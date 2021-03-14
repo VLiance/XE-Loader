@@ -1,0 +1,37 @@
+;Build cpp
+-c ../src/ -o obj/Win_{_sOpt}/  -DImWin -DUseWinFunc -DWinLastError -I ../ -I ../src/ 
+-DD_MemoryCheck
+-DD_REDIRECT_STDERR
+-Werror=implicit-function-declaration
+-Werror=int-conversion
+-Werror=incompatible-pointer-types
+>
+;Generate executable
+-o obj/Win_{_sOpt}/ -#To _out/{_sOpt}/XE-Loader.* -lgdi32 
+-Wl,--large-address-aware
+;Reserve 64Mo at 0x4000000 (For Exeloading)
+-Wl,--stack=0x4000000
+;-Wl,--image-base=0x400000
+;-Wl,--image-base=0x8000000
+;0x10000000 //DLL space
+;0x140000000 //64
+;0x180000000  //64 dll
+;Change adress base to enable Virtual Alloc from 0x4000000
+;-Wl,--image-base=0x8000000
+-Wl,--image-base=0x10000000
+>
+;-#Run _out/{_sOpt}/XE-Loader.exe  E:/_Project/Vellum/Sokol/_cwc/sapp/_out/cube-sapp/Windows_Debug_wasm/cube-sapp.exe
+;-#Run _out/{_sOpt}/XE-Loader.exe  E:/_Project/Vellum/Sokol/_cwc/sapp/_out/imgui-sapp/Windows_Debug_wasm/imgui-sapp.exe
+;-#Run _out/{_sOpt}/XE-Loader.exe  E:/Data/autre/_Cwc/Toolchain/VLianceTool/DJGPP_RT/DJGPP_RT-10.2.0.3/i586-pc-msdosdjgpp/bin/g++.exe
+;-#Run _out/{_sOpt}/XE-Loader.exe  echfs-utils.elf
+;-#Run _out/{_sOpt}/XE-Loader.exe  parted
+;-#Run _out/{_sOpt}/XE-Loader.exe App.elf
+;-#Run _out/{_sOpt}/XE-Loader.exe  E:/Data/autre/_Cwc/Toolchain/VLianceTool/LibRT/LibRT-999/bin/g++.exe
+-#Run _out/{_sOpt}/XE-Loader.exe  Main
+;-#Run _out/{_sOpt}/ExeLoader.exe  shapes-sapp.exe
+;-#Run _out/{_sOpt}/ExeLoader.exe  E:/_Project/Vellum/ElfLoader/_out/Debug/Main_32
+;-#Run _out/{_sOpt}/ExeLoader.exe  E:/Data/setting/Sokol_Cwc/_cwc/sapp/_out/cube-sapp/CpcDos_Debug_wasm/cube-sapp.exe
+;-#Run _out/{_sOpt}/ExeLoader.exe E:/_Project/Box2D/cwc/_out/Windows_Clang_Debug/App.exe
+;-#Run _out/{_sOpt}/ExeLoader.exe imgui-sapp.exe
+;-#Run _out/{_sOpt}/ExeLoader.exe "D:/Try/Midori/Midori.exe"
+>
