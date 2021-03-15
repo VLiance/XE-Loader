@@ -44,6 +44,14 @@ int
 	#define _set(call)  _module->exe_ret = call
 	if(!_module)return 0;
 	
+	
+	#ifndef VirtualLoadPE
+	if(!_module->have_reloc){
+		err_print("Cannot start executable without .reloc section, when Virtual allocation is not supported");
+		return 1;
+	}
+	#endif
+	
 	switch (_module->type.val)
 	{
 	_case XE_Type_EXE:

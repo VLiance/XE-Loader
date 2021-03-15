@@ -62,6 +62,7 @@ typedef struct XE_Module{
 	char* name;
 	void* handle;
 	void* section_text;
+	bool have_reloc;
 	int exe_ret;
 	XE_Type_ type;
 	XE_Arch_ arch;

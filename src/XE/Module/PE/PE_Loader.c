@@ -540,7 +540,7 @@ XE_Module*
 	PIMAGE_DATA_DIRECTORY directory = GET_HEADER_DICTIONARY(m, IMAGE_DIRECTORY_ENTRY_EXPORT);
 	PIMAGE_EXPORT_DIRECTORY exports = (PIMAGE_EXPORT_DIRECTORY) ( m->codeBase + directory->VirtualAddress);
 	_module->name =  (char*) ( m->codeBase + exports->Name);
-	_module->handle = m;
+	_module->have_reloc = m->isRelocated;
 	
 	if(m->isDLL){
 		_module->type = XE_Type_(DLL);
