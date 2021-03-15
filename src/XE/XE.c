@@ -23,8 +23,8 @@
 #include <stdio.h>
 #include <errno.h>
 
-#include "XE/Sys/File.inc"  //Can be overrided
-#include "XE/Sys/Debug.inc" //Can be overrided
+#include "XE/File.inc"  //Can be overrided
+#include "XE/Debug.inc" //Can be overrided
 
 extern FILE* stdout_; 
 extern FILE* stderr_;

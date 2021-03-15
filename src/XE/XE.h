@@ -17,7 +17,7 @@
 #ifndef HDef_XE
 #define HDef_XE
 
-#include "XE/_Config.h"
+#include "_Config.h"
 
 #include "Xternal/Xternal.h"
 

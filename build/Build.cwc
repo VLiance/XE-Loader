@@ -1,10 +1,12 @@
 ;Build cpp
--c ../src/ -o obj/Win_{_sOpt}/  -DImWin -DUseWinFunc -DWinLastError -I ../ -I ../src/ 
--DD_MemoryCheck
--DD_REDIRECT_STDERR
--Werror=implicit-function-declaration
--Werror=int-conversion
--Werror=incompatible-pointer-types
+-c ../src/ -o obj/Win_{_sOpt}/  -DImWin -DUseWinFunc -DWinLastError 
+	-I ../include/
+	-I ../ -I ../src/ 
+	-DD_MemoryCheck
+	-DD_REDIRECT_STDERR
+	-Werror=implicit-function-declaration
+	-Werror=int-conversion
+	-Werror=incompatible-pointer-types
 >
 ;Generate executable
 -o obj/Win_{_sOpt}/ -#To _out/{_sOpt}/XE-Loader.* -lgdi32 
