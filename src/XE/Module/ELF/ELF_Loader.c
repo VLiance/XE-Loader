@@ -45,7 +45,7 @@ XE_Module*
 {
 	ELF_File* f = Load_Module_ELF_MEM(_module->file.path, _module->file.data, _module->file.size);
 	_module->handle = f;
-	
+	_module->have_reloc = f->rel;
 	_module->section_text = f->shdr_madr_text;
 	//GDB_Send_AddSymbolFile(f->nm, f->shdr_madr_text);
 	/*
