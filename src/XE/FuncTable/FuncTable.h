@@ -313,7 +313,12 @@ FILE* stderr_; //Not used?
 {"",			"setvbuf"  					,(FUNC_) pipe_setvbuf },
 {"",			"_set_error_mode" 			,(FUNC_) pipe_set_error_mode },
 
+{"",			"RegisterClassA"  			,(FUNC_) pipe_RegisterClassA }, 
 {"",			"RegisterClassW"  			,(FUNC_) pipe_RegisterClassW }, 
+{"",			"UnregisterClassA"  		,(FUNC_) pipe_UnregisterClassA }, 
+{"",			"UnregisterClassW"  		,(FUNC_) pipe_UnregisterClassW }, 
+
+
 {"",			"AdjustWindowRectEx"  		,(FUNC_) pipe_AdjustWindowRectEx }, 
 
 {"",			"DispatchMessageA"  		,(FUNC_) pipe_DispatchMessageA }, 
@@ -390,7 +395,6 @@ FILE* stderr_; //Not used?
 
 //Windows
 
-{"",			"GetVersionExW"  				,(FUNC_) sys_GetVersionExW },
 {"",			"CreateWindowExW"  				,(FUNC_) pipe_CreateWindowExW },
 {"",			"GetClientRect"  				,(FUNC_) sys_GetClientRect },
 {"",			"GetWindowRect"  				,(FUNC_) sys_GetWindowRect },
@@ -648,6 +652,14 @@ FILE* stderr_; //Not used?
 {"",			"fseek"  	,(FUNC_) fseek },
 {"",			"ftell"  	,(FUNC_) ftell },
 {"",			"rewind"  	,(FUNC_) rewind },
+
+{"",			"GetSystemMetrics"  		,(FUNC_) sys_GetSystemMetrics },
+{"",			"SystemParametersInfoA"  	,(FUNC_) sys_SystemParametersInfoA },
+{"",			"SystemParametersInfoW"  	,(FUNC_) sys_SystemParametersInfoW },
+{"",			"GetCursorPos"  		,(FUNC_) sys_GetCursorPos },
+{"",			"GetVersionExA"  		,(FUNC_) sys_GetVersionExA },
+{"",			"GetVersionExW"  		,(FUNC_) sys_GetVersionExW },
+{"",			"MonitorFromPoint"  		,(FUNC_) sys_MonitorFromPoint },
 /////////////////////////////////
 
 };

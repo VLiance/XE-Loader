@@ -67,15 +67,28 @@ DWORD WINAPI sys_GetLastError(VOID){
 
 //!WINBOOL WINAPI GetVersionExA (LPOSVERSIONINFOA lpVersionInformation)
 //!WINBOOL WINAPI GetVersionExW (LPOSVERSIONINFOW lpVersionInformation)
-WINBOOL WINAPI sys_GetVersionExW (LPOSVERSIONINFOW lpVersionInformation){
-	showfunc("GetVersionExW( lpVersionInformation: %p)", lpVersionInformation); 
-	
 	//DWORD dwOSVersionInfoSize;
 	//DWORD dwMajorVersion;
 	//DWORD dwMinorVersion;
 	//DWORD dwBuildNumber;
 	//DWORD dwPlatformId;
 	//WCHAR szCSDVersion[128];	
+WINBOOL WINAPI sys_GetVersionExA(LPOSVERSIONINFOA lpVersionInformation){
+	showfunc("GetVersionExA( lpVersionInformation: %p )", lpVersionInformation);
+	#ifdef Func_Win
+		return GetVersionExA(lpVersionInformation);
+	#else
+		lpVersionInformation->dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
+		lpVersionInformation->dwMajorVersion = 10;
+		lpVersionInformation->dwMinorVersion = 0;
+		lpVersionInformation->dwBuildNumber = 0;
+		lpVersionInformation->dwPlatformId = 2;
+		lpVersionInformation->szCSDVersion[128] = 0;
+		return 1;
+	#endif
+}
+WINBOOL WINAPI sys_GetVersionExW (LPOSVERSIONINFOW lpVersionInformation){
+	showfunc("GetVersionExW( lpVersionInformation: %p)", lpVersionInformation); 
 	#ifdef Func_Win
 		return GetVersionExW(lpVersionInformation);
 	#else
@@ -85,11 +98,9 @@ WINBOOL WINAPI sys_GetVersionExW (LPOSVERSIONINFOW lpVersionInformation){
 		lpVersionInformation->dwBuildNumber = 0;
 		lpVersionInformation->dwPlatformId = 2;
 		lpVersionInformation->szCSDVersion[128] = 0;
-
-	return 1;
+		return 1;
 	#endif
 }
-
 
 //!WINBOOL WINAPI TrackMouseEvent(LPTRACKMOUSEEVENT lpEventTrack)
 WINBOOL WINAPI sys_TrackMouseEvent(LPTRACKMOUSEEVENT lpEventTrack){
@@ -537,3 +548,52 @@ DWORD WINAPI sys_GetModuleFileNameW (HMODULE hModule, LPWSTR lpFilename, DWORD n
 	#endif
 }
 
+//!int WINAPI GetSystemMetrics(int nIndex)
+int WINAPI sys_GetSystemMetrics(int nIndex){
+	showfunc("GetSystemMetrics( nIndex: %d )", nIndex);
+	#ifdef Func_Win
+		return GetSystemMetrics(nIndex);
+	#else
+		return 0;//Fail --> use custom implementation
+	#endif
+}
+
+//!WINBOOL WINAPI SystemParametersInfoA(UINT uiAction,UINT uiParam,PVOID pvParam,UINT fWinIni)
+//!WINBOOL WINAPI SystemParametersInfoW(UINT uiAction,UINT uiParam,PVOID pvParam,UINT fWinIni)
+DWORD WINAPI sys_SystemParametersInfoA(UINT uiAction,UINT uiParam,PVOID pvParam,UINT fWinIni){
+	showfunc("SystemParametersInfoA( uiAction: %p, uiParam: %s, pvParam: %d, fWinIni: %d )", uiAction, uiParam, fWinIni);
+	#ifdef Func_Win
+		return SystemParametersInfoA(uiAction, pvParam, fWinIni);
+	#else
+		return 0;
+	#endif
+}
+DWORD WINAPI sys_SystemParametersInfoW(UINT uiAction,UINT uiParam,PVOID pvParam,UINT fWinIni){
+	showfunc("SystemParametersInfoW( uiAction: %p, uiParam: %s, pvParam: %d, fWinIni: %d )", uiAction, uiParam, fWinIni);
+	#ifdef Func_Win
+		return SystemParametersInfoW(uiAction, pvParam, fWinIni);
+	#else
+		return 0;
+	#endif
+}
+
+//!WINBOOL WINAPI GetCursorPos(LPPOINT lpPoint)
+WINBOOL WINAPI sys_GetCursorPos(LPPOINT lpPoint){
+	showfunc("GetCursorPos( lpPoint: %p )", lpPoint);
+	#ifdef Func_Win
+		return GetCursorPos(lpPoint);
+	#else
+		return false;//Fail
+	#endif
+}
+
+//!HMONITOR WINAPI MonitorFromPoint(POINT pt,DWORD dwFlags)
+HMONITOR WINAPI sys_MonitorFromPoint(POINT pt,DWORD dwFlags){
+	showfunc("MonitorFromPoint( pt: %p, dwFlags: %d )", pt, dwFlags);
+	#ifdef Func_Win
+		return MonitorFromPoint(pt, dwFlags);
+	#else
+		return 0;//Fail
+	#endif
+
+}

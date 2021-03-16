@@ -45,7 +45,20 @@ typedef LRESULT (*func_WndProc)( HWND hwnd,UINT msg,WPARAM wParam,LPARAM lParam)
 func_WndProc aWndProc[MAX_WND_CLASS] = {};
 short aWndProc_idx = 0;
 
+//!ATOM WINAPI RegisterClassA (CONST WNDCLASSA *lpWndClass)
 //!ATOM RegisterClassW(const WNDCLASSW *lpWndClass)
+inl ATOM WINAPI pipe_RegisterClassA(const WNDCLASSA *lpWndClass){
+	showfunc("RegisterClassA( value: %p )", lpWndClass);
+	#ifdef Func_Win
+		return RegisterClassA((WNDCLASSA*)lpWndClass);
+	#else
+		if(aWndProc_idx < MAX_WND_CLASS){
+		    aWndProc[aWndProc_idx] = (func_WndProc)lpWndClass->lpfnWndProc;//WNDPROC
+			aWndProc_idx++;
+		}
+		return 0;
+	#endif
+}
 inl ATOM WINAPI pipe_RegisterClassW(const WNDCLASSW *lpWndClass){
 	showfunc("RegisterClassW( value: %p )", lpWndClass);
 	#ifdef Func_Win
@@ -56,6 +69,25 @@ inl ATOM WINAPI pipe_RegisterClassW(const WNDCLASSW *lpWndClass){
 			aWndProc_idx++;
 		}
 		return 0;
+	#endif
+}
+
+//!WINBOOL WINAPI UnregisterClassA (LPCSTR lpClassName, HINSTANCE hInstance)
+//!WINBOOL WINAPI UnregisterClassW (LPCWSTR lpClassName, HINSTANCE hInstance)
+WINBOOL WINAPI pipe_UnregisterClassA (LPCSTR lpClassName, HINSTANCE hInstance){
+	showfunc("UnregisterClassA( lpClassName: %p, hInstance: %p)", lpClassName, hInstance);
+	#ifdef Func_Win
+		return UnregisterClassA(lpClassName, hInstance);
+	#else
+		return false;
+	#endif
+}
+WINBOOL WINAPI pipe_UnregisterClassW (LPCSTR lpClassName, HINSTANCE hInstance){
+	showfunc("UnregisterClassW( lpClassName: %p, hInstance: %p)", lpClassName, hInstance);
+	#ifdef Func_Win
+		return pipe_UnregisterClassW(lpClassName, hInstance);
+	#else
+		return false;
 	#endif
 }
 
