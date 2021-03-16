@@ -536,12 +536,13 @@ XE_Module*
 	Load_Module_PE(XE_Module* _module) 
 {
 	MEMORYMODULE* m = Load_Module_PE_MEM( _module->file.data, _module->file.size);
+	_module->handle = m;
 	
 	PIMAGE_DATA_DIRECTORY directory = GET_HEADER_DICTIONARY(m, IMAGE_DIRECTORY_ENTRY_EXPORT);
 	PIMAGE_EXPORT_DIRECTORY exports = (PIMAGE_EXPORT_DIRECTORY) ( m->codeBase + directory->VirtualAddress);
 	_module->name =  (char*) ( m->codeBase + exports->Name);
 	_module->have_reloc = m->isRelocated;
-	
+		
 	if(m->isDLL){
 		_module->type = XE_Type_(DLL);
 	}
