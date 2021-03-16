@@ -748,10 +748,12 @@ MEMORYMODULE*
 		goto error;
 	}
 
+#ifdef ExecuteTLS
 	if (!ExecuteTLS(result)){
 		warn_print("Warning, !ExecuteTLS");
 		goto error;
 	}
+#endif
 
 	// get entry point of loaded library
 	if (result->headers->OptionalHeader.AddressOfEntryPoint != 0) {
