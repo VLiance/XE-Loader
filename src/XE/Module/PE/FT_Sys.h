@@ -595,5 +595,14 @@ HMONITOR WINAPI sys_MonitorFromPoint(POINT pt,DWORD dwFlags){
 	#else
 		return 0;//Fail
 	#endif
-
 }
+//!WINBOOL WINAPI SetConsoleTextAttribute(HANDLE hConsoleOutput,WORD wAttributes)
+WINBOOL WINAPI sys_SetConsoleTextAttribute(HANDLE hConsoleOutput,WORD wAttributes){
+	showfunc("SetConsoleTextAttribute( hConsoleOutput: %p, wAttributes: %d )", hConsoleOutput, wAttributes);
+	#ifdef Func_Win
+		return SetConsoleTextAttribute(hConsoleOutput, wAttributes);
+	#else
+		return false;//Fail
+	#endif
+}
+

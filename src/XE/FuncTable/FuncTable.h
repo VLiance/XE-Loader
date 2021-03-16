@@ -317,6 +317,7 @@ FILE* stderr_; //Not used?
 {"",			"RegisterClassW"  			,(FUNC_) pipe_RegisterClassW }, 
 {"",			"UnregisterClassA"  		,(FUNC_) pipe_UnregisterClassA }, 
 {"",			"UnregisterClassW"  		,(FUNC_) pipe_UnregisterClassW }, 
+{"",			"UnregisterClassW"  		,(FUNC_) pipe_UnregisterClassW }, 
 
 
 {"",			"AdjustWindowRectEx"  		,(FUNC_) pipe_AdjustWindowRectEx }, 
@@ -660,6 +661,8 @@ FILE* stderr_; //Not used?
 {"",			"GetVersionExA"  		,(FUNC_) sys_GetVersionExA },
 {"",			"GetVersionExW"  		,(FUNC_) sys_GetVersionExW },
 {"",			"MonitorFromPoint"  		,(FUNC_) sys_MonitorFromPoint },
+{"",			"SetConsoleTextAttribute"  		,(FUNC_) sys_SetConsoleTextAttribute },
+
 /////////////////////////////////
 
 };
