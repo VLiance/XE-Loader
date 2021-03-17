@@ -828,4 +828,50 @@ WINBOOL WINAPI sys_SetConsoleMode(HANDLE hConsoleHandle,DWORD dwMode){
 	#endif
 }
 
+//!WINBASEAPI WINBOOL WINAPI PeekConsoleInputA(HANDLE hConsoleInput,PINPUT_RECORD lpBuffer,DWORD nLength,LPDWORD lpNumberOfEventsRead);
+//!WINBASEAPI WINBOOL WINAPI PeekConsoleInputW(HANDLE hConsoleInput,PINPUT_RECORD lpBuffer,DWORD nLength,LPDWORD lpNumberOfEventsRead);
+WINBOOL WINAPI sys_PeekConsoleInputA(HANDLE hConsoleInput,PINPUT_RECORD lpBuffer,DWORD nLength,LPDWORD lpNumberOfEventsRead){
+	showfunc("PeekConsoleInputA( hConsoleInput: %p, lpBuffer: %d, nLength: %d, lpNumberOfEventsRead: %p", hConsoleInput, lpBuffer, nLength, lpNumberOfEventsRead);
+	#ifdef Func_Win
+		return PeekConsoleInputA( hConsoleInput, lpBuffer, nLength, lpNumberOfEventsRead );
+	#else
+		return false;
+	#endif
+}
+WINBOOL WINAPI sys_PeekConsoleInputW(HANDLE hConsoleInput,PINPUT_RECORD lpBuffer,DWORD nLength,LPDWORD lpNumberOfEventsRead){
+	showfunc("PeekConsoleInputA( PeekConsoleInputW: %p, lpBuffer: %d, nLength: %d, lpNumberOfEventsRead: %p", hConsoleInput, lpBuffer, nLength, lpNumberOfEventsRead);
+	#ifdef Func_Win
+		return PeekConsoleInputW( hConsoleInput, lpBuffer, nLength, lpNumberOfEventsRead );
+	#else
+		return false;
+	#endif
+}
 
+//!WINBASEAPI WINBOOL WINAPI ReadConsoleInputA(HANDLE hConsoleInput,PINPUT_RECORD lpBuffer,DWORD nLength,LPDWORD lpNumberOfEventsRead)
+//!WINBASEAPI WINBOOL WINAPI ReadConsoleInputW(HANDLE hConsoleInput,PINPUT_RECORD lpBuffer,DWORD nLength,LPDWORD lpNumberOfEventsRead)
+WINBOOL WINAPI sys_ReadConsoleInputA(HANDLE hConsoleInput,PINPUT_RECORD lpBuffer,DWORD nLength,LPDWORD lpNumberOfEventsRead){
+	showfunc("ReadConsoleInputA( hConsoleInput: %p, lpBuffer: %d, nLength: %d, lpNumberOfEventsRead: %p", hConsoleInput, lpBuffer, nLength, lpNumberOfEventsRead);
+	#ifdef Func_Win
+		return PeekConsoleInputA( hConsoleInput, lpBuffer, nLength, lpNumberOfEventsRead );
+	#else
+		return false;
+	#endif
+}
+WINBOOL WINAPI sys_ReadConsoleInputW(HANDLE hConsoleInput,PINPUT_RECORD lpBuffer,DWORD nLength,LPDWORD lpNumberOfEventsRead){
+	showfunc("sys_ReadConsoleInputW( hConsoleInput: %p, lpBuffer: %d, nLength: %d, lpNumberOfEventsRead: %p", hConsoleInput, lpBuffer, nLength, lpNumberOfEventsRead);
+	#ifdef Func_Win
+		return sys_ReadConsoleInputW( hConsoleInput, lpBuffer, nLength, lpNumberOfEventsRead );
+	#else
+		return false;
+	#endif
+}
+
+//!WINBASEAPI WINBOOL WINAPI SetConsoleCtrlHandler(PHANDLER_ROUTINE HandlerRoutine,WINBOOL Add)
+WINBASEAPI WINBOOL WINAPI sys_SetConsoleCtrlHandler(PHANDLER_ROUTINE HandlerRoutine,WINBOOL Add){
+	showfunc("SetConsoleCtrlHandler( HandlerRoutine: %p, Add: %d", HandlerRoutine, Add );
+	#ifdef Func_Win
+		return SetConsoleCtrlHandler( HandlerRoutine, Add);
+	#else
+		return false;
+	#endif
+}

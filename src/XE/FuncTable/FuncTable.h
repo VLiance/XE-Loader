@@ -686,7 +686,12 @@ FILE* stderr_; //Not used?
 {"",			"ChangeDisplaySettingsExA"  ,(FUNC_) sys_ChangeDisplaySettingsExA},
 {"",			"GetConsoleMode"  			,(FUNC_) sys_GetConsoleMode},
 {"",			"SetConsoleMode"  			,(FUNC_) sys_SetConsoleMode},
-	
+{"",			"ReadConsoleInputA"  		,(FUNC_) sys_ReadConsoleInputA},
+{"",			"ReadConsoleInputW"  		,(FUNC_) sys_ReadConsoleInputW},
+{"",			"PeekConsoleInputA"  		,(FUNC_) sys_PeekConsoleInputA},
+{"",			"PeekConsoleInputW"  		,(FUNC_) sys_PeekConsoleInputW},
+{"",			"SetConsoleCtrlHandler"  	,(FUNC_) sys_SetConsoleCtrlHandler},
+
 /////////////////////////////////
 
 
