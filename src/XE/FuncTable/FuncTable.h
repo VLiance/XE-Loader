@@ -132,6 +132,16 @@ FILE* stderr_; //Not used?
 {"","_commode" 		,(FUNC_) &_commode },
 {"","__p__commode" 	,(FUNC_) &imp_p__commode }, 
 
+/////////// CRT /////////////
+{"",			"_initterm"  		,(FUNC_) imp_initterm },
+{"",			"_initterm_e"  	,(FUNC_) imp_initterm_e },
+{"",			"__set_app_type"  	,(FUNC_) imp_set_app_type },
+{"",			"__p__fmode"  		,(FUNC_) imp_p__fmode },
+{"",			"__lconv_init"  	,(FUNC_) imp_lconv_init },
+{"",			"__p__acmdln"  	,(FUNC_) imp_p__acmdln },
+{"",			"__getmainargs"  	,(FUNC_) imp_getmainargs },
+{"",			"_environ"  	,(FUNC_) (char***)&_environ_ },
+{"",			"__p__environ"  	,(FUNC_) imp_p__environ },
 
 /////// Linux /////
 #ifdef HAVE_OPERATOR_NEW_INT
@@ -220,15 +230,6 @@ FILE* stderr_; //Not used?
 //////////////////////////// FUNC TABLE /////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////
 
-/////////// CRT /////////////
-{"",			"_initterm"  		,(FUNC_) imp_initterm },
-{"",			"_initterm_e"  	,(FUNC_) imp_initterm_e },
-{"",			"__set_app_type"  	,(FUNC_) imp_set_app_type },
-{"",			"__p__fmode"  		,(FUNC_) imp_p__fmode },
-{"",			"__lconv_init"  	,(FUNC_) imp_lconv_init },
-{"",			"__p__acmdln"  	,(FUNC_) imp_p__acmdln },
-{"",			"__getmainargs"  	,(FUNC_) imp_getmainargs },
-{"",			"__p__environ"  	,(FUNC_) imp_p__environ },
 
 #ifdef Func_Win 
 {"",			"_onexit"  		,(FUNC_) _onexit },

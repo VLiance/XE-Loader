@@ -56,6 +56,7 @@ int
 	{
 	_case XE_Type_EXE:
 	{
+		#ifdef SearchFor_CustomMain
 		{	
 		_printl("Research 'main_entry()' entry point... ");
 		main_func dMain = (main_func)MemGetProcAddress(_module->handle, "main_entry");
@@ -75,6 +76,8 @@ int
 		_printl("--=== Execute EXE WinMain ===---");
 		if(dMain){return _set( dMain(0, 0, winMainArg, 0) );}
 		}
+		#endif
+		
 		//No export? try calling gentry point
 		_printl("Call entry point... ");
 		_printl("--=== Execute EXE ===---");

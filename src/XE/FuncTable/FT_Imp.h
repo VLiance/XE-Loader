@@ -243,11 +243,12 @@ inl int imp_initterm_e(__PIFV* ppfn,__PIFV* end){
 
 
 //!_CRTIMP char ***__cdecl __p__environ(void)
-static  char** _environ_ = 0;
+//static  char** _environ_ = 0;
+static  char* _environ_[] = {"test1", "test2"};
 inl char*** imp_p__environ(void){
 	showfunc("__p__environ( )", "");
 	//return &_environ; //Standard one
-	return &_environ_; //Custom
+	return (char***)&_environ_; //Custom
 }
 
 
@@ -362,7 +363,11 @@ int imp_getmainargs(int* _Argc, char*** _Argv, char*** _Env, int _DoWildCard, vo
 	for(int i = 0; i < *_Argc; i++){
 		showinf("arg[%d]: %s", i, (*_Argv)[i]);
 	}
+
 	*_Argc =0;
+	char* envp[] = { "param0", "param1", "param2" };
+	*_Env = (char**)&envp;
+	//*_Env = 0;
 	
 	return 0;//successful
 }
