@@ -123,7 +123,7 @@ FILE* stderr_; //Not used?
 {"",			"func_NotImplemented" 		,(FUNC_) func_NotImplemented }, //Must be first
 
 {"","__initenv" 	,(FUNC_) &__initenv }, //TODO -> to test //Special
-{"","__p___initenv" 	,(FUNC_) &imp_p__initenv }, //TODO -> to test //Special
+{"","__p___initenv" 	,(FUNC_) imp_p__initenv }, //TODO -> to test //Special
 
 {"","_iob" 			,(FUNC_) iob }, 	  //TODO -> to test //Special
 
@@ -555,15 +555,17 @@ FILE* stderr_; //Not used?
 
 {"",			"_snprintf"  		,(FUNC_) snprintf },
 {"",			"_beginthreadex"  ,(FUNC_) th_beginthreadex },
-{"",			"_errno"  			,(FUNC_) imp_errno },
+{"",			"_errno"  			,(FUNC_) &_errno },
 
-
+//{"",			"strlen"  	,(FUNC_) strlen },
+{"",			"strlen"  	,(FUNC_) imp_strlen }, //safer strlen
 
 /////////////////////////////////////////////
 /////////// DIRECT MAPPING //////////////////
 /// *safe enough for a direct replacement* ///
 /////////////////////////////////////////////
 /////////////////////////////////////////////
+#ifdef USE_Direct_Mapping
 
 {"",			"vfprintf"  ,(FUNC_) vfprintf },
 {"",			"scanf"  ,(FUNC_) scanf },
@@ -595,9 +597,6 @@ FILE* stderr_; //Not used?
 ////////////////////////////////////
 
 /////////// STRING ///////////////
-//#ifdef ImWin
-//{"wcslen"  	,(FUNC_) wcslen }, //Not in DJGPP
-//#endif
 {"",			"wcslen"  	,(FUNC_) wcslen_ },
 //{"",			"wcstombs"  ,(FUNC_) imp_wcstombs },
 {"",			"wcstombs"  ,(FUNC_) imp_wcstombs },
@@ -623,9 +622,9 @@ FILE* stderr_; //Not used?
 {"",			"atoi"  	,(FUNC_) atoi },
 
 {"",			"strstr"  	,(FUNC_) strstr },
-{"",			"strlen"  	,(FUNC_) strlen },
 {"",			"memchr"  	,(FUNC_) memchr },
 {"",			"strtoul"  	,(FUNC_) strtoul },
+
 
 ////////////////////////////////
 
@@ -655,6 +654,7 @@ FILE* stderr_; //Not used?
 {"",			"fseek"  	,(FUNC_) fseek },
 {"",			"ftell"  	,(FUNC_) ftell },
 {"",			"rewind"  	,(FUNC_) rewind },
+#endif
 
 {"",			"GetSystemMetrics"  		,(FUNC_) sys_GetSystemMetrics },
 {"",			"SystemParametersInfoA"  	,(FUNC_) sys_SystemParametersInfoA },

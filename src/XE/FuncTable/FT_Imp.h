@@ -244,7 +244,7 @@ inl int imp_initterm_e(__PIFV* ppfn,__PIFV* end){
 
 //!_CRTIMP char ***__cdecl __p__environ(void)
 //static  char** _environ_ = 0;
-static  char* _environ_[] = {"test1", "test2"};
+char* _environ_[] = {"test1", "test2"};
 inl char*** imp_p__environ(void){
 	showfunc("__p__environ( )", "");
 	//return &_environ; //Standard one
@@ -750,8 +750,17 @@ void imp_abort (void){
 int imp_isctype(int _C,int _Type){
 	showfunc("_isctype( _C: %d, _Type: %d)", _C, _Type);
 	//return _isctype(_C, _Type);
-	
 	return 1; //or 0?
+}
+
+//!size_t strlen ( const char * str )
+int imp_strlen(const char * str ){
+	showfunc("strlen( str: %s)", str);
+	if(str == 0){ //Std will not check for null ptr!
+		err_print("strlen on null ptr!");
+		return 0;
+	}
+	return strlen(str);
 }
 
 /*
