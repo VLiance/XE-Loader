@@ -623,7 +623,7 @@ FILE* stderr_; //Not used?
 {"",			"strstr"  	,(FUNC_) strstr },
 {"",			"strlen"  	,(FUNC_) strlen },
 {"",			"memchr"  	,(FUNC_) memchr },
-//{"",			"strtoul"  	,(FUNC_) strtoul },
+{"",			"strtoul"  	,(FUNC_) strtoul },
 
 ////////////////////////////////
 
@@ -683,8 +683,12 @@ FILE* stderr_; //Not used?
 {"",			"DestroyWindow"  			,(FUNC_) sys_DestroyWindow},
 {"",			"DeleteObject"  			,(FUNC_) sys_DeleteObject},
 {"",			"KillTimer"  				,(FUNC_) sys_KillTimer},
+{"",			"ChangeDisplaySettingsExA"  ,(FUNC_) sys_ChangeDisplaySettingsExA},
+{"",			"GetConsoleMode"  			,(FUNC_) sys_GetConsoleMode},
+{"",			"SetConsoleMode"  			,(FUNC_) sys_SetConsoleMode},
 	
 /////////////////////////////////
+
 
 };
 

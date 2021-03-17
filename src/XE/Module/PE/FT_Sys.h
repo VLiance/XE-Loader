@@ -799,3 +799,33 @@ WINBOOL WINAPI sys_KillTimer(HWND hWnd,UINT_PTR uIDEvent){
 		return false;
 	#endif
 }
+
+//!LONG WINAPI ChangeDisplaySettingsExA(LPCSTR lpszDeviceName,LPDEVMODEA lpDevMode,HWND hwnd,DWORD dwflags,LPVOID lParam)
+LONG WINAPI sys_ChangeDisplaySettingsExA(LPCSTR lpszDeviceName,LPDEVMODEA lpDevMode,HWND hwnd,DWORD dwflags,LPVOID lParam){
+	showfunc("ChangeDisplaySettingsExA( lpszDeviceName: %p, lpDevMode: %p,dwflags: %p, lParam: %p", lpszDeviceName, lpDevMode, hwnd, dwflags, lParam);
+	#ifdef Func_Win
+		return ChangeDisplaySettingsExA( lpszDeviceName, lpDevMode, hwnd, dwflags, lParam);
+	#else
+		return 0;
+	#endif
+}
+//!WINBASEAPI WINBOOL WINAPI GetConsoleMode(HANDLE hConsoleHandle,LPDWORD lpMode)
+WINBOOL WINAPI sys_GetConsoleMode(HANDLE hConsoleHandle,LPDWORD lpMode){
+	showfunc("GetConsoleMode( hConsoleHandle: %p, lpMode: %d", hConsoleHandle, lpMode );
+	#ifdef Func_Win
+		return GetConsoleMode( hConsoleHandle, lpMode);
+	#else
+		return false;
+	#endif
+}
+//!WINBASEAPI WINBOOL WINAPI SetConsoleMode(HANDLE hConsoleHandle,DWORD dwMode)
+WINBOOL WINAPI sys_SetConsoleMode(HANDLE hConsoleHandle,DWORD dwMode){
+	showfunc("SetConsoleMode( hConsoleHandle: %p, dwMode: %d", hConsoleHandle, dwMode );
+	#ifdef Func_Win
+		return SetConsoleMode( hConsoleHandle, dwMode);
+	#else
+		return false;
+	#endif
+}
+
+
