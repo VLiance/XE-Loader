@@ -674,8 +674,128 @@ HPALETTE WINAPI sys_CreatePalette(CONST LOGPALETTE *plpal){
 WINUSERAPI int WINAPI sys_ReleaseDC(HWND hWnd,HDC hDC){
 	showfunc("ReleaseDC( hWnd: %p, hDC: %p )", hWnd, hDC);
 	#ifdef Func_Win
-		return sys_ReleaseDC(hWnd, hDC);
+		return ReleaseDC(hWnd, hDC);
 	#else
 		return 0;//Not released
+	#endif
+}
+
+//!WINBOOL WINAPI SetEvent (HANDLE hEvent)
+WINBOOL WINAPI sys_SetEvent (HANDLE hEvent){
+	showfunc("SetEvent( hEvent: %p )", hEvent);
+	#ifdef Func_Win
+		return SetEvent(hEvent);
+	#else
+		return false;
+	#endif
+}
+
+//!int WINAPI SetDIBitsToDevice(HDC hdc,int xDest,int yDest,DWORD w,DWORD h,int xSrc,int ySrc,UINT StartScan,UINT cLines,CONST VOID *lpvBits,CONST BITMAPINFO *lpbmi,UINT ColorUse);
+int WINAPI sys_SetDIBitsToDevice(HDC hdc,int xDest,int yDest,DWORD w,DWORD h,int xSrc,int ySrc,UINT StartScan,UINT cLines,CONST VOID *lpvBits,CONST BITMAPINFO *lpbmi,UINT ColorUse){
+	showfunc("SetDIBitsToDevice( hdc: %p, xDest: %d, yDest %d, w: %d, h: %d, xSrc: %d, ySrc: %d, StartScan: %d, cLines: %d, lpvBits: %p, lpbmi: %p, ColorUse: %p )", hdc, xDest, yDest, w, h, xSrc, ySrc, StartScan, cLines, lpvBits, lpbmi, ColorUse);
+	#ifdef Func_Win
+		return SetDIBitsToDevice( hdc, xDest, yDest, w, h, xSrc, ySrc, StartScan, cLines, lpvBits, lpbmi, ColorUse);
+	#else
+		return false;
+	#endif
+}
+
+//!WINBOOL WINAPI GetKeyboardState(PBYTE lpKeyState)
+WINBOOL WINAPI sys_GetKeyboardState(PBYTE lpKeyState){
+	showfunc("GetKeyboardState( lpKeyState: %p )", lpKeyState);
+	#ifdef Func_Win
+		return GetKeyboardState(lpKeyState);
+	#else
+		return false;
+	#endif
+}
+
+//!HCURSOR WINAPI SetCursor(HCURSOR hCursor)
+HCURSOR WINAPI sys_SetCursor(HCURSOR hCursor){
+	showfunc("SetCursor( hCursor: %p )", hCursor);
+	#ifdef Func_Win
+		return SetCursor(hCursor);
+	#else
+		return false;
+	#endif
+}
+
+//!HDC WINAPI BeginPaint(HWND hWnd,LPPAINTSTRUCT lpPaint)
+HDC WINAPI sys_BeginPaint(HWND hWnd,LPPAINTSTRUCT lpPaint){
+	showfunc("BeginPaint( hWnd: %p, lpPaint:%p )", hWnd, lpPaint);
+	#ifdef Func_Win
+		return BeginPaint(hWnd, lpPaint);
+	#else
+		return 0;
+	#endif
+}
+
+//!HPALETTE WINAPI SelectPalette(HDC hdc,HPALETTE hPal,WINBOOL bForceBkgd)
+HPALETTE WINAPI sys_SelectPalette(HDC hdc,HPALETTE hPal,WINBOOL bForceBkgd){
+	showfunc("SelectPalette( hdc: %p, hPal:%p, bForceBkgd: %d )", hdc, hPal, bForceBkgd);
+	#ifdef Func_Win
+		return SelectPalette( hdc, hPal, bForceBkgd);
+	#else
+		return 0;
+	#endif
+}
+
+//!WINGDIAPI UINT WINAPI RealizePalette(HDC hdc)
+WINGDIAPI UINT WINAPI sys_RealizePalette(HDC hdc){
+	showfunc("RealizePalette( hdc: %p", hdc);
+	#ifdef Func_Win
+		return RealizePalette( hdc );
+	#else
+		return 0;
+	#endif
+}
+
+//!WINBOOL WINAPI InvalidateRect(HWND hWnd,CONST RECT *lpRect,WINBOOL bErase)
+WINBOOL WINAPI sys_InvalidateRect(HWND hWnd,CONST RECT *lpRect,WINBOOL bErase){
+	showfunc("InvalidateRect( hWnd: %p, lpRec: %p, bErase: %d", hWnd, lpRect, bErase );
+	#ifdef Func_Win
+		return InvalidateRect( hWnd, lpRect, bErase );
+	#else
+		return 0;
+	#endif
+}
+
+//!WINBOOL WINAPI EndPaint(HWND hWnd,CONST PAINTSTRUCT *lpPaint)
+WINBOOL WINAPI sys_EndPaint(HWND hWnd,CONST PAINTSTRUCT *lpPaint){
+	showfunc("EndPaint( hWnd: %p, lpPaint: %p", hWnd, lpPaint );
+	#ifdef Func_Win
+		return EndPaint( hWnd, lpPaint);
+	#else
+		return false;
+	#endif
+}
+
+//!WINBOOL WINAPI DestroyWindow(HWND hWnd)
+WINBOOL WINAPI sys_DestroyWindow(HWND hWnd){
+	showfunc("DestroyWindow( hWnd: %p", hWnd );
+	#ifdef Func_Win
+		return DestroyWindow( hWnd);
+	#else
+		return false;
+	#endif
+}
+
+//!WINBOOL WINAPI DeleteObject(HGDIOBJ ho)
+WINBOOL WINAPI sys_DeleteObject(HGDIOBJ ho){
+	showfunc("DeleteObject( ho: %p", ho );
+	#ifdef Func_Win
+		return DeleteObject( ho);
+	#else
+		return false;
+	#endif
+}
+
+//!WINBOOL WINAPI KillTimer(HWND hWnd,UINT_PTR uIDEvent)
+WINBOOL WINAPI sys_KillTimer(HWND hWnd,UINT_PTR uIDEvent){
+	showfunc("KillTimer( hWnd: %p, uIDEvent: %p", hWnd, uIDEvent );
+	#ifdef Func_Win
+		return KillTimer( hWnd, uIDEvent);
+	#else
+		return false;
 	#endif
 }

@@ -671,7 +671,18 @@ FILE* stderr_; //Not used?
 {"",			"GetDeviceCaps"  			,(FUNC_) sys_GetDeviceCaps },
 {"",			"CreatePalette"  			,(FUNC_) sys_CreatePalette },
 {"",			"ReleaseDC"  				,(FUNC_) sys_ReleaseDC },
-
+{"",			"SetEvent"  				,(FUNC_) sys_SetEvent },
+{"",			"SetDIBitsToDevice"  		,(FUNC_) sys_SetDIBitsToDevice },
+{"",			"GetKeyboardState"  		,(FUNC_) sys_GetKeyboardState},
+{"",			"SetCursor"  				,(FUNC_) sys_SetCursor},
+{"",			"BeginPaint"  				,(FUNC_) sys_BeginPaint},
+{"",			"EndPaint"  				,(FUNC_) sys_EndPaint},
+{"",			"SelectPalette"  			,(FUNC_) sys_SelectPalette},
+{"",			"RealizePalette"  			,(FUNC_) sys_RealizePalette},
+{"",			"InvalidateRect"  			,(FUNC_) sys_InvalidateRect},
+{"",			"DestroyWindow"  			,(FUNC_) sys_DestroyWindow},
+{"",			"DeleteObject"  			,(FUNC_) sys_DeleteObject},
+{"",			"KillTimer"  				,(FUNC_) sys_KillTimer},
 	
 /////////////////////////////////
 
