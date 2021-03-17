@@ -47,11 +47,14 @@
 //Some function are irrelevant and may be annoying, but sometime we need it for debugging purpose
 #define Show_AllFuncTable
 
+
 //Use the standard Widows VirtualAlloc allocation or the more portable ExeLoader version
 //#define USE_Windows_VirtualAlloc
 
 //Use standard TlsAlloc instead of the Exeloader one
 #define USE_Platform_ThreadStorage
+
+#define PE_ExecuteTLS
 
 #define USE_Platform_Atomic
 

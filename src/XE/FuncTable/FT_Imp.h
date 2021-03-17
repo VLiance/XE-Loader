@@ -364,9 +364,10 @@ int imp_getmainargs(int* _Argc, char*** _Argv, char*** _Env, int _DoWildCard, vo
 		showinf("arg[%d]: %s", i, (*_Argv)[i]);
 	}
 
-	*_Argc =0;
+	*_Argc =1;
 	char* envp[] = { "param0", "param1", "param2" };
 	*_Env = (char**)&envp;
+	*_Argv = (char**)&envp;
 	//*_Env = 0;
 	
 	return 0;//successful

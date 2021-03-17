@@ -748,7 +748,7 @@ MEMORYMODULE*
 		goto error;
 	}
 
-#ifdef ExecuteTLS
+#ifdef PE_ExecuteTLS
 	if (!ExecuteTLS(result)){
 		warn_print("Warning, !ExecuteTLS");
 		goto error;
