@@ -396,6 +396,7 @@ FILE* stderr_; //Not used?
 
 //Windows
 
+{"",			"CreateWindowExA"  				,(FUNC_) sys_CreateWindowExA },
 {"",			"CreateWindowExW"  				,(FUNC_) pipe_CreateWindowExW },
 {"",			"GetClientRect"  				,(FUNC_) sys_GetClientRect },
 {"",			"GetWindowRect"  				,(FUNC_) sys_GetWindowRect },
@@ -442,6 +443,7 @@ FILE* stderr_; //Not used?
 
 {"",			"SetErrorMode"  			,(FUNC_) sys_SetErrorMode },
 
+{"",			"DefWindowProcA"  			,(FUNC_) sys_DefWindowProcA },
 {"",			"DefWindowProcW"  			,(FUNC_) sys_DefWindowProcW },
 {"",			"Sleep"						,(FUNC_) th_Sleep },
 
@@ -457,13 +459,10 @@ FILE* stderr_; //Not used?
 {"",			"TrackMouseEvent"  			,(FUNC_) sys_TrackMouseEvent },
 
 
-
 {"",			"_get_osfhandle"  			,(FUNC_) imp_get_osfhandle },
 {"",			"_lseek"  					,(FUNC_) imp_lseek },
 {"",			"_write"  					,(FUNC_) imp_write},
 {"",			"_isatty"  					,(FUNC_) imp_isatty},
-
-
 
 
 {"",			"_vsnprintf"  	,(FUNC_) imp_vsnprintf },
@@ -624,6 +623,7 @@ FILE* stderr_; //Not used?
 {"",			"strstr"  	,(FUNC_) strstr },
 {"",			"strlen"  	,(FUNC_) strlen },
 {"",			"memchr"  	,(FUNC_) memchr },
+//{"",			"strtoul"  	,(FUNC_) strtoul },
 
 ////////////////////////////////
 
@@ -657,12 +657,22 @@ FILE* stderr_; //Not used?
 {"",			"GetSystemMetrics"  		,(FUNC_) sys_GetSystemMetrics },
 {"",			"SystemParametersInfoA"  	,(FUNC_) sys_SystemParametersInfoA },
 {"",			"SystemParametersInfoW"  	,(FUNC_) sys_SystemParametersInfoW },
-{"",			"GetCursorPos"  		,(FUNC_) sys_GetCursorPos },
-{"",			"GetVersionExA"  		,(FUNC_) sys_GetVersionExA },
-{"",			"GetVersionExW"  		,(FUNC_) sys_GetVersionExW },
+{"",			"GetCursorPos"  			,(FUNC_) sys_GetCursorPos },
+{"",			"GetVersionExA"  			,(FUNC_) sys_GetVersionExA },
+{"",			"GetVersionExW"  			,(FUNC_) sys_GetVersionExW },
 {"",			"MonitorFromPoint"  		,(FUNC_) sys_MonitorFromPoint },
-{"",			"SetConsoleTextAttribute"  		,(FUNC_) sys_SetConsoleTextAttribute },
+{"",			"SetConsoleTextAttribute"  	,(FUNC_) sys_SetConsoleTextAttribute },
+{"",			"GetMonitorInfoA"  			,(FUNC_) sys_GetMonitorInfoA },
+{"",			"GetMonitorInfoW"  			,(FUNC_) sys_GetMonitorInfoW },
+{"",			"AdjustWindowRect"  		,(FUNC_) sys_AdjustWindowRect },
+{"",			"MapWindowPoints"  			,(FUNC_) sys_MapWindowPoints },
+{"",			"PtInRect"  				,(FUNC_) sys_PtInRect },
+{"",			"SetForegroundWindow"  		,(FUNC_) sys_SetForegroundWindow },
+{"",			"GetDeviceCaps"  			,(FUNC_) sys_GetDeviceCaps },
+{"",			"CreatePalette"  			,(FUNC_) sys_CreatePalette },
+{"",			"ReleaseDC"  				,(FUNC_) sys_ReleaseDC },
 
+	
 /////////////////////////////////
 
 };

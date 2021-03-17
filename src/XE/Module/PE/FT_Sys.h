@@ -133,42 +133,27 @@ inl WINAPI HWND pipe_WindowFromDC(HDC hDC){
 	#endif
 }
 
-
+//!HWND WINAPI CreateWindowExA(DWORD dwExStyle,LPCSTR lpClassName,LPCSTR lpWindowName,DWORD dwStyle,int X,int Y,int nWidth,int nHeight,HWND hWndParent,HMENU hMenu,HINSTANCE hInstance,LPVOID lpParam)
+HWND WINAPI sys_CreateWindowExA(DWORD dwExStyle,LPCSTR lpClassName,LPCSTR lpWindowName,DWORD dwStyle,int X,int Y,int nWidth,int nHeight,HWND hWndParent,HMENU hMenu,HINSTANCE hInstance,LPVOID lpParam){
+	showfunc("CreateWindowExA( dwExStyle: %d, lpClassName: %s, lpWindowName :%p, dwStyle: %d, X: %d, Y: %d, nWidth: %d, nHeight: %d, hWndParent: %p, hMenu: %p, hInstance: %d, lpParam: %d )",
+								dwExStyle, lpClassName, lpWindowName, dwStyle, X, Y, nWidth, nHeight, hWndParent, hMenu, hInstance, lpParam);
+	#ifdef Func_Win
+		return CreateWindowExA( dwExStyle, lpClassName, lpWindowName, dwStyle, X, Y, nWidth, nHeight, hWndParent, hMenu, hInstance, lpParam );
+	#else
+		int idx = Create_context((ContextInf){.width=nWidth, .height=nHeight});
+		return (HWND)idx;
+	#endif
+}
 //!HWND WINAPI CreateWindowExW(DWORD dwExStyle,LPCWSTR lpClassName,LPCWSTR lpWindowName,DWORD dwStyle,int X,int Y,int nWidth,int nHeight,HWND hWndParent,HMENU hMenu,HINSTANCE hInstance,LPVOID lpParam)
 HWND WINAPI pipe_CreateWindowExW(DWORD dwExStyle,LPCWSTR lpClassName,LPCWSTR lpWindowName,DWORD dwStyle,int X,int Y,int nWidth,int nHeight,HWND hWndParent,HMENU hMenu,HINSTANCE hInstance,LPVOID lpParam){
-	showfunc("CreateWindowExW( dwExStyle: %d, lpClassName: %p, lpWindowName :%d, dwStyle: %d, X: %d, Y: %d, nWidth: %d, nHeight: %d, hWndParent: %p, hMenu: %p, hInstance: %d, lpParam: %d )",
+	showfunc("CreateWindowExW( dwExStyle: %d, lpClassName: %p, lpWindowName :%p, dwStyle: %d, X: %d, Y: %d, nWidth: %d, nHeight: %d, hWndParent: %p, hMenu: %p, hInstance: %d, lpParam: %d )",
 								dwExStyle, lpClassName, lpWindowName, dwStyle, X, Y, nWidth, nHeight, hWndParent, hMenu, hInstance, lpParam);
 	#ifdef Func_Win
 		return CreateWindowExW( dwExStyle, lpClassName, lpWindowName, dwStyle, X, Y, nWidth, nHeight, hWndParent, hMenu, hInstance, lpParam );
 	#else
 	
 		int idx = Create_context((ContextInf){.width=nWidth, .height=nHeight});
-		/*
-		//Create a new Window Context
-		aContext_count++; //Important: Skip the zero index (NULL)
-		int idx = aContext_count;
-		
-		aContext[idx].idx = idx;
-		aContext[idx].width = nWidth;
-		aContext[idx].height = nHeight;
-		#ifdef ShowPixView
-		aContext[idx].hwnd_View = pixView_createWindow(xe_hInstance, &aContext[idx]);
-		#endif
-
-		#ifdef CpcDos
-		if(nWidth > 10){
-			// Get ID context from cpcdos
-			aContext[idx].id_context = oCpc->Create_Context(nWidth, nHeight);
-			showinf("Create_Context()= idx: %d, height: %d, width: %d", idx,  aContext[idx].height,  aContext[idx].width);
-		}
-		#endif
-		
-		showinf("PixView= idx: %d, height: %d, width: %d", idx,  aContext[idx].height,  aContext[idx].width);
-		showinf("create hwnd_View( hwnd_View: %d, idx: %d, height: %d, width: %d )", aContext[idx].hwnd_View,  idx,  aContext[idx].height,  aContext[idx].width );
-		*/
 		return (HWND)idx;
-		
-		
 	#endif
 }
 
@@ -534,7 +519,7 @@ LPWCH WINAPI sys_GetEnvironmentStringsW (VOID){
 DWORD WINAPI sys_GetModuleFileNameA (HMODULE hModule, LPSTR lpFilename, DWORD nSize){
 	showfunc("GetModuleFileNameA( hModule: %p, lpFilename: %s, nSize: %d )", hModule, lpFilename, nSize);
 	#ifdef Func_Win
-		return sys_GetModuleFileNameA(hModule, lpFilename, nSize);
+		return GetModuleFileNameA(hModule, lpFilename, nSize);
 	#else
 		return 0;
 	#endif
@@ -561,17 +546,17 @@ int WINAPI sys_GetSystemMetrics(int nIndex){
 //!WINBOOL WINAPI SystemParametersInfoA(UINT uiAction,UINT uiParam,PVOID pvParam,UINT fWinIni)
 //!WINBOOL WINAPI SystemParametersInfoW(UINT uiAction,UINT uiParam,PVOID pvParam,UINT fWinIni)
 DWORD WINAPI sys_SystemParametersInfoA(UINT uiAction,UINT uiParam,PVOID pvParam,UINT fWinIni){
-	showfunc("SystemParametersInfoA( uiAction: %p, uiParam: %s, pvParam: %d, fWinIni: %d )", uiAction, uiParam, fWinIni);
+	showfunc("SystemParametersInfoA( uiAction: %p, uiParam: %s, pvParam: %d, fWinIni: %d )", uiAction, uiParam, pvParam, fWinIni);
 	#ifdef Func_Win
-		return SystemParametersInfoA(uiAction, pvParam, fWinIni);
+		return SystemParametersInfoA(uiAction, uiParam, pvParam, fWinIni);
 	#else
 		return 0;
 	#endif
 }
 DWORD WINAPI sys_SystemParametersInfoW(UINT uiAction,UINT uiParam,PVOID pvParam,UINT fWinIni){
-	showfunc("SystemParametersInfoW( uiAction: %p, uiParam: %s, pvParam: %d, fWinIni: %d )", uiAction, uiParam, fWinIni);
+	showfunc("SystemParametersInfoW( uiAction: %p, uiParam: %s, pvParam: %d, fWinIni: %d )", uiAction, uiParam, pvParam, fWinIni);
 	#ifdef Func_Win
-		return SystemParametersInfoW(uiAction, pvParam, fWinIni);
+		return SystemParametersInfoW(uiAction, uiParam, pvParam, fWinIni);
 	#else
 		return 0;
 	#endif
@@ -606,3 +591,91 @@ WINBOOL WINAPI sys_SetConsoleTextAttribute(HANDLE hConsoleOutput,WORD wAttribute
 	#endif
 }
 
+//!WINBOOL WINAPI GetMonitorInfoA(HMONITOR hMonitor,LPMONITORINFO lpmi)
+//!WINBOOL WINAPI GetMonitorInfoW(HMONITOR hMonitor,LPMONITORINFO lpmi)
+WINBOOL WINAPI sys_GetMonitorInfoA(HMONITOR hMonitor,LPMONITORINFO lpmi){
+	showfunc("GetMonitorInfoA( hMonitor: %p, lpmi: %d )", hMonitor, lpmi);
+	#ifdef Func_Win
+		return GetMonitorInfoA(hMonitor, lpmi);
+	#else
+		return false;//Fail
+	#endif
+}
+WINBOOL WINAPI sys_GetMonitorInfoW(HMONITOR hMonitor,LPMONITORINFO lpmi){
+	showfunc("GetMonitorInfoW( hMonitor: %p, lpmi: %d )", hMonitor, lpmi);
+	#ifdef Func_Win
+		return GetMonitorInfoW(hMonitor, lpmi);
+	#else
+		return false;//Fail
+	#endif
+}
+
+//!WINBOOL WINAPI AdjustWindowRect(LPRECT lpRect,DWORD dwStyle,WINBOOL bMenu)
+WINBOOL WINAPI sys_AdjustWindowRect(LPRECT lpRect,DWORD dwStyle,WINBOOL bMenu){
+		showfunc("AdjustWindowRect( lpRect: %p, dwStyle: %d, bMenu: %d )", lpRect, dwStyle, bMenu);
+	#ifdef Func_Win
+		return AdjustWindowRect(lpRect, dwStyle, bMenu);
+	#else
+		return false;//Fail
+	#endif
+}
+
+//!int WINAPI MapWindowPoints(HWND hWndFrom,HWND hWndTo,LPPOINT lpPoints,UINT cPoints)
+int WINAPI sys_MapWindowPoints(HWND hWndFrom,HWND hWndTo,LPPOINT lpPoints,UINT cPoints){
+	showfunc("MapWindowPoints( hWndFrom: %p, hWndTo: %d, lpPoints: %d, cPoints: %d )", hWndFrom, hWndTo, lpPoints, cPoints);
+	#ifdef Func_Win
+		return MapWindowPoints(hWndFrom, hWndTo, lpPoints, cPoints);
+	#else
+		return 0;//Fail
+	#endif
+}
+
+//!WINBOOL WINAPI PtInRect(CONST RECT *lprc,POINT pt)
+WINBOOL WINAPI sys_PtInRect(CONST RECT *lprc,POINT pt){
+	showfunc("PtInRect( lprc: %p, pt: %d )", lprc, pt);
+	#ifdef Func_Win
+		return PtInRect(lprc, pt);
+	#else
+		return 0;//If the specified point does not lie within the rectangle, the return value is zero.
+	#endif
+}
+
+//!WINBOOL WINAPI SetForegroundWindow(HWND hWnd)
+WINBOOL WINAPI sys_SetForegroundWindow(HWND hWnd){
+	showfunc("SetForegroundWindow( hWnd: %p )", hWnd);
+	#ifdef Func_Win
+		return SetForegroundWindow(hWnd);
+	#else
+		return false;
+	#endif
+}
+
+//!int WINAPI GetDeviceCaps(HDC hdc,int index)
+int WINAPI sys_GetDeviceCaps(HDC hdc,int index){
+	showfunc("GetDeviceCaps( hdc: %p, index: %d )", hdc, index);
+	#ifdef Func_Win
+		return GetDeviceCaps(hdc, index);
+	#else
+		return 0;
+	#endif
+}
+
+//!HPALETTE WINAPI CreatePalette(CONST LOGPALETTE *plpal)
+HPALETTE WINAPI sys_CreatePalette(CONST LOGPALETTE *plpal){
+	showfunc("CreatePalette( plpal: %p )", plpal);
+	#ifdef Func_Win
+		return CreatePalette(plpal);
+	#else
+		return 0;//Fail
+	#endif
+}
+
+//!WINUSERAPI int WINAPI ReleaseDC(HWND hWnd,HDC hDC)
+WINUSERAPI int WINAPI sys_ReleaseDC(HWND hWnd,HDC hDC){
+	showfunc("ReleaseDC( hWnd: %p, hDC: %p )", hWnd, hDC);
+	#ifdef Func_Win
+		return sys_ReleaseDC(hWnd, hDC);
+	#else
+		return 0;//Not released
+	#endif
+}
