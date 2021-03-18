@@ -202,7 +202,7 @@ ULONG imp_chkstk(){
  //Windows wchar_t is 16-bit & for Linux, wchar_t is 32 bit.
  size_t imp_wcstombs(char* dest, const wchar_t* src, size_t max){
 // wprintf(L"\nTHE SOURCE! %c\n " ,src);
-	showfunc("imp_wcstombs( dest: %p, src: %p , max: %d )", dest,src,max);
+	showfunc("wcstombs( dest: %p, src: %p , max: %d )", dest,src,max);
 	if(!dest){ return 0;}
 	
 	// char* _res = W2CStr_(dest, src, max);
@@ -335,6 +335,9 @@ int * imp_p__initenv(){
      int newmode;
    } _startupinfo;
  #endif
+int argc_ = 3;
+const char* envp_[] = { "env0", "env1", "env2" };
+const char* argv_[] = { "param0", "param1", "param2" };
 //!int __getmainargs(int * _Argc,char *** _Argv,char *** _Env,int _DoWildCard,_startupinfo * _StartInfo)
 int imp_getmainargs(int* _Argc, char*** _Argv, char*** _Env, int _DoWildCard, void* _StartInfo){ //_StartInfo :Other information to be passed to the CRT DLL.
 	showfunc("__getmainargs( _Argc: %p, _Argv: %p, _Env: %p, _DoWildCard: %d, _StartInfo: %p )", _Argc, _Argv, _Env, _DoWildCard, _StartInfo);
@@ -364,12 +367,10 @@ int imp_getmainargs(int* _Argc, char*** _Argv, char*** _Env, int _DoWildCard, vo
 		showinf("arg[%d]: %s", i, (*_Argv)[i]);
 	}
 
-	*_Argc =1;
-	char* envp[] = { "param0", "param1", "param2" };
-	*_Env = (char**)&envp;
-	*_Argv = (char**)&envp;
-	//*_Env = 0;
-	
+	*_Argc = argc_;
+	*_Env = (char**)&envp_;
+	*_Argv = (char**)&argv_;
+
 	return 0;//successful
 }
 
