@@ -704,6 +704,11 @@ FILE* stderr_; //Not used?
 {"",			"_access"  					,(FUNC_) imp_access},
 {"",			"signal"  					,(FUNC_) imp_signal},
 {"",			"_open"  					,(FUNC_) imp_open},
+{"",			"strerror"  				,(FUNC_) imp_strerror},
+{"",			"exit"  					,(FUNC_) imp_exit},
+{"",			"_stati64"  				,(FUNC_) imp_stati64},
+{"",			"_read"  					,(FUNC_) imp_read},
+{"",			"_close"  					,(FUNC_) imp_close},
 /////////////////////////////////	
 
 

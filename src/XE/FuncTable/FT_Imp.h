@@ -741,6 +741,15 @@ void imp_deregister_frame(void* ptr){
 	showfunc_opt("__deregister_frame( ptr: %p)", ptr);
 }
 
+//!void exit(int status)
+void imp_exit(int status){
+	showfunc("exit(status: %d)", status);
+	fn void GDB_Func_Break();
+	GDB_Func_Break();
+	showfunc("Try Continuing...", "");
+	return;
+}
+
 //!void abort (void)
 void imp_abort (void){
 	showfunc("abort", "");
@@ -798,13 +807,57 @@ void (*imp_signal(int sig, void (*func)(int)))(int){
 	signal(sig, func);
 }
 
-
+#include <io.h> //_open
 //!int _open(const char *filename, int oflag, [int pmode])
 int imp_open(const char *filename, int oflag, int pmode){
 	showfunc("_open(filename: '%s', oflag: %d, pmode: %d)", filename, oflag, pmode);
-	//_open(filename, oflag, pmode);
-	return -1;//error
+	return _open(filename, oflag, pmode);
+//	return -1;//error
 }
+
+//!char *__cdecl strerror(int) __MINGW_ATTRIB_DEPRECATED_SEC_WARN;
+char* imp_strerror(int _errno){
+	showfunc("strerror(_errno: %d)", _errno);
+	char* err  = strerror(_errno);
+	showinf("strerror: %s", err);
+	return err;
+}
+
+
+//!int _stati64(const char *__path, struct stati64 *__statbuf);
+#define _dev_t uint32_t //Represents device handles.
+#define _ino_t uint16_t //For returning status information.
+struct _stati64 {
+    _dev_t st_dev;
+    _ino_t st_ino;
+    unsigned short st_mode;
+    short st_nlink;
+    short st_uid;
+    short st_gid;
+    _dev_t st_rdev;
+    __int64 st_size;
+    time_t st_atime;
+    time_t st_mtime;
+    time_t st_ctime;
+};
+int imp_stati64(const char* __path, struct _stati64* __statbuf){
+	showfunc("_stati64(__path: '%s', __statbuf: %p)", __path, __statbuf);
+	return 0;
+	//The return value is 0 if the call was successful, otherwise -1 is returned and errno contains the reason. The buffer is not touched unless the call is successful. 
+}
+
+//!int _read(int const fd, void * const buffer, unsigned const buffer_size)
+int imp_read(int const fd, void* const buffer, unsigned const buffer_size){
+	showfunc("_read(fd: '%d', buffer: %p, buffer_size: %d)", fd, buffer, buffer_size);
+	return _read( fd, buffer, buffer_size);
+}
+
+//!int _close(int fd)
+int imp_close(int fd){
+	showfunc("_close(fd: '%d')", fd);
+	return _close( fd);
+}
+
 /*
 LPVOID WINAPI LocalLock (HLOCAL hMem);
 SIZE_T WINAPI LocalShrink (HLOCAL hMem, UINT cbNewSize);
