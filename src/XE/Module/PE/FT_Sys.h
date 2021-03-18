@@ -875,3 +875,25 @@ WINBASEAPI WINBOOL WINAPI sys_SetConsoleCtrlHandler(PHANDLER_ROUTINE HandlerRout
 		return false;
 	#endif
 }
+
+//!WINBASEAPI DWORD WINAPI GetFullPathNameA (LPCSTR lpFileName, DWORD nBufferLength, LPSTR lpBuffer, LPSTR *lpFilePart)
+DWORD WINAPI sys_GetFullPathNameA (LPCSTR lpFileName, DWORD nBufferLength, LPSTR lpBuffer, LPSTR *lpFilePart){
+	showfunc("GetFullPathNameA( lpFileName: %p, nBufferLength: %d, lpBuffer: %p, lpFilePart: %p", lpFileName, nBufferLength, lpBuffer, lpFilePart );
+	#ifdef Func_Win
+		return GetFullPathNameA( lpFileName, nBufferLength, lpBuffer, lpFilePart );
+	#else
+		return 0;
+	#endif
+}
+/*
+//!WINBASEAPI WINBOOL WINAPI GetConsoleMode(HANDLE hConsoleHandle,LPDWORD lpMode)
+WINBOOL WINAPI sys_GetConsoleMode(HANDLE hConsoleHandle,LPDWORD lpMode){
+	showfunc("GetConsoleMode( hConsoleHandle: %p, lpMode: %d", hConsoleHandle, lpMode );
+	#ifdef Func_Win
+		return GetConsoleMode( hConsoleHandle, lpMode );
+	#else
+		return 0;
+	#endif
+}*/
+
+

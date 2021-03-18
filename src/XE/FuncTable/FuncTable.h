@@ -694,6 +694,8 @@ FILE* stderr_; //Not used?
 {"",			"PeekConsoleInputW"  		,(FUNC_) sys_PeekConsoleInputW},
 {"",			"SetConsoleCtrlHandler"  	,(FUNC_) sys_SetConsoleCtrlHandler},
 
+{"",			"GetFullPathNameA"  		,(FUNC_) sys_GetFullPathNameA},
+{"",			"GetConsoleMode"  			,(FUNC_) sys_GetConsoleMode},
 /////////////////////////////////
 
 
