@@ -885,6 +885,30 @@ DWORD WINAPI sys_GetFullPathNameA (LPCSTR lpFileName, DWORD nBufferLength, LPSTR
 		return 0;
 	#endif
 }
+
+//!WINBASEAPI DWORD WINAPI GetTempPathA (DWORD nBufferLength, LPSTR lpBuffer)
+//!WINBASEAPI DWORD WINAPI GetTempPathW (DWORD nBufferLength, LPWSTR lpBuffer)
+DWORD WINAPI  sys_GetTempPathA (DWORD nBufferLength, LPSTR lpBuffer){
+	showfunc("GetTempPathA( nBufferLength: %d, lpBuffer: %d", nBufferLength, lpBuffer );
+	#ifdef Func_Win
+		return GetTempPathA( nBufferLength, lpBuffer);
+	#else
+		const char* path_temp = "C:\\TEMP\\";
+		_memcpy(lpBuffer, path_temp, sizeof(path_temp));
+		return sizeof(path_temp);
+	#endif
+}
+DWORD WINAPI  sys_GetTempPathW (DWORD nBufferLength, LPWSTR lpBuffer){
+	showfunc("GetTempPathW( nBufferLength: %d, lpBuffer: %d", nBufferLength, lpBuffer );
+	#ifdef Func_Win
+		return GetTempPathW( nBufferLength, lpBuffer);
+	#else
+		const wchar_t* path_temp = L"C:\\TEMP\\";
+		_memcpy(lpBuffer, path_temp, sizeof(path_temp));
+		return sizeof(path_temp);
+	#endif
+}
+
 /*
 //!WINBASEAPI WINBOOL WINAPI GetConsoleMode(HANDLE hConsoleHandle,LPDWORD lpMode)
 WINBOOL WINAPI sys_GetConsoleMode(HANDLE hConsoleHandle,LPDWORD lpMode){

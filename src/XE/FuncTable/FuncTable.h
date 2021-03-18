@@ -715,6 +715,7 @@ FILE* stderr_; //Not used?
 {"",			"_read"  					,(FUNC_) imp_read},
 {"",			"_close"  					,(FUNC_) imp_close},
 {"",			"WriteFile"  				,(FUNC_) imp_WriteFile},
+{"",			"GetTempPathA"  			,(FUNC_) sys_GetTempPathA},
 /////////////////////////////////	
 
 
