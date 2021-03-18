@@ -387,6 +387,7 @@ FILE* stderr_; //Not used?
 
 {"",			"setlocale"  				,(FUNC_) pipe_setlocale },
 {"",			"getenv"  					,(FUNC_) pipe_getenv },
+{"",			"_putenv"  					,(FUNC_) imp_putenv },
 
 {"",			"IsDebuggerPresent"  	 	,(FUNC_) pipe_IsDebuggerPresent },
 {"",			"UnhandledExceptionFilter" 	,(FUNC_) pipe_UnhandledExceptionFilter },
@@ -559,6 +560,7 @@ FILE* stderr_; //Not used?
 
 //{"",			"strlen"  	,(FUNC_) strlen },
 {"",			"strlen"  	,(FUNC_) imp_strlen }, //safer strlen
+{"",			"strpbrk"  	,(FUNC_) imp_strpbrk }, 
 
 /////////////////////////////////////////////
 /////////// DIRECT MAPPING //////////////////
@@ -579,6 +581,7 @@ FILE* stderr_; //Not used?
 
 {"",			"fprintf"  ,(FUNC_) imp_fprintf },
 {"",			"sprintf"  ,(FUNC_) imp_sprintf },
+{"",			"vsprintf"  ,(FUNC_) imp_vsprintf },
 
 
 {"",			"putc"  	,(FUNC_) imp_putc },
@@ -624,6 +627,7 @@ FILE* stderr_; //Not used?
 {"",			"strstr"  	,(FUNC_) strstr },
 {"",			"memchr"  	,(FUNC_) memchr },
 {"",			"strtoul"  	,(FUNC_) strtoul },
+
 
 
 ////////////////////////////////
@@ -696,7 +700,11 @@ FILE* stderr_; //Not used?
 
 {"",			"GetFullPathNameA"  		,(FUNC_) sys_GetFullPathNameA},
 {"",			"GetConsoleMode"  			,(FUNC_) sys_GetConsoleMode},
-/////////////////////////////////
+{"",			"_fileno"  					,(FUNC_) imp_fileno},
+{"",			"_access"  					,(FUNC_) imp_access},
+{"",			"signal"  					,(FUNC_) imp_signal},
+{"",			"_open"  					,(FUNC_) imp_open},
+/////////////////////////////////	
 
 
 };

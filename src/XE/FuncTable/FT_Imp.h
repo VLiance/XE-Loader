@@ -541,7 +541,7 @@ int imp_vsnprintf (char* s, size_t n, const char *  format, va_list __local_argv
 	return vsnprintf(s, n, format, __local_argv);
 	*/
 	
-	showfunc_opt("vsnprintf( s: %p, n: %u, format: %s, ... )  --  %u", s, n, format);
+	showfunc_opt("vsnprintf( s: %p, n: %u, format: %s, ... )", s, n, format);
 	#ifdef USE_limit_on_vsnprintf
 	if(n > USE_limit_on_vsnprintf) n = USE_limit_on_vsnprintf;
 	#endif
@@ -554,6 +554,15 @@ int imp_vsnprintf (char* s, size_t n, const char *  format, va_list __local_argv
 	*/
 	return vsnprintf(s, n, format, __local_argv);
 }
+
+//!int vsprintf (char * s, const char * format, va_list arg )
+int imp_vsprintf (char* s, const char *  format, va_list __local_argv){
+	showfunc_opt("vsprintf( s: %p, format: %s, ... )", s,  format);
+	return vsprintf(s, format, __local_argv);
+}
+
+
+
 
 //!UINT ___lc_codepage_func(void)
 UINT imp_lc_codepage_func(void){
@@ -732,13 +741,6 @@ void imp_deregister_frame(void* ptr){
 	showfunc_opt("__deregister_frame( ptr: %p)", ptr);
 }
 
-
-//!int _open(const char *filename,int oflag [,int pmode])
-int imp_open(const char *filename,int oflag,int pmode){
-	showfunc("_open( filename: %s, oflag: d, pmode: %d)", filename,oflag,pmode);
-	return -1;//error
-}
-
 //!void abort (void)
 void imp_abort (void){
 	showfunc("abort", "");
@@ -765,6 +767,44 @@ int imp_strlen(const char * str ){
 	return strlen(str);
 }
 
+//!char* strpbrk( const char * str1, const char * str2 )
+char* imp_strpbrk( const char* str1, const char* str2 ){
+	showfunc("strpbrk( str1: %s, str2: %s)", str1, str2);
+	return strpbrk(str1, str2);
+}
+
+//!int _putenv(const char *envstring)
+int imp_putenv(const char *envstring){
+	showfunc("putenv( envstring: %s)", envstring);
+	return 0;//successful 
+}
+
+//!int _fileno(FILE *stream)
+int imp_fileno(FILE* stream){
+	showfunc("_fileno( stream: %p)", stream);
+	return -1;//continue? 
+	//return _fileno(stream);//continue? 
+}
+
+//!int _access( const char *path, int mode)
+int imp_access( const char* path, int mode){
+	showfunc("_access( path: %s, mode: %d)", path, mode);
+	return 0;//Each function returns 0 if the file has the given mode. The function returns -1 if the named file does not exist or does not have the given mode; in this case, errno is set as shown in the following table.
+}
+
+//!void (*signal(int sig, void (*func)(int)))(int)
+void (*imp_signal(int sig, void (*func)(int)))(int){
+	showfunc("signal(signal: %d, func: %p)", sig, func);
+	signal(sig, func);
+}
+
+
+//!int _open(const char *filename, int oflag, [int pmode])
+int imp_open(const char *filename, int oflag, int pmode){
+	showfunc("_open(filename: '%s', oflag: %d, pmode: %d)", filename, oflag, pmode);
+	//_open(filename, oflag, pmode);
+	return -1;//error
+}
 /*
 LPVOID WINAPI LocalLock (HLOCAL hMem);
 SIZE_T WINAPI LocalShrink (HLOCAL hMem, UINT cbNewSize);
