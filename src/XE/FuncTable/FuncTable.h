@@ -134,8 +134,8 @@ FILE* stderr_; //Not used?
 
 /////////// CRT /////////////
 {"",			"_initterm"  		,(FUNC_) imp_initterm },
-{"",			"_initterm_e"  	,(FUNC_) imp_initterm_e },
-{"",			"__set_app_type"	  	,(FUNC_) imp_set_app_type },
+{"",			"_initterm_e"  		,(FUNC_) imp_initterm_e },
+{"",			"__set_app_type"	,(FUNC_) imp_set_app_type },
 {"",			"__p__fmode"  		,(FUNC_) imp_p__fmode },
 {"",			"__lconv_init"  	,(FUNC_) imp_lconv_init },
 {"",			"_acmdln"  			,(FUNC_) &__acmdln },
@@ -157,10 +157,10 @@ FILE* stderr_; //Not used?
 
 {"",			"__cxa_finalize" ,(FUNC_)  imp_cxa_finalize }, //global destructor
 
-{"",			"__divdi3"  	,(FUNC_) __divdi3 },
-{"",			"__libc_start_main"  	,(FUNC_) imp_libc_start_main },
+{"",			"__divdi3"  		,(FUNC_) __divdi3 },
+{"",			"__libc_start_main" ,(FUNC_) imp_libc_start_main },
 {"",			"XOpenDisplay"  	,(FUNC_) imp_XOpenDisplay },
-{"",			"XMatchVisualInfo"  	,(FUNC_) imp_XMatchVisualInfo },
+{"",			"XMatchVisualInfo"  ,(FUNC_) imp_XMatchVisualInfo },
 {"",			"XCreateColormap"  	,(FUNC_) imp_XCreateColormap },
 {"",			"XCreateWindow"  	,(FUNC_) imp_XCreateWindow },
 {"",			"XAllocWMHints"  	,(FUNC_) imp_XAllocWMHints },
@@ -168,7 +168,7 @@ FILE* stderr_; //Not used?
 {"",			"XShmCreateImage"  	,(FUNC_) imp_XShmCreateImage},
 {"",			"pthread_create"  	,(FUNC_) imp_pthread_create},
 {"",			"clock_gettime" 	,(FUNC_) imp_clock_gettime},
-{"",			"usleep" 	,(FUNC_) imp_usleep},
+{"",			"usleep" 			,(FUNC_) imp_usleep},
 {"",			"XTranslateCoordinates" 	,(FUNC_) imp_XTranslateCoordinates},
 {"",			"shmget" 		,(FUNC_) imp_shmget},
 {"",			"shmat" 		,(FUNC_) imp_shmat},
@@ -255,8 +255,7 @@ FILE* stderr_; //Not used?
 //Temp
 
 //{"wcscpy"  				,(FUNC_) wcscpy },
-{"",			"sscanf"  				,(FUNC_) sscanf },
-{"",			"bsearch"  			,(FUNC_) bsearch },
+
 
 //{"GetModuleFileNameW"  	,(FUNC_) GetModuleFileNameW },
 //{"_open"  				,(FUNC_) imp_open },
@@ -283,18 +282,18 @@ FILE* stderr_; //Not used?
 {"",			"isupper"  		,(FUNC_ )imp_isupper },
 {"",			"islower"  		,(FUNC_) imp_islower },
 
-{"",			"_lock"  			,(FUNC_) imp_lock },
+{"",			"_lock"  		,(FUNC_) imp_lock },
 {"",			"_unlock"  		,(FUNC_) imp_unlock },
 
-{"",			"_vscprintf"  		,(FUNC_) imp_vscprintf },
+
 ////////////////////////////////////////////////////////////
 
 ////// Special fn WGL ////////////////////////////////////
 {"",			"GetPixelFormat"  		,(FUNC_) pipe_GetPixelFormat }, 
 {"",			"SetPixelFormat"  		,(FUNC_) pipe_SetPixelFormat }, 
 {"",			"ChoosePixelFormat"  	,(FUNC_) pipe_ChoosePixelFormat },
-{"",			"DescribePixelFormat"  ,(FUNC_) pipe_DescribePixelFormat },
-{"",			"SwapBuffers"  		,(FUNC_) pipe_SwapBuffers },
+{"",			"DescribePixelFormat"  	,(FUNC_) pipe_DescribePixelFormat },
+{"",			"SwapBuffers"  			,(FUNC_) pipe_SwapBuffers },
 ////////////////////////////////////////////////////////////
 
 ///////////////// System //////////////
@@ -476,7 +475,7 @@ FILE* stderr_; //Not used?
 
 {"",			"abort"  		,(FUNC_) imp_abort }, 
 
-{"",			"_stricmp"  ,(FUNC_) imp_stricmp },
+{"",			"_stricmp"  	,(FUNC_) imp_stricmp },
 
 
 
@@ -548,14 +547,14 @@ FILE* stderr_; //Not used?
 
 {"",			"malloc"  	,(FUNC_) imp_malloc },
 {"",			"calloc"  	,(FUNC_) imp_calloc },
-{"",			"realloc"  ,(FUNC_) imp_realloc },
+{"",			"realloc"  	,(FUNC_) imp_realloc },
 {"",			"free"  	,(FUNC_) imp_free },
 
 
 
 
-{"",			"_snprintf"  		,(FUNC_) snprintf },
-{"",			"_beginthreadex"  ,(FUNC_) th_beginthreadex },
+
+{"",			"_beginthreadex"  	,(FUNC_) th_beginthreadex },
 {"",			"_errno"  			,(FUNC_) &_errno },
 
 //{"",			"strlen"  	,(FUNC_) strlen },
@@ -567,30 +566,36 @@ FILE* stderr_; //Not used?
 /// *safe enough for a direct replacement* ///
 /////////////////////////////////////////////
 /////////////////////////////////////////////
-#ifdef USE_Direct_Mapping
-
-{"",			"vfprintf"  ,(FUNC_) vfprintf },
-{"",			"scanf"  ,(FUNC_) scanf },
 
 /////////// LOG ////////////////////
-{"",			"printf"  	,(FUNC_) imp_printf },
 
 
 {"",			"fflush"  	,(FUNC_) imp_fflush },
 {"",			"fwrite"  	,(FUNC_) imp_fwrite },
 
-{"",			"fprintf"  ,(FUNC_) imp_fprintf },
-{"",			"sprintf"  ,(FUNC_) imp_sprintf },
-{"",			"vsprintf"  ,(FUNC_) imp_vsprintf },
-
+{"",			"printf"  			,(FUNC_) imp_printf },
+{"",			"fprintf"  			,(FUNC_) imp_fprintf },
+{"",			"sprintf"  			,(FUNC_) imp_sprintf },
+{"",			"vsprintf"  		,(FUNC_) imp_vsprintf },
+{"",			"_vscprintf"  		,(FUNC_) imp_vscprintf },
 
 {"",			"putc"  	,(FUNC_) imp_putc },
 {"",			"fputc"  	,(FUNC_) imp_fputc },
 {"",			"puts"  	,(FUNC_) imp_puts },
 {"",			"fputs"  	,(FUNC_) imp_fputs },
-{"",			"putchar"  ,(FUNC_) imp_putchar },
+{"",			"putchar"	,(FUNC_) imp_putchar },
 
 ////////////////////////////////////
+
+#ifdef USE_Direct_Mapping
+
+{"",			"sscanf"  				,(FUNC_) sscanf },
+{"",			"bsearch"  				,(FUNC_) bsearch },
+
+{"",			"_snprintf"  		,(FUNC_) snprintf },
+{"",			"vfprintf"  		,(FUNC_) vfprintf },
+{"",			"scanf"  			,(FUNC_) scanf },
+
 
 /////////// MEM ////////////////////
 {"",			"memcmp"  		,(FUNC_) memcmp },
@@ -616,11 +621,11 @@ FILE* stderr_; //Not used?
 {"",			"strcat"  	,(FUNC_) strcat },
 {"",			"strchr"  	,(FUNC_) strchr },
 {"",			"strcpy"  	,(FUNC_) strcpy },
-{"",			"strncmp"  ,(FUNC_) strncmp },
+{"",			"strncmp"  	,(FUNC_) strncmp },
 {"",			"strtok"  	,(FUNC_) strtok },
 {"",			"strtol"  	,(FUNC_) strtol },
 //{"",			"time"  	,(FUNC_) time },
-{"",			"strrchr"  ,(FUNC_) strrchr },
+{"",			"strrchr"  	,(FUNC_) strrchr },
 {"",			"srand"  	,(FUNC_) srand },
 {"",			"atoi"  	,(FUNC_) atoi },
 
@@ -635,7 +640,7 @@ FILE* stderr_; //Not used?
 /////////// CHAR ////////////////
 {"",			"getc"  	,(FUNC_) getc },
 {"",			"fgetc"  	,(FUNC_) fgetc },
-{"",			"getchar"  ,(FUNC_) getchar },
+{"",			"getchar"  	,(FUNC_) getchar },
 {"",			"getch"  	,(FUNC_) getch },
 /////////////////////////////////
 
@@ -709,6 +714,7 @@ FILE* stderr_; //Not used?
 {"",			"_stati64"  				,(FUNC_) imp_stati64},
 {"",			"_read"  					,(FUNC_) imp_read},
 {"",			"_close"  					,(FUNC_) imp_close},
+{"",			"WriteFile"  				,(FUNC_) imp_WriteFile},
 /////////////////////////////////	
 
 

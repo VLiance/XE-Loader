@@ -529,39 +529,22 @@ inl int imp_fwprintf (FILE* stream, const wchar_t* format, ...){
 
 //!int vsnprintf (char * __restrict__ __stream, size_t __n, const char * __restrict__ __format, va_list __local_argv);
 int imp_vsnprintf (char* s, size_t n, const char *  format, va_list __local_argv){
-	/*
-	showfunc("vsnprintf( s: %u, n: %d, format: %s, ... )", s,n,format); 
-	
-	static int count = 0;
-	count++;
-	if(n == 4048){
-		printf("\nhere");
-	}
-	
-	return vsnprintf(s, n, format, __local_argv);
-	*/
-	
+
 	showfunc_opt("vsnprintf( s: %p, n: %u, format: %s, ... )", s, n, format);
 	#ifdef USE_limit_on_vsnprintf
 	if(n > USE_limit_on_vsnprintf) n = USE_limit_on_vsnprintf;
 	#endif
-	/*
-	if(strcmp(format, "#version %I64i%s%s") == 0)
-	{
-		format = "#version %llu%s%s";
-		showfunc("CORRECTED : vsnprintf( s: %p, n: %u, format: %s, ... )", s, n, format);
-	}
-	*/
+	
 	return vsnprintf(s, n, format, __local_argv);
 }
 
 //!int vsprintf (char * s, const char * format, va_list arg )
 int imp_vsprintf (char* s, const char *  format, va_list __local_argv){
 	showfunc_opt("vsprintf( s: %p, format: %s, ... )", s,  format);
-	return vsprintf(s, format, __local_argv);
+	int ret = vsprintf(s, format, __local_argv);
+	showinf("vsprintf_result: %s", s);
+	return ret;
 }
-
-
 
 
 //!UINT ___lc_codepage_func(void)
@@ -641,33 +624,33 @@ int imp_fflush( FILE * stream ){
 //!int fputc(int char, FILE *stream)
 int imp_fputc(int _char, FILE *stream){
 	showfunc_opt("fputc( _char: %d, stream: %p, ... )", _char,stream); 
-	printf("%c", _char);
+	_printf("%c", _char);
 	return _char;
 }
 
 //!int putc(int char, FILE *stream)
 int imp_putc(int _char, FILE *stream){
 	showfunc_opt("putc( _char: %d, stream: %p, ... )", _char,stream); 
-	printf("%c", _char);
+	_printf("%c", _char);
 	return _char;
 }
 //!int putchar ( int character )
 int imp_putchar( int _char ){
 	showfunc_opt("putc( character: %c )", _char); 
-	printf("%c", _char);
+	_printf("%c", _char);
 	return _char;
 }
 
 //!int puts ( const char * str )
 int imp_puts( const char * str ){
 	showfunc_opt("puts( _char: %s )", str); 
-	return printf(str);
+	return _printf(str);
 }
 
 //!int fputs ( const char * str, FILE * stream )
 int imp_fputs ( const char * str, FILE * stream ){
 	showfunc_opt("puts( _char: %s, stream: %p)", str, stream); 
-	return printf(str);
+	return _printf(str);
 }
 
 //!int sprintf ( char * str, const char * format, ... )
@@ -689,16 +672,6 @@ int* imp_errno(void ){
 	//  return &(msvcrt_get_thread_data()->thread_errno);
 	return &_errno_;
 }
-//!intptr_t _get_osfhandle(int fd)
-#ifndef EBADF
-#define EBADF            9      /* Bad file number */
-#endif
-intptr_t imp_get_osfhandle(int fd){
-	showfunc("_get_osfhandle( fd: %d )", fd); 
-	//File descriptor 0 stdint, 1 stdout, 2 strerr
-	//If execution is allowed to continue, it returns INVALID_HANDLE_VALUE (-1). It also sets errno to EBADF, indicating an invalid file handle.
-	return -1;
-}
 
 //!long _lseek(int fd,long offset,int origin)
 long imp_lseek(int fd,long offset,int origin){
@@ -712,7 +685,7 @@ long imp_lseek(int fd,long offset,int origin){
 //!int _write(int fd,const void *buffer, unsigned int count)
 int imp_write(int fd,const void* buffer, unsigned int count){
 	showfunc_opt("_write( fd: %d, buffer: %p, count: %d )", fd, buffer, count);
-	int _bytes = printf ("%.*s\n",count, buffer)-1;
+	int _bytes = _printf ("%.*s\n",count, buffer)-1;
 	if(_bytes > count){_bytes = count;}
 	return _bytes;
 	
@@ -788,12 +761,7 @@ int imp_putenv(const char *envstring){
 	return 0;//successful 
 }
 
-//!int _fileno(FILE *stream)
-int imp_fileno(FILE* stream){
-	showfunc("_fileno( stream: %p)", stream);
-	return -1;//continue? 
-	//return _fileno(stream);//continue? 
-}
+
 
 //!int _access( const char *path, int mode)
 int imp_access( const char* path, int mode){
@@ -807,7 +775,29 @@ void (*imp_signal(int sig, void (*func)(int)))(int){
 	signal(sig, func);
 }
 
-#include <io.h> //_open
+#include <io.h> //_open / _get_osfhandle / _fileno
+
+//!int _fileno(FILE *stream)
+int imp_fileno(FILE* stream){
+	showfunc("_fileno( stream: %p)", stream);
+	//return -1;//continue? 
+	return _fileno(stream);//continue? 
+}
+
+//!intptr_t _get_osfhandle(int fd)
+#ifndef EBADF
+#define EBADF            9      /* Bad file number */
+#endif
+intptr_t imp_get_osfhandle(int fd){
+	showfunc("_get_osfhandle( fd: %d )", fd); 
+	//GetFileSizeEx
+	intptr_t handle = _get_osfhandle(fd);
+	showinf("FileHandle: %p", handle);
+	//File descriptor 0 stdint, 1 stdout, 2 strerr
+	//If execution is allowed to continue, it returns INVALID_HANDLE_VALUE (-1). It also sets errno to EBADF, indicating an invalid file handle.
+	return handle;
+	//return -1;
+}
 //!int _open(const char *filename, int oflag, [int pmode])
 int imp_open(const char *filename, int oflag, int pmode){
 	showfunc("_open(filename: '%s', oflag: %d, pmode: %d)", filename, oflag, pmode);
@@ -856,6 +846,17 @@ int imp_read(int const fd, void* const buffer, unsigned const buffer_size){
 int imp_close(int fd){
 	showfunc("_close(fd: '%d')", fd);
 	return _close( fd);
+}
+
+//!WINBASEAPI WINBOOL WINAPI WriteFile (HANDLE hFile, LPCVOID lpBuffer, DWORD nNumberOfBytesToWrite, LPDWORD lpNumberOfBytesWritten, LPOVERLAPPED lpOverlapped);
+WINBOOL WINAPI imp_WriteFile(HANDLE hFile, LPCVOID lpBuffer, DWORD nNumberOfBytesToWrite, LPDWORD lpNumberOfBytesWritten, LPOVERLAPPED lpOverlapped){
+	showfunc("WriteFile(hFile: %p, lpBuffer: %p, nNumberOfBytesToWrite: %d, lpNumberOfBytesWritten: %p, lpOverlapped: %p)", hFile, lpBuffer, nNumberOfBytesToWrite, lpNumberOfBytesWritten, lpOverlapped);
+	#ifdef Func_Win
+		return WriteFile(hFile, lpBuffer, nNumberOfBytesToWrite, lpNumberOfBytesWritten, lpOverlapped);
+	#endif
+	*lpNumberOfBytesWritten=nNumberOfBytesToWrite;
+	_printl("%.*s\n", nNumberOfBytesToWrite, lpBuffer);
+	return true;
 }
 
 /*
