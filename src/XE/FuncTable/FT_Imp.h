@@ -337,7 +337,9 @@ int * imp_p__initenv(){
  #endif
 int argc_ = 3;
 const char* envp_[] = { "env0", "env1", "env2" };
-const char* argv_[] = { "param0", "param1", "param2" };
+//const char* argv_[] = { "cwc", "param1", "param2" };
+const char* argv_[] = { "cwc", "-c", "ddd.c" };
+
 //!int __getmainargs(int * _Argc,char *** _Argv,char *** _Env,int _DoWildCard,_startupinfo * _StartInfo)
 int imp_getmainargs(int* _Argc, char*** _Argv, char*** _Env, int _DoWildCard, void* _StartInfo){ //_StartInfo :Other information to be passed to the CRT DLL.
 	showfunc("__getmainargs( _Argc: %p, _Argv: %p, _Env: %p, _DoWildCard: %d, _StartInfo: %p )", _Argc, _Argv, _Env, _DoWildCard, _StartInfo);
@@ -741,7 +743,7 @@ int imp_isctype(int _C,int _Type){
 
 //!size_t strlen ( const char * str )
 int imp_strlen(const char * str ){
-	showfunc("strlen( str: %s)", str);
+	showfunc_opt("strlen( str: %s)", str);
 	if(str == 0){ //Std will not check for null ptr!
 		err_print("strlen on null ptr!");
 		return 0;
@@ -762,13 +764,6 @@ int imp_putenv(const char *envstring){
 }
 
 
-
-//!int _access( const char *path, int mode)
-int imp_access( const char* path, int mode){
-	showfunc("_access( path: %s, mode: %d)", path, mode);
-	return 0;//Each function returns 0 if the file has the given mode. The function returns -1 if the named file does not exist or does not have the given mode; in this case, errno is set as shown in the following table.
-}
-
 //!void (*signal(int sig, void (*func)(int)))(int)
 void (*imp_signal(int sig, void (*func)(int)))(int){
 	showfunc("signal(signal: %d, func: %p)", sig, func);
@@ -776,6 +771,15 @@ void (*imp_signal(int sig, void (*func)(int)))(int){
 }
 
 #include <io.h> //_open / _get_osfhandle / _fileno
+
+
+//!int _access( const char *path, int mode)
+int imp_access( const char* path, int mode){
+	showfunc("_access( path: %s, mode: %d)", path, mode);
+	//return 0;//Each function returns 0 if the file has the given mode. The function returns -1 if the named file does not exist or does not have the given mode; in this case, errno is set as shown in the following table.
+	return _access( path, mode);//Each function returns 0 if the file has the given mode. The function returns -1 if the named file does not exist or does not have the given mode; in this case, errno is set as shown in the following table.
+}
+
 
 //!int _fileno(FILE *stream)
 int imp_fileno(FILE* stream){

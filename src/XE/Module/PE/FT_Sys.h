@@ -742,7 +742,7 @@ HPALETTE WINAPI sys_SelectPalette(HDC hdc,HPALETTE hPal,WINBOOL bForceBkgd){
 
 //!WINGDIAPI UINT WINAPI RealizePalette(HDC hdc)
 WINGDIAPI UINT WINAPI sys_RealizePalette(HDC hdc){
-	showfunc("RealizePalette( hdc: %p", hdc);
+	showfunc("RealizePalette( hdc: %p )", hdc);
 	#ifdef Func_Win
 		return RealizePalette( hdc );
 	#else
@@ -752,7 +752,7 @@ WINGDIAPI UINT WINAPI sys_RealizePalette(HDC hdc){
 
 //!WINBOOL WINAPI InvalidateRect(HWND hWnd,CONST RECT *lpRect,WINBOOL bErase)
 WINBOOL WINAPI sys_InvalidateRect(HWND hWnd,CONST RECT *lpRect,WINBOOL bErase){
-	showfunc("InvalidateRect( hWnd: %p, lpRec: %p, bErase: %d", hWnd, lpRect, bErase );
+	showfunc("InvalidateRect( hWnd: %p, lpRec: %p, bErase: %d )", hWnd, lpRect, bErase );
 	#ifdef Func_Win
 		return InvalidateRect( hWnd, lpRect, bErase );
 	#else
@@ -762,7 +762,7 @@ WINBOOL WINAPI sys_InvalidateRect(HWND hWnd,CONST RECT *lpRect,WINBOOL bErase){
 
 //!WINBOOL WINAPI EndPaint(HWND hWnd,CONST PAINTSTRUCT *lpPaint)
 WINBOOL WINAPI sys_EndPaint(HWND hWnd,CONST PAINTSTRUCT *lpPaint){
-	showfunc("EndPaint( hWnd: %p, lpPaint: %p", hWnd, lpPaint );
+	showfunc("EndPaint( hWnd: %p, lpPaint: %p )", hWnd, lpPaint );
 	#ifdef Func_Win
 		return EndPaint( hWnd, lpPaint);
 	#else
@@ -772,7 +772,7 @@ WINBOOL WINAPI sys_EndPaint(HWND hWnd,CONST PAINTSTRUCT *lpPaint){
 
 //!WINBOOL WINAPI DestroyWindow(HWND hWnd)
 WINBOOL WINAPI sys_DestroyWindow(HWND hWnd){
-	showfunc("DestroyWindow( hWnd: %p", hWnd );
+	showfunc("DestroyWindow( hWnd: %p )", hWnd );
 	#ifdef Func_Win
 		return DestroyWindow( hWnd);
 	#else
@@ -782,7 +782,7 @@ WINBOOL WINAPI sys_DestroyWindow(HWND hWnd){
 
 //!WINBOOL WINAPI DeleteObject(HGDIOBJ ho)
 WINBOOL WINAPI sys_DeleteObject(HGDIOBJ ho){
-	showfunc("DeleteObject( ho: %p", ho );
+	showfunc("DeleteObject( ho: %p )", ho );
 	#ifdef Func_Win
 		return DeleteObject( ho);
 	#else
@@ -792,7 +792,7 @@ WINBOOL WINAPI sys_DeleteObject(HGDIOBJ ho){
 
 //!WINBOOL WINAPI KillTimer(HWND hWnd,UINT_PTR uIDEvent)
 WINBOOL WINAPI sys_KillTimer(HWND hWnd,UINT_PTR uIDEvent){
-	showfunc("KillTimer( hWnd: %p, uIDEvent: %p", hWnd, uIDEvent );
+	showfunc("KillTimer( hWnd: %p, uIDEvent: %p )", hWnd, uIDEvent );
 	#ifdef Func_Win
 		return KillTimer( hWnd, uIDEvent);
 	#else
@@ -802,7 +802,7 @@ WINBOOL WINAPI sys_KillTimer(HWND hWnd,UINT_PTR uIDEvent){
 
 //!LONG WINAPI ChangeDisplaySettingsExA(LPCSTR lpszDeviceName,LPDEVMODEA lpDevMode,HWND hwnd,DWORD dwflags,LPVOID lParam)
 LONG WINAPI sys_ChangeDisplaySettingsExA(LPCSTR lpszDeviceName,LPDEVMODEA lpDevMode,HWND hwnd,DWORD dwflags,LPVOID lParam){
-	showfunc("ChangeDisplaySettingsExA( lpszDeviceName: %p, lpDevMode: %p,dwflags: %p, lParam: %p", lpszDeviceName, lpDevMode, hwnd, dwflags, lParam);
+	showfunc("ChangeDisplaySettingsExA( lpszDeviceName: %p, lpDevMode: %p,dwflags: %p, lParam: %p )", lpszDeviceName, lpDevMode, hwnd, dwflags, lParam);
 	#ifdef Func_Win
 		return ChangeDisplaySettingsExA( lpszDeviceName, lpDevMode, hwnd, dwflags, lParam);
 	#else
@@ -811,7 +811,7 @@ LONG WINAPI sys_ChangeDisplaySettingsExA(LPCSTR lpszDeviceName,LPDEVMODEA lpDevM
 }
 //!WINBASEAPI WINBOOL WINAPI GetConsoleMode(HANDLE hConsoleHandle,LPDWORD lpMode)
 WINBOOL WINAPI sys_GetConsoleMode(HANDLE hConsoleHandle,LPDWORD lpMode){
-	showfunc("GetConsoleMode( hConsoleHandle: %p, lpMode: %d", hConsoleHandle, lpMode );
+	showfunc("GetConsoleMode( hConsoleHandle: %p, lpMode: %d )", hConsoleHandle, lpMode );
 	#ifdef Func_Win
 		return GetConsoleMode( hConsoleHandle, lpMode);
 	#else
@@ -820,7 +820,7 @@ WINBOOL WINAPI sys_GetConsoleMode(HANDLE hConsoleHandle,LPDWORD lpMode){
 }
 //!WINBASEAPI WINBOOL WINAPI SetConsoleMode(HANDLE hConsoleHandle,DWORD dwMode)
 WINBOOL WINAPI sys_SetConsoleMode(HANDLE hConsoleHandle,DWORD dwMode){
-	showfunc("SetConsoleMode( hConsoleHandle: %p, dwMode: %d", hConsoleHandle, dwMode );
+	showfunc("SetConsoleMode( hConsoleHandle: %p, dwMode: %d )", hConsoleHandle, dwMode );
 	#ifdef Func_Win
 		return SetConsoleMode( hConsoleHandle, dwMode);
 	#else
@@ -831,7 +831,7 @@ WINBOOL WINAPI sys_SetConsoleMode(HANDLE hConsoleHandle,DWORD dwMode){
 //!WINBASEAPI WINBOOL WINAPI PeekConsoleInputA(HANDLE hConsoleInput,PINPUT_RECORD lpBuffer,DWORD nLength,LPDWORD lpNumberOfEventsRead);
 //!WINBASEAPI WINBOOL WINAPI PeekConsoleInputW(HANDLE hConsoleInput,PINPUT_RECORD lpBuffer,DWORD nLength,LPDWORD lpNumberOfEventsRead);
 WINBOOL WINAPI sys_PeekConsoleInputA(HANDLE hConsoleInput,PINPUT_RECORD lpBuffer,DWORD nLength,LPDWORD lpNumberOfEventsRead){
-	showfunc("PeekConsoleInputA( hConsoleInput: %p, lpBuffer: %d, nLength: %d, lpNumberOfEventsRead: %p", hConsoleInput, lpBuffer, nLength, lpNumberOfEventsRead);
+	showfunc("PeekConsoleInputA( hConsoleInput: %p, lpBuffer: %d, nLength: %d, lpNumberOfEventsRead: %p )", hConsoleInput, lpBuffer, nLength, lpNumberOfEventsRead);
 	#ifdef Func_Win
 		return PeekConsoleInputA( hConsoleInput, lpBuffer, nLength, lpNumberOfEventsRead );
 	#else
@@ -839,7 +839,7 @@ WINBOOL WINAPI sys_PeekConsoleInputA(HANDLE hConsoleInput,PINPUT_RECORD lpBuffer
 	#endif
 }
 WINBOOL WINAPI sys_PeekConsoleInputW(HANDLE hConsoleInput,PINPUT_RECORD lpBuffer,DWORD nLength,LPDWORD lpNumberOfEventsRead){
-	showfunc("PeekConsoleInputA( PeekConsoleInputW: %p, lpBuffer: %d, nLength: %d, lpNumberOfEventsRead: %p", hConsoleInput, lpBuffer, nLength, lpNumberOfEventsRead);
+	showfunc("PeekConsoleInputA( PeekConsoleInputW: %p, lpBuffer: %d, nLength: %d, lpNumberOfEventsRead: %p )", hConsoleInput, lpBuffer, nLength, lpNumberOfEventsRead);
 	#ifdef Func_Win
 		return PeekConsoleInputW( hConsoleInput, lpBuffer, nLength, lpNumberOfEventsRead );
 	#else
@@ -850,7 +850,7 @@ WINBOOL WINAPI sys_PeekConsoleInputW(HANDLE hConsoleInput,PINPUT_RECORD lpBuffer
 //!WINBASEAPI WINBOOL WINAPI ReadConsoleInputA(HANDLE hConsoleInput,PINPUT_RECORD lpBuffer,DWORD nLength,LPDWORD lpNumberOfEventsRead)
 //!WINBASEAPI WINBOOL WINAPI ReadConsoleInputW(HANDLE hConsoleInput,PINPUT_RECORD lpBuffer,DWORD nLength,LPDWORD lpNumberOfEventsRead)
 WINBOOL WINAPI sys_ReadConsoleInputA(HANDLE hConsoleInput,PINPUT_RECORD lpBuffer,DWORD nLength,LPDWORD lpNumberOfEventsRead){
-	showfunc("ReadConsoleInputA( hConsoleInput: %p, lpBuffer: %d, nLength: %d, lpNumberOfEventsRead: %p", hConsoleInput, lpBuffer, nLength, lpNumberOfEventsRead);
+	showfunc("ReadConsoleInputA( hConsoleInput: %p, lpBuffer: %d, nLength: %d, lpNumberOfEventsRead: %p )", hConsoleInput, lpBuffer, nLength, lpNumberOfEventsRead);
 	#ifdef Func_Win
 		return PeekConsoleInputA( hConsoleInput, lpBuffer, nLength, lpNumberOfEventsRead );
 	#else
@@ -858,7 +858,7 @@ WINBOOL WINAPI sys_ReadConsoleInputA(HANDLE hConsoleInput,PINPUT_RECORD lpBuffer
 	#endif
 }
 WINBOOL WINAPI sys_ReadConsoleInputW(HANDLE hConsoleInput,PINPUT_RECORD lpBuffer,DWORD nLength,LPDWORD lpNumberOfEventsRead){
-	showfunc("sys_ReadConsoleInputW( hConsoleInput: %p, lpBuffer: %d, nLength: %d, lpNumberOfEventsRead: %p", hConsoleInput, lpBuffer, nLength, lpNumberOfEventsRead);
+	showfunc("sys_ReadConsoleInputW( hConsoleInput: %p, lpBuffer: %d, nLength: %d, lpNumberOfEventsRead: %p )", hConsoleInput, lpBuffer, nLength, lpNumberOfEventsRead);
 	#ifdef Func_Win
 		return sys_ReadConsoleInputW( hConsoleInput, lpBuffer, nLength, lpNumberOfEventsRead );
 	#else
@@ -868,7 +868,7 @@ WINBOOL WINAPI sys_ReadConsoleInputW(HANDLE hConsoleInput,PINPUT_RECORD lpBuffer
 
 //!WINBASEAPI WINBOOL WINAPI SetConsoleCtrlHandler(PHANDLER_ROUTINE HandlerRoutine,WINBOOL Add)
 WINBASEAPI WINBOOL WINAPI sys_SetConsoleCtrlHandler(PHANDLER_ROUTINE HandlerRoutine,WINBOOL Add){
-	showfunc("SetConsoleCtrlHandler( HandlerRoutine: %p, Add: %d", HandlerRoutine, Add );
+	showfunc("SetConsoleCtrlHandler( HandlerRoutine: %p, Add: %d )", HandlerRoutine, Add );
 	#ifdef Func_Win
 		return SetConsoleCtrlHandler( HandlerRoutine, Add);
 	#else
@@ -878,7 +878,7 @@ WINBASEAPI WINBOOL WINAPI sys_SetConsoleCtrlHandler(PHANDLER_ROUTINE HandlerRout
 
 //!WINBASEAPI DWORD WINAPI GetFullPathNameA (LPCSTR lpFileName, DWORD nBufferLength, LPSTR lpBuffer, LPSTR *lpFilePart)
 DWORD WINAPI sys_GetFullPathNameA (LPCSTR lpFileName, DWORD nBufferLength, LPSTR lpBuffer, LPSTR *lpFilePart){
-	showfunc("GetFullPathNameA( lpFileName: %p, nBufferLength: %d, lpBuffer: %p, lpFilePart: %p", lpFileName, nBufferLength, lpBuffer, lpFilePart );
+	showfunc("GetFullPathNameA( lpFileName: %p, nBufferLength: %d, lpBuffer: %p, lpFilePart: %p )", lpFileName, nBufferLength, lpBuffer, lpFilePart );
 	#ifdef Func_Win
 		return GetFullPathNameA( lpFileName, nBufferLength, lpBuffer, lpFilePart );
 	#else
@@ -889,23 +889,48 @@ DWORD WINAPI sys_GetFullPathNameA (LPCSTR lpFileName, DWORD nBufferLength, LPSTR
 //!WINBASEAPI DWORD WINAPI GetTempPathA (DWORD nBufferLength, LPSTR lpBuffer)
 //!WINBASEAPI DWORD WINAPI GetTempPathW (DWORD nBufferLength, LPWSTR lpBuffer)
 DWORD WINAPI  sys_GetTempPathA (DWORD nBufferLength, LPSTR lpBuffer){
-	showfunc("GetTempPathA( nBufferLength: %d, lpBuffer: %d", nBufferLength, lpBuffer );
+	showfunc("GetTempPathA( nBufferLength: %d, lpBuffer: %p )", nBufferLength, lpBuffer );
 	#ifdef Func_Win
 		return GetTempPathA( nBufferLength, lpBuffer);
 	#else
-		const char* path_temp = "C:\\TEMP\\";
-		_memcpy(lpBuffer, path_temp, sizeof(path_temp));
-		return sizeof(path_temp);
+		const char path_temp[] = "C:\\Windows\\TEMP\\";
+		if(nBufferLength >= sizeof(path_temp)){
+			_memcpy(lpBuffer, path_temp, sizeof(path_temp));
+		}
+		return sizeof(path_temp); //If the return value is greater than nBufferLength, the return value is the length, in TCHARs, of the buffer required to hold the path.
 	#endif
 }
 DWORD WINAPI  sys_GetTempPathW (DWORD nBufferLength, LPWSTR lpBuffer){
-	showfunc("GetTempPathW( nBufferLength: %d, lpBuffer: %d", nBufferLength, lpBuffer );
+	showfunc("GetTempPathW( nBufferLength: %d, lpBuffer: %d )", nBufferLength, lpBuffer );
 	#ifdef Func_Win
 		return GetTempPathW( nBufferLength, lpBuffer);
 	#else
 		const wchar_t* path_temp = L"C:\\TEMP\\";
 		_memcpy(lpBuffer, path_temp, sizeof(path_temp));
 		return sizeof(path_temp);
+	#endif
+}
+
+
+//!WINBASEAPI HANDLE WINAPI CreateFileA (LPCSTR lpFileName, DWORD dwDesiredAccess, DWORD dwShareMode, LPSECURITY_ATTRIBUTES lpSecurityAttributes, DWORD dwCreationDisposition, DWORD dwFlagsAndAttributes, HANDLE hTemplateFile)
+//!WINBASEAPI HANDLE WINAPI CreateFileW (LPCWSTR lpFileName, DWORD dwDesiredAccess, DWORD dwShareMode, LPSECURITY_ATTRIBUTES lpSecurityAttributes, DWORD dwCreationDisposition, DWORD dwFlagsAndAttributes, HANDLE hTemplateFile)
+HANDLE WINAPI sys_CreateFileA (LPCSTR lpFileName, DWORD dwDesiredAccess, DWORD dwShareMode, LPSECURITY_ATTRIBUTES lpSecurityAttributes, DWORD dwCreationDisposition, DWORD dwFlagsAndAttributes, HANDLE hTemplateFile){
+ 	showfunc("CreateFileA( lpFileName: %s, dwDesiredAccess: %d, dwShareMode: %d, lpSecurityAttributes: %p, dwCreationDisposition: %d, dwFlagsAndAttributes: %d, hTemplateFile: %p )", lpFileName, dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwCreationDisposition, dwFlagsAndAttributes, hTemplateFile );
+	#ifdef Func_Win
+		return CreateFileA(  lpFileName, dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwCreationDisposition, dwFlagsAndAttributes, hTemplateFile );
+	#else
+		return 0;
+	#endif
+ }
+
+//!WINBASEAPI WINBOOL WINAPI CreateProcessA (LPCSTR lpApplicationName, LPSTR lpCommandLine, LPSECURITY_ATTRIBUTES lpProcessAttributes, LPSECURITY_ATTRIBUTES lpThreadAttributes, WINBOOL bInheritHandles, DWORD dwCreationFlags, LPVOID lpEnvironment, LPCSTR lpCurrentDirectory, LPSTARTUPINFOA lpStartupInfo, LPPROCESS_INFORMATION lpProcessInformation)
+//!WINBASEAPI WINBOOL WINAPI CreateProcessW (LPCWSTR lpApplicationName, LPWSTR lpCommandLine, LPSECURITY_ATTRIBUTES lpProcessAttributes, LPSECURITY_ATTRIBUTES lpThreadAttributes, WINBOOL bInheritHandles, DWORD dwCreationFlags, LPVOID lpEnvironment, LPCWSTR lpCurrentDirectory, LPSTARTUPINFOW lpStartupInfo, LPPROCESS_INFORMATION lpProcessInformation)
+WINBOOL WINAPI sys_CreateProcessA (LPCSTR lpApplicationName, LPSTR lpCommandLine, LPSECURITY_ATTRIBUTES lpProcessAttributes, LPSECURITY_ATTRIBUTES lpThreadAttributes, WINBOOL bInheritHandles, DWORD dwCreationFlags, LPVOID lpEnvironment, LPCSTR lpCurrentDirectory, LPSTARTUPINFOA lpStartupInfo, LPPROCESS_INFORMATION lpProcessInformation){
+	showfunc("CreateProcessA( lpApplicationName: %s, lpCommandLine: %s, lpProcessAttributes: %p, lpThreadAttributes: %p, bInheritHandles: %p, dwCreationFlags: %d, lpEnvironment: %p, lpCurrentDirectory: %p, lpStartupInfo: %p, lpProcessInformation: %p )", lpApplicationName, lpCommandLine, lpProcessAttributes, lpThreadAttributes, bInheritHandles, dwCreationFlags, lpEnvironment, lpCurrentDirectory, lpStartupInfo, lpProcessInformation );
+	#ifdef Func_Win
+		return CreateProcessA( lpApplicationName, lpCommandLine, lpProcessAttributes, lpThreadAttributes, bInheritHandles, dwCreationFlags, lpEnvironment, lpCurrentDirectory, lpStartupInfo, lpProcessInformation );
+	#else
+		return 0;
 	#endif
 }
 

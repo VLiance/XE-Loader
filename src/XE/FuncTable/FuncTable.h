@@ -716,6 +716,8 @@ FILE* stderr_; //Not used?
 {"",			"_close"  					,(FUNC_) imp_close},
 {"",			"WriteFile"  				,(FUNC_) imp_WriteFile},
 {"",			"GetTempPathA"  			,(FUNC_) sys_GetTempPathA},
+{"",			"CreateFileA"  				,(FUNC_) sys_CreateFileA},
+{"",			"CreateProcessA"  			,(FUNC_) sys_CreateProcessA},
 /////////////////////////////////	
 
 
