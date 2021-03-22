@@ -165,7 +165,6 @@ HWND pixView_createWindow( HINSTANCE hInstance, ContextInf* _context){
 
 static void draw_square(uint32_t _color, uint32_t* _pix, int _lsize, int _posx, int _posy, int _width, int _height, int inc){
 	int y = _height-1;
-	
 	for(int x = 0; x <  _width;  x+=inc)	{_pix[_posx+x+((_posy+0) *_lsize)]			= _color;}
 	for(int x = 0; x <  _width;  x+=inc) 	{_pix[_posx+x+((_posy+y) * _lsize)] 		= _color;}
 	for(y = 0; y 	 <  _height; y+=inc)	{_pix[_posx+0+((_posy+y) * _lsize)] 		= _color;}
@@ -204,20 +203,22 @@ void pixView_MakeSurface(ContextInf* _context){
 	#ifndef USE_Transparent_PixView
 	return;
 	#endif
-	//Clear with background color//
+	
+	//!Transparent!//
+	//Clear
 	_memset(_context->pixels, 0xFF, _context->mem_width*_context->mem_height*4 );
 
-	//black border
+	//Border
 	draw_square(0xFF555555,  _context->pixels,_context->mem_width, 0,0, _context->mem_width, _context->mem_height,1);
 	draw_square(0xFFCCCCCC,  _context->pixels,_context->mem_width, 2,2, _context->mem_width-2, 1,3);
 	draw_square(0xFFAAAAAA,  _context->pixels,_context->mem_width, _context->off_x-1,_context->off_y-1, _context->width+2, _context->height+2,1);
 	
 	//Minimise
-	draw_square(0xFF000000,  _context->pixels,_context->mem_width, _context->mem_width-90,6, 12, 3,1);
+	draw_square(0xFF444455,  _context->pixels,_context->mem_width, _context->mem_width-90,6, 12, 3,1);
 	
 	//Maximise
 	draw_square(0xFFAAAAAA,  _context->pixels,_context->mem_width, _context->mem_width-55,2, 10, 10,2);
-	draw_square(0xFF000000,  _context->pixels,_context->mem_width, _context->mem_width-60,5, 10, 10,1);
+	draw_square(0xFF444455,  _context->pixels,_context->mem_width, _context->mem_width-60,5, 10, 10,1);
 	
 	//Close
 	draw_square(0xFFAA0000,  _context->pixels,_context->mem_width, _context->mem_width-25,5, 10, 3,1);
