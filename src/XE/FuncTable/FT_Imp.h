@@ -822,23 +822,33 @@ char* imp_strerror(int _errno){
 #define _dev_t uint32_t //Represents device handles.
 #define _ino_t uint16_t //For returning status information.
 struct _stati64 {
-    _dev_t st_dev;
-    _ino_t st_ino;
-    unsigned short st_mode;
-    short st_nlink;
-    short st_uid;
-    short st_gid;
-    _dev_t st_rdev;
-    __int64 st_size;
-    time_t st_atime;
-    time_t st_mtime;
-    time_t st_ctime;
+    _dev_t st_dev;	//If a device, fd; otherwise 0.
+    _ino_t st_ino;	//
+    unsigned short st_mode; //Bit mask for file-mode information. The _S_IFCHR bit is set if fd refers to a device. The _S_IFREG bit is set if fd refers to an ordinary file. The read/write bits are set according to the file's permission mode. _S_IFCHR and other constants are defined in SYS\Stat.h.
+    short st_nlink;	 //Always 1 on non-NTFS file systems.
+    short st_uid;    //
+    short st_gid;	 //
+    _dev_t st_rdev;  //If a device, fd; otherwise 0.
+    __int64 st_size; //Size of the file in bytes.
+    time_t st_atime; //Time of the last file access.
+    time_t st_mtime; //Time of the last modification of the file.
+    time_t st_ctime; //Time of the creation of the file.
 };
 int imp_stati64(const char* __path, struct _stati64* __statbuf){
 	showfunc("_stati64(__path: '%s', __statbuf: %p)", __path, __statbuf);
+	//TODO get  last modification of the file.
 	return 0;
 	//The return value is 0 if the call was successful, otherwise -1 is returned and errno contains the reason. The buffer is not touched unless the call is successful. 
 }
+//!int _fstati64(int fd, struct _stati64 *buffer)
+int imp_fstati64(int fd, struct _stati64* buffer){
+	showfunc("_fstati64(fd: '%d', buffer: %p)", fd, buffer);
+	//TODO get  last modification of the file.
+	return 0;
+	//Returns 0 if the file-status information is obtained. A return value of -1 indicates an error.
+}
+
+
 
 //!int _read(int const fd, void * const buffer, unsigned const buffer_size)
 int imp_read(int const fd, void* const buffer, unsigned const buffer_size){
@@ -848,20 +858,66 @@ int imp_read(int const fd, void* const buffer, unsigned const buffer_size){
 
 //!int _close(int fd)
 int imp_close(int fd){
-	showfunc("_close(fd: '%d')", fd);
+	showfunc("_close(fd: %d )", fd);
 	return _close( fd);
 }
+
+//!int imp_dup(int fd)
+int imp_dup(int fd){
+	showfunc("_dup((fd: %d )", fd);
+	int ret = _dup( fd);
+	showinf("ret: %d", ret);
+	return ret;
+}
+
 
 //!WINBASEAPI WINBOOL WINAPI WriteFile (HANDLE hFile, LPCVOID lpBuffer, DWORD nNumberOfBytesToWrite, LPDWORD lpNumberOfBytesWritten, LPOVERLAPPED lpOverlapped);
 WINBOOL WINAPI imp_WriteFile(HANDLE hFile, LPCVOID lpBuffer, DWORD nNumberOfBytesToWrite, LPDWORD lpNumberOfBytesWritten, LPOVERLAPPED lpOverlapped){
 	showfunc("WriteFile(hFile: %p, lpBuffer: %p, nNumberOfBytesToWrite: %d, lpNumberOfBytesWritten: %p, lpOverlapped: %p)", hFile, lpBuffer, nNumberOfBytesToWrite, lpNumberOfBytesWritten, lpOverlapped);
-	#ifdef Func_Win
+	/*
+	//Is that we want?
+	#ifdef Func_Win 
 		return WriteFile(hFile, lpBuffer, nNumberOfBytesToWrite, lpNumberOfBytesWritten, lpOverlapped);
 	#endif
+	*/
 	*lpNumberOfBytesWritten=nNumberOfBytesToWrite;
 	_printl("%.*s\n", nNumberOfBytesToWrite, lpBuffer);
 	return true;
 }
+
+
+#include <process.h>
+//int __cdecl _getpid(void);
+//!int _getpid( void )
+int imp_getpid( void ){
+	showfunc("_getpid( )", "");
+	int ret = _getpid( );
+	showinf("ret: %d", ret)
+	return ret;
+}
+
+//!clock_t clock (void)
+#include <time.h> 
+clock_t imp_clock(void){ //Returns the processor time consumed by the program.
+	showfunc("clock( )", "");
+	clock_t _ret = clock();
+	showinf("ret: %d ", _ret);
+	return _ret;
+}
+
+//!int ___mb_cur_max_func(void)
+int imp_mb_cur_max_func(void){ //Internal CRT function. Retrieves the maximum number of bytes in a multibyte character for the current or specified locale.
+	showfunc("___mb_cur_max_func( )", "");
+	return 1;
+}
+
+//!void _cexit( void )
+void imp_cexit(void){ //The _cexit function calls, in last-in, first-out (LIFO) order, the functions registered by atexit and _onexit. Then _cexit flushes all I/O buffers and closes all open streams before returning. _c_exit is the same as _exit but returns to the calling process without processing atexit or _onexit or flushing stream buffers
+	showfunc("_cexit( )", "");
+}
+
+
+
 
 /*
 LPVOID WINAPI LocalLock (HLOCAL hMem);

@@ -23,7 +23,8 @@
 -Wl,--image-base=0x10000000
 >
 ;-#Run _out/{_sOpt}/XE-Loader.exe  E:/_Project/_Cwc/Toolchain/VLianceTool/DJGPP_RT__/DJGPP_RT-10.2.0.2/bin/i586-pc-msdosdjgpp-g++.exe
--#Run _out/{_sOpt}/XE-Loader.exe  E:/_Project/_Cwc/Toolchain/VLianceTool/LibRT/LibRT-999/bin/g++.exe
+-#Run _out/{_sOpt}/XE-Loader.exe  E:/_Project/XE-Loader/build/_out/Debug/../libexec/gcc/i686-w64-mingw32/8.1.0/cc1plus.exe
+;-#Run _out/{_sOpt}/XE-Loader.exe  E:/_Project/_Cwc/Toolchain/VLianceTool/LibRT/LibRT-999/bin/g++.exe
 ;-#Run _out/{_sOpt}/XE-Loader.exe  E:/_Project/Vellum/Sokol/_cwc/sapp/_out/cube-sapp/Windows_Debug_wasm/cube-sapp.exe
 ;-#Run _out/{_sOpt}/XE-Loader.exe  E:/_Project/Vellum/Sokol/_cwc/sapp/_out/imgui-sapp/Windows_Debug_wasm/imgui-sapp.exe
 ;-#Run _out/{_sOpt}/XE-Loader.exe  E:/Data/autre/_Cwc/Toolchain/VLianceTool/DJGPP_RT/DJGPP_RT-10.2.0.3/i586-pc-msdosdjgpp/bin/g++.exe

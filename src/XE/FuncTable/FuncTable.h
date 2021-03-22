@@ -711,15 +711,25 @@ FILE* stderr_; //Not used?
 {"",			"_open"  					,(FUNC_) imp_open},
 {"",			"strerror"  				,(FUNC_) imp_strerror},
 {"",			"exit"  					,(FUNC_) imp_exit},
-{"",			"_stati64"  				,(FUNC_) imp_stati64},
+
+{"",			"_stati64"  				,(FUNC_) imp_stati64},   //File info
+{"",			"_fstati64"  				,(FUNC_) imp_fstati64},  //File info
 {"",			"_read"  					,(FUNC_) imp_read},
 {"",			"_close"  					,(FUNC_) imp_close},
 {"",			"WriteFile"  				,(FUNC_) imp_WriteFile},
-{"",			"GetTempPathA"  			,(FUNC_) sys_GetTempPathA},
 {"",			"CreateFileA"  				,(FUNC_) sys_CreateFileA},
-{"",			"CreateProcessA"  			,(FUNC_) sys_CreateProcessA},
-/////////////////////////////////	
 
+{"",			"GetTempPathA"  			,(FUNC_) sys_GetTempPathA},
+{"",			"CreateProcessA"  			,(FUNC_) sys_CreateProcessA},
+{"",			"_dup"  					,(FUNC_) imp_dup},
+{"",			"_getpid"  					,(FUNC_) imp_getpid},
+{"",			"GetExitCodeProcess"  		,(FUNC_) sys_GetExitCodeProcess},
+{"",			"GlobalMemoryStatusEx"  	,(FUNC_) sys_GlobalMemoryStatusEx},
+{"",			"clock"  					,(FUNC_) imp_clock },
+{"",			"___mb_cur_max_func"  		,(FUNC_) imp_mb_cur_max_func },
+{"",			"_cexit"  					,(FUNC_) imp_cexit },
+
+/////////////////////////////////	
 
 };
 

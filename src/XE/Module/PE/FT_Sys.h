@@ -928,21 +928,47 @@ HANDLE WINAPI sys_CreateFileA (LPCSTR lpFileName, DWORD dwDesiredAccess, DWORD d
 WINBOOL WINAPI sys_CreateProcessA (LPCSTR lpApplicationName, LPSTR lpCommandLine, LPSECURITY_ATTRIBUTES lpProcessAttributes, LPSECURITY_ATTRIBUTES lpThreadAttributes, WINBOOL bInheritHandles, DWORD dwCreationFlags, LPVOID lpEnvironment, LPCSTR lpCurrentDirectory, LPSTARTUPINFOA lpStartupInfo, LPPROCESS_INFORMATION lpProcessInformation){
 	showfunc("CreateProcessA( lpApplicationName: %s, lpCommandLine: %s, lpProcessAttributes: %p, lpThreadAttributes: %p, bInheritHandles: %p, dwCreationFlags: %d, lpEnvironment: %p, lpCurrentDirectory: %p, lpStartupInfo: %p, lpProcessInformation: %p )", lpApplicationName, lpCommandLine, lpProcessAttributes, lpThreadAttributes, bInheritHandles, dwCreationFlags, lpEnvironment, lpCurrentDirectory, lpStartupInfo, lpProcessInformation );
 	#ifdef Func_Win
-		return CreateProcessA( lpApplicationName, lpCommandLine, lpProcessAttributes, lpThreadAttributes, bInheritHandles, dwCreationFlags, lpEnvironment, lpCurrentDirectory, lpStartupInfo, lpProcessInformation );
+		bool ret =  CreateProcessA( lpApplicationName, lpCommandLine, lpProcessAttributes, lpThreadAttributes, bInheritHandles, dwCreationFlags, lpEnvironment, lpCurrentDirectory, lpStartupInfo, lpProcessInformation );
 	#else
-		return 0;
+		bool ret = false ;
+	#endif
+	showinf("ret: %d", ret);
+	return ret;
+}
+
+//!WINBASEAPI WINBOOL WINAPI GetExitCodeProcess (HANDLE hProcess, LPDWORD lpExitCode)
+WINBOOL WINAPI sys_GetExitCodeProcess (HANDLE hProcess, LPDWORD lpExitCode) {
+ 	showfunc("GetExitCodeProcess( hProcess: %p, lpExitCode: %p )", hProcess, lpExitCode);
+	#ifdef Func_Win
+		bool ret = GetExitCodeProcess( hProcess, lpExitCode );
+	#else
+		bool ret = false ;
+	#endif
+	showinf("ret: %d, *lpExitCode: %d", ret,  *lpExitCode);
+	return ret;
+}
+
+//!WINBASEAPI WINBOOL WINAPI GlobalMemoryStatusEx (LPMEMORYSTATUSEX lpBuffer)
+typedef struct _MEMORYSTATUSEX_ {
+  DWORD     dwLength;
+  DWORD     dwMemoryLoad;
+  DWORDLONG ullTotalPhys;
+  DWORDLONG ullAvailPhys;
+  DWORDLONG ullTotalPageFile;
+  DWORDLONG ullAvailPageFile;
+  DWORDLONG ullTotalVirtual;
+  DWORDLONG ullAvailVirtual;
+  DWORDLONG ullAvailExtendedVirtual;
+} _MEMORYSTATUSEX_, *LPMEMORYSTATUSEX_;
+ WINBOOL WINAPI sys_GlobalMemoryStatusEx (LPMEMORYSTATUSEX_ lpBuffer){
+	showfunc("GlobalMemoryStatusEx( lpBuffer: %p )", lpBuffer);
+	#ifdef Func_Win
+		return GlobalMemoryStatusEx((LPMEMORYSTATUSEX)lpBuffer );
+	#else
+	
+		return true;
 	#endif
 }
 
-/*
-//!WINBASEAPI WINBOOL WINAPI GetConsoleMode(HANDLE hConsoleHandle,LPDWORD lpMode)
-WINBOOL WINAPI sys_GetConsoleMode(HANDLE hConsoleHandle,LPDWORD lpMode){
-	showfunc("GetConsoleMode( hConsoleHandle: %p, lpMode: %d", hConsoleHandle, lpMode );
-	#ifdef Func_Win
-		return GetConsoleMode( hConsoleHandle, lpMode );
-	#else
-		return 0;
-	#endif
-}*/
 
 
