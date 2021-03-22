@@ -213,10 +213,10 @@ void pixView_MakeSurface(ContextInf* _context){
 	draw_square(0xFFAAAAAA,  _context->pixels,_context->mem_width, _context->off_x-1,_context->off_y-1, _context->width+2, _context->height+2,1);
 	
 	//Minimise
-	draw_square(0xFF000000,  _context->pixels,_context->mem_width, _context->mem_width-90,5, 10, 3,1);
+	draw_square(0xFF000000,  _context->pixels,_context->mem_width, _context->mem_width-90,6, 12, 3,1);
 	
 	//Maximise
-	draw_square(0xFF000000,  _context->pixels,_context->mem_width, _context->mem_width-55,2, 10, 10,2);
+	draw_square(0xFFAAAAAA,  _context->pixels,_context->mem_width, _context->mem_width-55,2, 10, 10,2);
 	draw_square(0xFF000000,  _context->pixels,_context->mem_width, _context->mem_width-60,5, 10, 10,1);
 	
 	//Close
