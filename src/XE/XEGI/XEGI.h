@@ -6,6 +6,10 @@ typedef struct {
 	int idx;
 	int width;
 	int height;
+	int off_x;
+	int off_y;
+	int mem_width;
+	int mem_height;
 	int id_context; // cpcdos
 } ContextInf;
 extern int aContext_count;

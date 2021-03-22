@@ -30,6 +30,19 @@ struct pixel {
  float pixView_mouse_x  = 0;
  float pixView_mouse_y  = 0;
  bool bLButtonDown  = false;
+ 
+#ifdef USE_Transparent_PixView
+	#define WIN_BORDER_T 10
+	#define WIN_BORDER_L 0
+	#define WIN_BORDER_R WIN_BORDER_L
+	#define WIN_BORDER_B WIN_BORDER_L
+	
+#else
+	#define WIN_BORDER_T 0
+	#define WIN_BORDER_L 0
+	#define WIN_BORDER_R WIN_BORDER_L
+	#define WIN_BORDER_B WIN_BORDER_L
+#endif 
 
 LRESULT CALLBACK WndProc( HWND hwnd,UINT msg,WPARAM wParam,LPARAM lParam){
 	uint32_t h = (uint32_t)hwnd;
@@ -82,6 +95,13 @@ LRESULT CALLBACK WndProc( HWND hwnd,UINT msg,WPARAM wParam,LPARAM lParam){
 
 HWND pixView_createWindow( HINSTANCE hInstance, ContextInf* _context){
 
+
+	_context->mem_width  = _context->width+ WIN_BORDER_L + WIN_BORDER_R;
+	_context->mem_height = _context->height+ WIN_BORDER_T + WIN_BORDER_B;
+	_context->off_x = WIN_BORDER_L;
+	_context->off_y = WIN_BORDER_T;
+   
+
   static bool class_registred = false;
   if(!class_registred){
 	  WNDCLASSEX wc;
@@ -116,7 +136,7 @@ HWND pixView_createWindow( HINSTANCE hInstance, ContextInf* _context){
     "pixview_class",
     "pixview",
 	WS_MINIMIZEBOX | WS_SYSMENU | WS_POPUP | WS_CAPTION,
-    300, 200, _context->width, _context->height,
+    300, 200, _context->mem_width, _context->mem_height,
     NULL, NULL, hInstance, NULL );
 
   if ( !hwnd ) {
@@ -144,8 +164,8 @@ void pixView_MakeSurface(ContextInf* _context){
 	
 	BITMAPINFO bmi;
 	bmi.bmiHeader.biSize = sizeof(BITMAPINFO);
-	bmi.bmiHeader.biWidth = _context->width;
-	bmi.bmiHeader.biHeight =  -_context->height; //Order pixels from top to bottom
+	bmi.bmiHeader.biWidth =		_context->mem_width;
+	bmi.bmiHeader.biHeight =  -(_context->mem_height); //Order pixels from top to bottom
 	bmi.bmiHeader.biPlanes = 1;
 	bmi.bmiHeader.biBitCount = 32; //last byte not used, 32 bit for alignment
 	bmi.bmiHeader.biCompression = BI_RGB;
@@ -186,8 +206,8 @@ void pixView_update(ContextInf* _context){
 	HBITMAP hbmOld = (HBITMAP)SelectObject( hdcMem, _context->hbmp );
 
 	SIZE frameSize;
-	frameSize.cx = _context->width;
-    frameSize.cy = _context->height;
+	frameSize.cx = _context->width  + WIN_BORDER_L + WIN_BORDER_R;
+    frameSize.cy = _context->height + WIN_BORDER_T + WIN_BORDER_B;
 	POINT ptSrc = {0,0};
 	int nWinAlpha = 255;
 	BLENDFUNCTION bf = {AC_SRC_OVER, 0, nWinAlpha, AC_SRC_ALPHA};

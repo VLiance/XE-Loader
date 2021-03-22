@@ -37,8 +37,11 @@ ContextInf* Blit_context(uint32_t _idx, const void* _pixels, int _SrcWidth){ //T
 		uint32_t* pix_src = (uint32_t*)_pixels;
 		uint32_t* pix_dest = (uint32_t*)aContext[_idx].pixels;
 		
+		int off_x = aContext[_idx].off_x;
+		int off_y = aContext[_idx].off_y;
+		
 		for(int y = 0; y <  aContext[_idx].height; y++){
-			memcpy(pix_dest + (y * aContext[_idx].width), pix_src + (y * _SrcWidth), aContext[_idx].width *4);
+			memcpy(pix_dest + off_x + ((y + off_y) * (aContext[_idx].mem_width)), pix_src + (y * _SrcWidth), aContext[_idx].width *4);
 		}
 		
 		//( aContext[idx].width & SrcWidth may differ )
