@@ -1621,6 +1621,106 @@ typedef IMAGE_BASE_RELOCATION UNALIGNED *PIMAGE_BASE_RELOCATION;
 #define IMAGE_ARCHIVE_LINKER_MEMBER "/               "
 #define IMAGE_ARCHIVE_LONGNAMES_MEMBER "//              "
 
+#ifndef _PALETTEENTRY_DEFINED
+#define _PALETTEENTRY_DEFINED
+typedef struct tagPALETTEENTRY
+{
+BYTE peRed;
+BYTE peGreen;
+BYTE peBlue;
+BYTE peFlags;
+}
+PALETTEENTRY,*PPALETTEENTRY,*LPPALETTEENTRY;
+#endif
+#ifndef _LOGPALETTE_DEFINED
+#define _LOGPALETTE_DEFINED
+typedef struct tagLOGPALETTE
+{
+WORD palVersion;
+WORD palNumEntries;
+PALETTEENTRY palPalEntry[1];
+}
+LOGPALETTE,*PLOGPALETTE,*NPLOGPALETTE,*LPLOGPALETTE;
+#endif
+#ifndef LF_FACESIZE
+#define LF_FACESIZE 32
+#endif
+
+
+
+
+typedef struct _KEY_EVENT_RECORD
+{
+WINBOOL bKeyDown;
+WORD wRepeatCount;
+WORD wVirtualKeyCode;
+WORD wVirtualScanCode;
+union
+{
+WCHAR UnicodeChar;
+CHAR AsciiChar;
+}
+uChar;
+DWORD dwControlKeyState;
+}
+KEY_EVENT_RECORD,*PKEY_EVENT_RECORD;
+
+typedef struct _MOUSE_EVENT_RECORD
+{
+COORD dwMousePosition;
+DWORD dwButtonState;
+DWORD dwControlKeyState;
+DWORD dwEventFlags;
+}
+MOUSE_EVENT_RECORD,*PMOUSE_EVENT_RECORD;
+
+typedef struct _MENU_EVENT_RECORD
+{
+UINT dwCommandId;
+}
+MENU_EVENT_RECORD,*PMENU_EVENT_RECORD;
+
+typedef struct _FOCUS_EVENT_RECORD
+{
+WINBOOL bSetFocus;
+}
+FOCUS_EVENT_RECORD,*PFOCUS_EVENT_RECORD;
+typedef struct _WINDOW_BUFFER_SIZE_RECORD
+{
+COORD dwSize;
+}
+WINDOW_BUFFER_SIZE_RECORD,*PWINDOW_BUFFER_SIZE_RECORD;
+typedef struct _INPUT_RECORD
+{
+WORD EventType;
+union
+{
+KEY_EVENT_RECORD KeyEvent;
+MOUSE_EVENT_RECORD MouseEvent;
+WINDOW_BUFFER_SIZE_RECORD WindowBufferSizeEvent;
+MENU_EVENT_RECORD MenuEvent;
+FOCUS_EVENT_RECORD FocusEvent;
+}
+Event;
+}
+INPUT_RECORD,*PINPUT_RECORD;
+
+typedef struct tagPAINTSTRUCT
+{
+HDC hdc;
+WINBOOL fErase;
+RECT rcPaint;
+WINBOOL fRestore;
+WINBOOL fIncUpdate;
+BYTE rgbReserved[32];
+}
+PAINTSTRUCT,*PPAINTSTRUCT,*NPPAINTSTRUCT,*LPPAINTSTRUCT;
+
+typedef void *HGDIOBJ;
+
+typedef WINBOOL (WINAPI *PHANDLER_ROUTINE)(DWORD CtrlType);
+
+
 #endif /*Not ImWin*/
 /* -extra- */
 #ifndef HIWORD

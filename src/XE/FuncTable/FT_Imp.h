@@ -202,7 +202,7 @@ ULONG imp_chkstk(){
  //Windows wchar_t is 16-bit & for Linux, wchar_t is 32 bit.
  size_t imp_wcstombs(char* dest, const wchar_t* src, size_t max){
 // wprintf(L"\nTHE SOURCE! %c\n " ,src);
-	showfunc("imp_wcstombs( dest: %p, src: %p , max: %d )", dest,src,max);
+	showfunc("wcstombs( dest: %p, src: %p , max: %d )", dest,src,max);
 	if(!dest){ return 0;}
 	
 	// char* _res = W2CStr_(dest, src, max);
@@ -243,11 +243,12 @@ inl int imp_initterm_e(__PIFV* ppfn,__PIFV* end){
 
 
 //!_CRTIMP char ***__cdecl __p__environ(void)
-static  char** _environ_ = 0;
+//static  char** _environ_ = 0;
+char* _environ_[] = {"test1", "test2"};
 inl char*** imp_p__environ(void){
 	showfunc("__p__environ( )", "");
 	//return &_environ; //Standard one
-	return &_environ_; //Custom
+	return (char***)&_environ_; //Custom
 }
 
 
@@ -334,6 +335,11 @@ int * imp_p__initenv(){
      int newmode;
    } _startupinfo;
  #endif
+int argc_ = 3;
+const char* envp_[] = { "env0", "env1", "env2" };
+//const char* argv_[] = { "cwc", "param1", "param2" };
+const char* argv_[] = { "cwc", "-c", "ddd.c" };
+
 //!int __getmainargs(int * _Argc,char *** _Argv,char *** _Env,int _DoWildCard,_startupinfo * _StartInfo)
 int imp_getmainargs(int* _Argc, char*** _Argv, char*** _Env, int _DoWildCard, void* _StartInfo){ //_StartInfo :Other information to be passed to the CRT DLL.
 	showfunc("__getmainargs( _Argc: %p, _Argv: %p, _Env: %p, _DoWildCard: %d, _StartInfo: %p )", _Argc, _Argv, _Env, _DoWildCard, _StartInfo);
@@ -362,8 +368,11 @@ int imp_getmainargs(int* _Argc, char*** _Argv, char*** _Env, int _DoWildCard, vo
 	for(int i = 0; i < *_Argc; i++){
 		showinf("arg[%d]: %s", i, (*_Argv)[i]);
 	}
-	*_Argc =0;
-	
+
+	*_Argc = argc_;
+	*_Env = (char**)&envp_;
+	*_Argv = (char**)&argv_;
+
 	return 0;//successful
 }
 
@@ -522,31 +531,23 @@ inl int imp_fwprintf (FILE* stream, const wchar_t* format, ...){
 
 //!int vsnprintf (char * __restrict__ __stream, size_t __n, const char * __restrict__ __format, va_list __local_argv);
 int imp_vsnprintf (char* s, size_t n, const char *  format, va_list __local_argv){
-	/*
-	showfunc("vsnprintf( s: %u, n: %d, format: %s, ... )", s,n,format); 
-	
-	static int count = 0;
-	count++;
-	if(n == 4048){
-		printf("\nhere");
-	}
-	
-	return vsnprintf(s, n, format, __local_argv);
-	*/
-	
-	showfunc_opt("vsnprintf( s: %p, n: %u, format: %s, ... )  --  %u", s, n, format);
+
+	showfunc_opt("vsnprintf( s: %p, n: %u, format: %s, ... )", s, n, format);
 	#ifdef USE_limit_on_vsnprintf
 	if(n > USE_limit_on_vsnprintf) n = USE_limit_on_vsnprintf;
 	#endif
-	/*
-	if(strcmp(format, "#version %I64i%s%s") == 0)
-	{
-		format = "#version %llu%s%s";
-		showfunc("CORRECTED : vsnprintf( s: %p, n: %u, format: %s, ... )", s, n, format);
-	}
-	*/
+	
 	return vsnprintf(s, n, format, __local_argv);
 }
+
+//!int vsprintf (char * s, const char * format, va_list arg )
+int imp_vsprintf (char* s, const char *  format, va_list __local_argv){
+	showfunc_opt("vsprintf( s: %p, format: %s, ... )", s,  format);
+	int ret = vsprintf(s, format, __local_argv);
+	showinf("vsprintf_result: %s", s);
+	return ret;
+}
+
 
 //!UINT ___lc_codepage_func(void)
 UINT imp_lc_codepage_func(void){
@@ -625,33 +626,33 @@ int imp_fflush( FILE * stream ){
 //!int fputc(int char, FILE *stream)
 int imp_fputc(int _char, FILE *stream){
 	showfunc_opt("fputc( _char: %d, stream: %p, ... )", _char,stream); 
-	printf("%c", _char);
+	_printf("%c", _char);
 	return _char;
 }
 
 //!int putc(int char, FILE *stream)
 int imp_putc(int _char, FILE *stream){
 	showfunc_opt("putc( _char: %d, stream: %p, ... )", _char,stream); 
-	printf("%c", _char);
+	_printf("%c", _char);
 	return _char;
 }
 //!int putchar ( int character )
 int imp_putchar( int _char ){
 	showfunc_opt("putc( character: %c )", _char); 
-	printf("%c", _char);
+	_printf("%c", _char);
 	return _char;
 }
 
 //!int puts ( const char * str )
 int imp_puts( const char * str ){
 	showfunc_opt("puts( _char: %s )", str); 
-	return printf(str);
+	return _printf(str);
 }
 
 //!int fputs ( const char * str, FILE * stream )
 int imp_fputs ( const char * str, FILE * stream ){
 	showfunc_opt("puts( _char: %s, stream: %p)", str, stream); 
-	return printf(str);
+	return _printf(str);
 }
 
 //!int sprintf ( char * str, const char * format, ... )
@@ -673,16 +674,6 @@ int* imp_errno(void ){
 	//  return &(msvcrt_get_thread_data()->thread_errno);
 	return &_errno_;
 }
-//!intptr_t _get_osfhandle(int fd)
-#ifndef EBADF
-#define EBADF            9      /* Bad file number */
-#endif
-intptr_t imp_get_osfhandle(int fd){
-	showfunc("_get_osfhandle( fd: %d )", fd); 
-	//File descriptor 0 stdint, 1 stdout, 2 strerr
-	//If execution is allowed to continue, it returns INVALID_HANDLE_VALUE (-1). It also sets errno to EBADF, indicating an invalid file handle.
-	return -1;
-}
 
 //!long _lseek(int fd,long offset,int origin)
 long imp_lseek(int fd,long offset,int origin){
@@ -696,7 +687,7 @@ long imp_lseek(int fd,long offset,int origin){
 //!int _write(int fd,const void *buffer, unsigned int count)
 int imp_write(int fd,const void* buffer, unsigned int count){
 	showfunc_opt("_write( fd: %d, buffer: %p, count: %d )", fd, buffer, count);
-	int _bytes = printf ("%.*s\n",count, buffer)-1;
+	int _bytes = _printf ("%.*s\n",count, buffer)-1;
 	if(_bytes > count){_bytes = count;}
 	return _bytes;
 	
@@ -725,11 +716,13 @@ void imp_deregister_frame(void* ptr){
 	showfunc_opt("__deregister_frame( ptr: %p)", ptr);
 }
 
-
-//!int _open(const char *filename,int oflag [,int pmode])
-int imp_open(const char *filename,int oflag,int pmode){
-	showfunc("_open( filename: %s, oflag: d, pmode: %d)", filename,oflag,pmode);
-	return -1;//error
+//!void exit(int status)
+void imp_exit(int status){
+	showfunc("exit(status: %d)", status);
+	fn void GDB_Func_Break();
+	GDB_Func_Break();
+	showfunc("Try Continuing...", "");
+	return;
 }
 
 //!void abort (void)
@@ -745,9 +738,200 @@ void imp_abort (void){
 int imp_isctype(int _C,int _Type){
 	showfunc("_isctype( _C: %d, _Type: %d)", _C, _Type);
 	//return _isctype(_C, _Type);
-	
 	return 1; //or 0?
 }
+
+//!size_t strlen ( const char * str )
+int imp_strlen(const char * str ){
+	showfunc_opt("strlen( str: %s)", str);
+	if(str == 0){ //Std will not check for null ptr!
+		err_print("strlen on null ptr!");
+		return 0;
+	}
+	return strlen(str);
+}
+
+//!char* strpbrk( const char * str1, const char * str2 )
+char* imp_strpbrk( const char* str1, const char* str2 ){
+	showfunc("strpbrk( str1: %s, str2: %s)", str1, str2);
+	return strpbrk(str1, str2);
+}
+
+//!int _putenv(const char *envstring)
+int imp_putenv(const char *envstring){
+	showfunc("putenv( envstring: %s)", envstring);
+	return 0;//successful 
+}
+
+
+//!void (*signal(int sig, void (*func)(int)))(int)
+void (*imp_signal(int sig, void (*func)(int)))(int){
+	showfunc("signal(signal: %d, func: %p)", sig, func);
+	signal(sig, func);
+}
+
+#include <io.h> //_open / _get_osfhandle / _fileno
+
+
+//!int _access( const char *path, int mode)
+int imp_access( const char* path, int mode){
+	showfunc("_access( path: %s, mode: %d)", path, mode);
+	//return 0;//Each function returns 0 if the file has the given mode. The function returns -1 if the named file does not exist or does not have the given mode; in this case, errno is set as shown in the following table.
+	#ifdef Func_Win
+	return _access( path, mode);//Each function returns 0 if the file has the given mode. The function returns -1 if the named file does not exist or does not have the given mode; in this case, errno is set as shown in the following table.
+	#endif
+	return 0;
+}
+
+
+//!int _fileno(FILE *stream)
+int imp_fileno(FILE* stream){
+	showfunc("_fileno( stream: %p)", stream);
+	#ifdef Func_Win
+	return _fileno(stream);//continue? 
+	#endif
+	return -1;;//continue? 
+}
+
+//!intptr_t _get_osfhandle(int fd)
+#ifndef EBADF
+#define EBADF            9      /* Bad file number */
+#endif
+intptr_t imp_get_osfhandle(int fd){
+	showfunc("_get_osfhandle( fd: %d )", fd); 
+	#ifdef Func_Win
+	intptr_t handle = _get_osfhandle(fd);
+	showinf("FileHandle: %p", handle);
+	//File descriptor 0 stdint, 1 stdout, 2 strerr
+	//If execution is allowed to continue, it returns INVALID_HANDLE_VALUE (-1). It also sets errno to EBADF, indicating an invalid file handle.
+	return handle;
+	#endif
+	return -1;
+}
+//!int _open(const char *filename, int oflag, [int pmode])
+int imp_open(const char *filename, int oflag, int pmode){
+	showfunc("_open(filename: '%s', oflag: %d, pmode: %d)", filename, oflag, pmode);
+	#ifdef Func_Win
+	return _open(filename, oflag, pmode);
+	#endif
+	return -1;//error
+}
+
+//!char *__cdecl strerror(int) __MINGW_ATTRIB_DEPRECATED_SEC_WARN;
+char* imp_strerror(int _errno){
+	showfunc("strerror(_errno: %d)", _errno);
+	char* err  = strerror(_errno);
+	showinf("strerror: %s", err);
+	return err;
+}
+
+
+//!int _stati64(const char *__path, struct stati64 *__statbuf);
+#define _dev_t uint32_t //Represents device handles.
+#define _ino_t uint16_t //For returning status information.
+struct _stati64 {
+    _dev_t st_dev;	//If a device, fd; otherwise 0.
+    _ino_t st_ino;	//
+    unsigned short st_mode; //Bit mask for file-mode information. The _S_IFCHR bit is set if fd refers to a device. The _S_IFREG bit is set if fd refers to an ordinary file. The read/write bits are set according to the file's permission mode. _S_IFCHR and other constants are defined in SYS\Stat.h.
+    short st_nlink;	 //Always 1 on non-NTFS file systems.
+    short st_uid;    //
+    short st_gid;	 //
+    _dev_t st_rdev;  //If a device, fd; otherwise 0.
+    __int64 st_size; //Size of the file in bytes.
+    time_t st_atime; //Time of the last file access.
+    time_t st_mtime; //Time of the last modification of the file.
+    time_t st_ctime; //Time of the creation of the file.
+};
+int imp_stati64(const char* __path, struct _stati64* __statbuf){
+	showfunc("_stati64(__path: '%s', __statbuf: %p)", __path, __statbuf);
+	//TODO get  last modification of the file.
+	return 0;
+	//The return value is 0 if the call was successful, otherwise -1 is returned and errno contains the reason. The buffer is not touched unless the call is successful. 
+}
+//!int _fstati64(int fd, struct _stati64 *buffer)
+int imp_fstati64(int fd, struct _stati64* buffer){
+	showfunc("_fstati64(fd: '%d', buffer: %p)", fd, buffer);
+	//TODO get  last modification of the file.
+	return 0;
+	//Returns 0 if the file-status information is obtained. A return value of -1 indicates an error.
+}
+
+
+
+//!int _read(int const fd, void * const buffer, unsigned const buffer_size)
+int imp_read(int const fd, void* const buffer, unsigned const buffer_size){
+	showfunc("_read(fd: '%d', buffer: %p, buffer_size: %d)", fd, buffer, buffer_size);
+	return _read( fd, buffer, buffer_size);
+}
+
+//!int _close(int fd)
+int imp_close(int fd){
+	showfunc("_close(fd: %d )", fd);
+	return _close( fd);
+}
+
+//!int imp_dup(int fd)
+int imp_dup(int fd){
+	showfunc("_dup((fd: %d )", fd);
+	#ifdef Func_Win
+	int ret = _dup( fd);
+	showinf("ret: %d", ret);
+	return ret;
+	#endif
+	return 0;
+}
+
+
+//!WINBASEAPI WINBOOL WINAPI WriteFile (HANDLE hFile, LPCVOID lpBuffer, DWORD nNumberOfBytesToWrite, LPDWORD lpNumberOfBytesWritten, LPOVERLAPPED lpOverlapped);
+WINBOOL WINAPI imp_WriteFile(HANDLE hFile, LPCVOID lpBuffer, DWORD nNumberOfBytesToWrite, LPDWORD lpNumberOfBytesWritten, LPOVERLAPPED lpOverlapped){
+	showfunc("WriteFile(hFile: %p, lpBuffer: %p, nNumberOfBytesToWrite: %d, lpNumberOfBytesWritten: %p, lpOverlapped: %p)", hFile, lpBuffer, nNumberOfBytesToWrite, lpNumberOfBytesWritten, lpOverlapped);
+	/*
+	//Is that we want?
+	#ifdef Func_Win 
+		return WriteFile(hFile, lpBuffer, nNumberOfBytesToWrite, lpNumberOfBytesWritten, lpOverlapped);
+	#endif
+	*/
+	*lpNumberOfBytesWritten=nNumberOfBytesToWrite;
+	_printl("%.*s\n", nNumberOfBytesToWrite, lpBuffer);
+	return true;
+}
+
+
+#include <process.h>
+//int __cdecl _getpid(void);
+//!int _getpid( void )
+int imp_getpid( void ){
+	showfunc("_getpid( )", "");
+	#ifdef Func_Win
+	int ret = _getpid( );
+	showinf("ret: %d", ret)
+	return ret;
+	#endif
+	return 0;
+}
+
+//!clock_t clock (void)
+#include <time.h> 
+clock_t imp_clock(void){ //Returns the processor time consumed by the program.
+	showfunc("clock( )", "");
+	clock_t _ret = clock();
+	showinf("ret: %d ", _ret);
+	return _ret;
+}
+
+//!int ___mb_cur_max_func(void)
+int imp_mb_cur_max_func(void){ //Internal CRT function. Retrieves the maximum number of bytes in a multibyte character for the current or specified locale.
+	showfunc("___mb_cur_max_func( )", "");
+	return 1;
+}
+
+//!void _cexit( void )
+void imp_cexit(void){ //The _cexit function calls, in last-in, first-out (LIFO) order, the functions registered by atexit and _onexit. Then _cexit flushes all I/O buffers and closes all open streams before returning. _c_exit is the same as _exit but returns to the calling process without processing atexit or _onexit or flushing stream buffers
+	showfunc("_cexit( )", "");
+}
+
+
+
 
 /*
 LPVOID WINAPI LocalLock (HLOCAL hMem);

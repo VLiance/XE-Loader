@@ -48,15 +48,15 @@ int imp_getopt(int argc, char * const argv[], const char *optstring){
 }
 
 #define time_t_ uint64_t
-#define clockid_t int
-struct timespec {
+#define clockid_t_ int
+struct timespec_ {
         time_t_   tv_sec;        /* seconds */
         long     tv_nsec;       /* nanoseconds */
 };
-struct timespec _timespec = {};
-//|int clock_gettime(clockid_t clk_id, struct timespec *tp)
-int imp_clock_gettime(clockid_t clk_id, struct timespec *tp) {
-	showfunc("clock_gettime( clk_id: %d, timespec: %p)", clk_id, tp);
+struct timespec_ _timespec = {};
+//|int clock_gettime(clockid_t clk_id, struct timespec_ *tp)
+int imp_clock_gettime(clockid_t_ clk_id, struct timespec_ *tp) {
+	showfunc("clock_gettime( clk_id: %d, timespec_: %p)", clk_id, tp);
 	
 	//Simulate 1 seconde?
 	_timespec.tv_sec+=1;
