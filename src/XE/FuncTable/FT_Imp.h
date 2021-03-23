@@ -777,15 +777,20 @@ void (*imp_signal(int sig, void (*func)(int)))(int){
 int imp_access( const char* path, int mode){
 	showfunc("_access( path: %s, mode: %d)", path, mode);
 	//return 0;//Each function returns 0 if the file has the given mode. The function returns -1 if the named file does not exist or does not have the given mode; in this case, errno is set as shown in the following table.
+	#ifdef Func_Win
 	return _access( path, mode);//Each function returns 0 if the file has the given mode. The function returns -1 if the named file does not exist or does not have the given mode; in this case, errno is set as shown in the following table.
+	#endif
+	return 0;
 }
 
 
 //!int _fileno(FILE *stream)
 int imp_fileno(FILE* stream){
 	showfunc("_fileno( stream: %p)", stream);
-	//return -1;//continue? 
+	#ifdef Func_Win
 	return _fileno(stream);//continue? 
+	#endif
+	return -1;;//continue? 
 }
 
 //!intptr_t _get_osfhandle(int fd)
@@ -794,19 +799,22 @@ int imp_fileno(FILE* stream){
 #endif
 intptr_t imp_get_osfhandle(int fd){
 	showfunc("_get_osfhandle( fd: %d )", fd); 
-	//GetFileSizeEx
+	#ifdef Func_Win
 	intptr_t handle = _get_osfhandle(fd);
 	showinf("FileHandle: %p", handle);
 	//File descriptor 0 stdint, 1 stdout, 2 strerr
 	//If execution is allowed to continue, it returns INVALID_HANDLE_VALUE (-1). It also sets errno to EBADF, indicating an invalid file handle.
 	return handle;
-	//return -1;
+	#endif
+	return -1;
 }
 //!int _open(const char *filename, int oflag, [int pmode])
 int imp_open(const char *filename, int oflag, int pmode){
 	showfunc("_open(filename: '%s', oflag: %d, pmode: %d)", filename, oflag, pmode);
+	#ifdef Func_Win
 	return _open(filename, oflag, pmode);
-//	return -1;//error
+	#endif
+	return -1;//error
 }
 
 //!char *__cdecl strerror(int) __MINGW_ATTRIB_DEPRECATED_SEC_WARN;
@@ -865,9 +873,12 @@ int imp_close(int fd){
 //!int imp_dup(int fd)
 int imp_dup(int fd){
 	showfunc("_dup((fd: %d )", fd);
+	#ifdef Func_Win
 	int ret = _dup( fd);
 	showinf("ret: %d", ret);
 	return ret;
+	#endif
+	return 0;
 }
 
 
@@ -891,9 +902,12 @@ WINBOOL WINAPI imp_WriteFile(HANDLE hFile, LPCVOID lpBuffer, DWORD nNumberOfByte
 //!int _getpid( void )
 int imp_getpid( void ){
 	showfunc("_getpid( )", "");
+	#ifdef Func_Win
 	int ret = _getpid( );
 	showinf("ret: %d", ret)
 	return ret;
+	#endif
+	return 0;
 }
 
 //!clock_t clock (void)

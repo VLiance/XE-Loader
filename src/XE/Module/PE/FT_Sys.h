@@ -671,7 +671,7 @@ HPALETTE WINAPI sys_CreatePalette(CONST LOGPALETTE *plpal){
 }
 
 //!WINUSERAPI int WINAPI ReleaseDC(HWND hWnd,HDC hDC)
-WINUSERAPI int WINAPI sys_ReleaseDC(HWND hWnd,HDC hDC){
+int WINAPI sys_ReleaseDC(HWND hWnd,HDC hDC){
 	showfunc("ReleaseDC( hWnd: %p, hDC: %p )", hWnd, hDC);
 	#ifdef Func_Win
 		return ReleaseDC(hWnd, hDC);
@@ -741,7 +741,7 @@ HPALETTE WINAPI sys_SelectPalette(HDC hdc,HPALETTE hPal,WINBOOL bForceBkgd){
 }
 
 //!WINGDIAPI UINT WINAPI RealizePalette(HDC hdc)
-WINGDIAPI UINT WINAPI sys_RealizePalette(HDC hdc){
+UINT WINAPI sys_RealizePalette(HDC hdc){
 	showfunc("RealizePalette( hdc: %p )", hdc);
 	#ifdef Func_Win
 		return RealizePalette( hdc );
@@ -867,7 +867,7 @@ WINBOOL WINAPI sys_ReadConsoleInputW(HANDLE hConsoleInput,PINPUT_RECORD lpBuffer
 }
 
 //!WINBASEAPI WINBOOL WINAPI SetConsoleCtrlHandler(PHANDLER_ROUTINE HandlerRoutine,WINBOOL Add)
-WINBASEAPI WINBOOL WINAPI sys_SetConsoleCtrlHandler(PHANDLER_ROUTINE HandlerRoutine,WINBOOL Add){
+WINBOOL WINAPI sys_SetConsoleCtrlHandler(PHANDLER_ROUTINE HandlerRoutine,WINBOOL Add){
 	showfunc("SetConsoleCtrlHandler( HandlerRoutine: %p, Add: %d )", HandlerRoutine, Add );
 	#ifdef Func_Win
 		return SetConsoleCtrlHandler( HandlerRoutine, Add);

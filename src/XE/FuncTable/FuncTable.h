@@ -555,7 +555,7 @@ FILE* stderr_; //Not used?
 
 
 {"",			"_beginthreadex"  	,(FUNC_) th_beginthreadex },
-{"",			"_errno"  			,(FUNC_) &_errno },
+{"",			"_errno"  			,(FUNC_) &_errno_ },
 
 //{"",			"strlen"  	,(FUNC_) strlen },
 {"",			"strlen"  	,(FUNC_) imp_strlen }, //safer strlen
