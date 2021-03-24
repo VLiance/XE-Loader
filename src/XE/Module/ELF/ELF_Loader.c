@@ -45,7 +45,7 @@ XE_Module*
 {
 	ELF_File* f = Load_Module_ELF_MEM(_module->file.path, _module->file.data, _module->file.size);
 	_module->handle = f;
-	_module->have_reloc = f->rel;
+	_module->have_reloc = (f->ehdr->e_type == ET_DYN);
 	_module->section_text = f->shdr_madr_text;
 	//GDB_Send_AddSymbolFile(f->nm, f->shdr_madr_text);
 	/*
@@ -114,6 +114,13 @@ ELF_File*
 			return NULL;
     }
 
+	if(f->ehdr->e_type != ET_DYN){
+		warn_print("warning, not relocable, executable require to be loaded on Virtual Memory");
+	}else{
+		//IF DET_FLAGS_1 => Dynamic section is present
+			//IF DE_1_PIE is set in DET_FLAGS_1 => pie executable 
+	}
+	
     /* now go through program headers, to find the allocation space of this file */
     f->min = (void *) -1;
     f->max = 0;
@@ -211,9 +218,9 @@ ELF_File*
         if (_phdr->p_type == PT_LOAD) {
             if (_phdr->p_filesz > 0) {
 				void* dest = (void *) _phdr->p_vaddr + f->offset;
-				printf("\nMemCpy PT_LOAD: [0x%p, 0x%p] to %p" ,  _phdr->p_offset,  _phdr->p_offset + _phdr->p_filesz, dest);
+				_printl("MemCpy PT_LOAD: [0x%p, 0x%p] to %p" ,  _phdr->p_offset,  _phdr->p_offset + _phdr->p_filesz, dest);
                 /* OK, there's something to copy in, so do so */
-                memcpy(dest,
+                _memcpy(dest,
                        f->prog + _phdr->p_offset,
                        _phdr->p_filesz);
 					   
@@ -247,12 +254,12 @@ ELF_File*
 		  //Elf32_Word	sh_addralign;		/* Section alignment */
 		  //Elf32_Word	sh_entsize;		/* Entry size if section holds table */
 			char* sec_name =  (char*)sh_strtab_p + _shdr->sh_name;
-			printf("\n%2d: %4d '%s', [0x%p, 0x%p]", i, _shdr->sh_name,
+			_printl("%2d: %4d '%s', [0x%p, 0x%p]", i, _shdr->sh_name,
             sec_name, _shdr->sh_offset, _shdr->sh_offset + _shdr->sh_size);
 			
 			if(phdr_madr != 0 && strcmp(sec_name, ".text") == 0){
 				f->shdr_madr_text = phdr_madr + _shdr->sh_offset;
-				printf("\nFound text sec 0x%p ", f->shdr_madr_text);
+				_printl("Found text sec 0x%p ", f->shdr_madr_text);
 			}
 			
 			
@@ -302,8 +309,8 @@ ELF_File*
 		}
     }
 	
-	printf("\n f->hashtab : %d", f->hashtab  );
-	printf("\n\n/////-= End ELF: %s =--///\n", nm);
+	_printl(" f->hashtab : %d", f->hashtab  );
+	_printl("/////-= End ELF: %s =--///\n", nm);
 
     /*check dependencies */
 	
@@ -334,6 +341,8 @@ void relocateELF(int fileNo, struct ELF_File *f)
 {
     /* do processor-specific relocation */
 #if GELFLOAD_ARCH_i386
+_printl("GELFLOAD_ARCH_i386");
+
 #define REL_P ((ssize_t) (currel->r_offset + f->offset))
 #define REL_S ((ssize_t) (findELFSymbol( \
                 f->strtab + f->symtab[ELFNATIVE_R_SYM(currel->r_info)].st_name, \
@@ -354,14 +363,14 @@ void relocateELF(int fileNo, struct ELF_File *f)
             switch (ELFNATIVE_R_TYPE(currel->r_info)) {
                 case R_386_32:
 				
-				printf("\n f->hashtab : %d", f->hashtab  );
-				printf("\nR_386_32 %s ", f->nm);
+				_printl(" f->hashtab : %d", f->hashtab  );
+				_printl("R_386_32 %s ", f->nm);
 					
                     WORD32_REL(REL_S + REL_A);
                     break;
 
                 case R_386_PC32:
-					printf("\nR_386_PC32 %s ", f->nm);
+					_printl("R_386_PC32 %s ", f->nm);
 					
                     WORD32_REL(REL_S + REL_A - REL_P);
                     break;
@@ -369,7 +378,7 @@ void relocateELF(int fileNo, struct ELF_File *f)
                 case R_386_COPY:
                 {
 				
-					printf("\nR_386_COPY %s ", f->nm);
+					_printl("R_386_COPY %s ", f->nm);
 					
                     /* this is a bit more convoluted, as we need to find it in both places and copy */
                     ElfNative_Sym *localsym, *sosym;
@@ -380,11 +389,11 @@ void relocateELF(int fileNo, struct ELF_File *f)
 					
                     //OK, we should have both, so copy it over 
                     if (localsym && sosym) {
-                        memcpy((void *) (localsym->st_value + f->offset),
+                        _memcpy((void *) (localsym->st_value + f->offset),
                                soptr, sosym->st_size);
                     } else {
                        //  depend on localsym's size 
-                        memcpy((void *) (localsym->st_value + f->offset),
+                        _memcpy((void *) (localsym->st_value + f->offset),
                                soptr, localsym->st_size);
 
                     }
@@ -401,7 +410,7 @@ void relocateELF(int fileNo, struct ELF_File *f)
                     break;
 
                 default:
-                    fprintf(stderr, "Unsupported relocation %d in %s\n", ELFNATIVE_R_TYPE(currel->r_info), f->nm);
+                    err_print( "Unsupported relocation %d in %s", ELFNATIVE_R_TYPE(currel->r_info), f->nm);
             }
         }
     }
@@ -419,6 +428,8 @@ void relocateELF(int fileNo, struct ELF_File *f)
 
 
 #elif GELFLOAD_ARCH_x86_64
+_printl("GELFLOAD_ARCH_x86_64");
+
 #define REL_P ((ssize_t) (currel->r_offset + f->offset))
 #define REL_S ((ssize_t) (findELFSymbol( \
                 f->strtab + f->symtab[ELFNATIVE_R_SYM(currel->r_info)].st_name, \
@@ -451,11 +462,11 @@ void relocateELF(int fileNo, struct ELF_File *f)
 
                     /* OK, we should have both, so copy it over */
                     if (localsym && sosym) {
-                        memcpy((void *) (localsym->st_value + f->offset),
+                        _memcpy((void *) (localsym->st_value + f->offset),
                                soptr, sosym->st_size);
                     } else {
                         /* depend on localsym's size */
-                        memcpy((void *) (localsym->st_value + f->offset),
+                        _memcpy((void *) (localsym->st_value + f->offset),
                                soptr, localsym->st_size);
 
                     }
@@ -523,8 +534,7 @@ void initELF(struct ELF_File *except)
 //#include "elfload_exec.h"
 int CallEntryPoint_ELF(ELF_File* f)
 {
-
-	/* relocate them */
+	_printl("-- Relocate ELF --");
       relocateELF(1, f);
 	  
 
@@ -542,7 +552,8 @@ int CallEntryPoint_ELF(ELF_File* f)
 			}
 		}
 	*/
-
+	
+	_printl("--=== Execute ELF ===---");
 	((void(*)()) (f->ehdr->e_entry + f->offset))();
 
 
@@ -585,13 +596,6 @@ int argc = 0;
 
 
 
-void FakePrintf(){
-	printf("\nPrintf found \n");
-}
-
-void FakeFunc(){
-	printf("\nFound Fake Func\n");
-}
 
 /* Find a symbol within the currently loaded ELF files
  * localin: The number of the current file, where STB_LOCAL symbols are OK
@@ -753,7 +757,7 @@ if(strcmp(nm,"fputs")== 0) { //Temp
     // uh oh, not found!
   
   //  return NULL;
-    return &FakeFunc;
+  //  return &FakeFunc;
 	
 	
 }
