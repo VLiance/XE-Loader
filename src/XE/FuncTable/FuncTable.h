@@ -55,8 +55,9 @@
 
 #include "XE/FuncTable/DummyTable.h"
 
-#include "XE/FuncTable/FT_Memory.h"
+#include "XE/FT_Custom.inc"
 
+#include "XE/FuncTable/FT_Memory.h"
 #include "XE/Module/PE/FT_pe.h"
 #include "XE/Module/ELF/FT_elf.h"
 
@@ -121,6 +122,8 @@ FILE* stderr_; //Not used?
 //#include "FuncTable/CpcDosFuncTable.h"
 //////////////////////////////////////
 {"",			"func_NotImplemented" 		,(FUNC_) func_NotImplemented }, //Must be first
+
+#include "XE/FT_Custom.ht"
 
 {"","__initenv" 	,(FUNC_) &__initenv }, //TODO -> to test //Special
 {"","__p___initenv" 	,(FUNC_) imp_p__initenv }, //TODO -> to test //Special

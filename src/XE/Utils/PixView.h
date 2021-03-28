@@ -44,6 +44,11 @@ struct pixel {
 	#define WIN_BORDER_B WIN_BORDER_L
 #endif 
 
+#ifndef GET_X_LPARAM
+#define GET_X_LPARAM(lp)    ((int)(short)LOWORD(lp))
+#define GET_Y_LPARAM(lp)    ((int)(short)HIWORD(lp))
+#endif 
+
 LRESULT CALLBACK WndProc( HWND hwnd,UINT msg,WPARAM wParam,LPARAM lParam){
 	uint32_t h = (uint32_t)hwnd;
 
