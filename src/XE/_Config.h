@@ -85,6 +85,12 @@
 
 //#define No_FullWinHeader
 //#define NoSetLastError //USE_Window_LastError?
+
+
+//Use Calloc instead of malloc + memset to 0
+#define HAVE_Calloc
+
+
 /*
 
 #define No_vswprintf
