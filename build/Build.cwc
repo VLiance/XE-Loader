@@ -30,11 +30,12 @@
 ;-#Run _out/{_sOpt}/XE-Loader.exe  E:/Data/autre/_Cwc/Toolchain/VLianceTool/DJGPP_RT/DJGPP_RT-10.2.0.3/i586-pc-msdosdjgpp/bin/g++.exe
 ;-#Run _out/{_sOpt}/XE-Loader.exe  echfs-utils.elf
 ;-#Run _out/{_sOpt}/XE-Loader.exe  parted
--#Run _out/{_sOpt}/XE-Loader.exe GZE
+;-#Run _out/{_sOpt}/XE-Loader.exe GZE
+;-#Run _out/{_sOpt}/XE-Loader.exe Square.exe
 ;-#Run _out/{_sOpt}/XE-Loader.exe App.elf
 ;-#Run _out/{_sOpt}/XE-Loader.exe  E:/Data/autre/_Cwc/Toolchain/VLianceTool/LibRT/LibRT-999/bin/gcc.exe
 ;-#Run _out/{_sOpt}/XE-Loader.exe  imdisk.sys
-;-#Run _out/{_sOpt}/XE-Loader.exe  ElieDraw.exe
+-#Run _out/{_sOpt}/XE-Loader.exe  ElieDraw.exe
 ;-#Run _out/{_sOpt}/XE-Loader.exe   shapes-sapp.exe
 ;-#Run _out/{_sOpt}/ExeLoader.exe  E:/_Project/Vellum/ElfLoader/_out/Debug/Main_32
 ;-#Run _out/{_sOpt}/ExeLoader.exe  E:/Data/setting/Sokol_Cwc/_cwc/sapp/_out/cube-sapp/CpcDos_Debug_wasm/cube-sapp.exe
