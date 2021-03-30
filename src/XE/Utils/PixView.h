@@ -20,16 +20,9 @@
 *
 */
 
-struct pixel {
-  union {
-	struct {unsigned char b, g, r, a;};
-    int val;
-  };
-};
-
- float pixView_mouse_x  = 0;
- float pixView_mouse_y  = 0;
- bool bLButtonDown  = false;
+float pixView_mouse_x  = 0;  //FIXME: AtomicInt
+float pixView_mouse_y  = 0;	 //FIXME: AtomicInt
+bool bLButtonDown  = false;  //FIXME: AtomicBool
  
 #ifdef USE_Transparent_PixView
 	#define WIN_BORDER_T 20
@@ -56,6 +49,17 @@ LRESULT CALLBACK WndProc( HWND hwnd,UINT msg,WPARAM wParam,LPARAM lParam){
     case WM_CREATE:
       {
        // MakeSurface( hwnd );
+      }
+      break;
+	  
+ case WM_SYSCOMMAND :
+      {
+			switch ( (int)wParam ) {
+			case SC_RESTORE:{
+				//TODO
+			  }
+			  break;
+		}
       }
       break;
 	  
@@ -92,81 +96,12 @@ LRESULT CALLBACK WndProc( HWND hwnd,UINT msg,WPARAM wParam,LPARAM lParam){
         PostQuitMessage( 0 );
       }
       break;
-    default:
-      return DefWindowProc( hwnd, msg, wParam, lParam );
   }
-  return 0;
+	return DefWindowProc( hwnd, msg, wParam, lParam );
 }
 
-HWND pixView_createWindow( HINSTANCE hInstance, ContextInf* _context){
-
-	_context->mem_width  = _context->width+ WIN_BORDER_L + WIN_BORDER_R;
-	_context->mem_height = _context->height+ WIN_BORDER_T + WIN_BORDER_B;
-	_context->off_y = WIN_BORDER_T;
-	_context->off_x = WIN_BORDER_L;
-
-	static bool class_registred = false;
-	if(!class_registred){
-		WNDCLASSEX wc;
-		wc.cbClsExtra = 0;
-		wc.cbWndExtra = 0;
-		wc.cbSize = sizeof( WNDCLASSEX );
-		wc.hbrBackground = CreateSolidBrush( 0 );
-		wc.hCursor = LoadCursor( NULL, IDC_ARROW );
-		wc.hIcon = LoadIcon( NULL, IDI_APPLICATION );
-		wc.hIconSm = LoadIcon( NULL, IDI_APPLICATION );
-		wc.hInstance = hInstance;
-		wc.lpfnWndProc = WndProc;
-		wc.lpszClassName = "pixview_class";
-		wc.lpszMenuName = NULL;
-		wc.style = 0;
-
-		if ( !RegisterClassEx(&wc) ) {
-			MessageBox( NULL, "Failed to register window class.", "Error", MB_OK );
-			return 0;
-		}
-		class_registred = true;
-	}
-
-	//HINSTANCE hInstance = GetModuleHandle(NULL);
-	HWND hwnd = CreateWindowEx(
-		#ifdef USE_Transparent_PixView
-			WS_EX_LAYERED  | WS_EX_NOPARENTNOTIFY, //WS_EX_LAYERED, // WS_EX_APPWINDOW,
-		#else
-			WS_EX_APPWINDOW  | WS_EX_NOPARENTNOTIFY, //WS_EX_LAYERED, // WS_EX_APPWINDOW,
-		#endif
-
-		"pixview_class",
-		"pixview",
-		WS_MINIMIZEBOX | WS_SYSMENU | WS_POPUP | WS_CAPTION,
-		300, 200, _context->mem_width, _context->mem_height,
-		NULL, NULL, hInstance, NULL 
-	);
-
-	if ( !hwnd ) {
-		MessageBox( NULL, "Failed to create PixView", "Error", MB_OK );
-		return 0;
-	}
-
-	RECT rcClient, rcWindow;
-	POINT ptDiff;
-
-	#ifndef USE_Transparent_PixView
-		GetClientRect( hwnd, &rcClient );
-		GetWindowRect( hwnd, &rcWindow );
-		ptDiff.x = (rcWindow.right - rcWindow.left) - rcClient.right;
-		ptDiff.y = (rcWindow.bottom - rcWindow.top) - rcClient.bottom;
-		MoveWindow( hwnd, rcWindow.left, rcWindow.top, _context->mem_width + ptDiff.x, _context->mem_height + ptDiff.y, false);
-	#endif
-	
-	//int _nTitleOffset = fClientResize(hWnd, _oWindow->vFrame.nWidth, _oWindow->vFrame.nHeight); //Set correct client size
-	//ClipOrCenterWindowToMonitor(hWnd, MONITOR_CENTER | MONITOR_WORKAREA, _nTitleOffset);
-	
-
-	ShowWindow( hwnd, SW_SHOWDEFAULT );
-	return hwnd;
-}
-
+ContextInf* upd_pixview = 0;
+bool bTh_Surface_ready = false;
 
 static void draw_square(uint32_t _color, uint32_t* _pix, int _lsize, int _posx, int _posy, int _width, int _height, int inc){
 	int y = _height-1;
@@ -230,10 +165,12 @@ void pixView_MakeSurface(ContextInf* _context){
 	draw_square(0xFFAA0000,  _context->pixels,_context->mem_width, _context->mem_width-25,10, 10, 3,2);
 }
 
-void pixView_update(ContextInf* _context){
+void pixView_update_thread(ContextInf* _context){
 
 	HWND _hwnd = (HWND)_context->hwnd_View;
-	if(_hwnd == 0){return;}
+	if(_hwnd == 0){
+		return;
+	}
 	UpdateWindow( _hwnd );
 	MSG _msg;
 	ShowWindow( _hwnd, SW_SHOW );
@@ -262,6 +199,135 @@ void pixView_update(ContextInf* _context){
  
 	SelectObject( hdcMem, hbmOld );
 	DeleteObject(hdcMem);
-	//DeleteDC( hdc );
 	ReleaseDC( _hwnd, hdc );
+}
+
+void set_ContextRealSize(ContextInf* _context){
+	_context->mem_width  = _context->width+ WIN_BORDER_L + WIN_BORDER_R;
+	_context->mem_height = _context->height+ WIN_BORDER_T + WIN_BORDER_B;
+	_context->off_y = WIN_BORDER_T;
+	_context->off_x = WIN_BORDER_L;
+}
+
+
+DWORD WINAPI pixView_createWindow_thread(ContextInf* _context) {
+	set_ContextRealSize(_context);
+
+	HINSTANCE hInstance = GetModuleHandle(NULL);
+	
+	static bool class_registred = false;
+	if(!class_registred){
+		WNDCLASSEX wc;
+		wc.cbClsExtra = 0;
+		wc.cbWndExtra = 0;
+		wc.cbSize = sizeof( WNDCLASSEX );
+		wc.hbrBackground = CreateSolidBrush( 0 );
+		wc.hCursor = LoadCursor( NULL, IDC_ARROW );
+		wc.hIcon = LoadIcon( NULL, IDI_APPLICATION );
+		wc.hIconSm = LoadIcon( NULL, IDI_APPLICATION );
+		wc.hInstance = hInstance;
+		wc.lpfnWndProc = WndProc;
+		wc.lpszClassName = "pixview_class";
+		wc.lpszMenuName = NULL;
+		wc.style = 0;
+
+		if ( !RegisterClassEx(&wc) ) {
+			MessageBox( NULL, "Failed to register window class.", "Error", MB_OK );
+			return 0;
+		}
+		class_registred = true;
+	}
+
+	HWND hwnd = CreateWindowEx(
+		#ifdef USE_Transparent_PixView
+			WS_EX_LAYERED  | WS_EX_NOPARENTNOTIFY, //WS_EX_LAYERED, // WS_EX_APPWINDOW,
+		#else
+			WS_EX_APPWINDOW  | WS_EX_NOPARENTNOTIFY, //WS_EX_LAYERED, // WS_EX_APPWINDOW,
+		#endif
+
+		"pixview_class",
+		"pixview",
+		WS_MINIMIZEBOX | WS_SYSMENU | WS_POPUP | WS_CAPTION,
+		300, 200, _context->mem_width, _context->mem_height,
+		NULL, NULL, hInstance, NULL 
+	);
+
+	if ( !hwnd ) {
+		MessageBox( NULL, "Failed to create PixView", "Error", MB_OK );
+		return 0;
+	}
+
+	RECT rcClient, rcWindow;
+	POINT ptDiff;
+
+	#ifndef USE_Transparent_PixView
+		GetClientRect( hwnd, &rcClient );
+		GetWindowRect( hwnd, &rcWindow );
+		ptDiff.x = (rcWindow.right - rcWindow.left) - rcClient.right;
+		ptDiff.y = (rcWindow.bottom - rcWindow.top) - rcClient.bottom;
+		MoveWindow( hwnd, rcWindow.left, rcWindow.top, _context->mem_width + ptDiff.x, _context->mem_height + ptDiff.y, false);
+	#endif
+	
+	_context->hwnd_View = hwnd;
+	
+	int last_width  = _context->width;
+	int last_height = _context->height;
+	pixView_MakeSurface(_context);
+	
+	bTh_Surface_ready = true;
+
+	ShowWindow( hwnd, SW_SHOWDEFAULT );
+	
+	MSG _msg;
+	while (1){
+		if(upd_pixview == _context){
+			if(last_width != _context->width || last_height != _context->height){
+				last_width  = _context->width;
+				last_height = _context->height;
+				set_ContextRealSize(_context);
+				pixView_MakeSurface(_context);
+			}
+			pixView_update_thread(upd_pixview);
+			upd_pixview = 0;
+		}
+		
+		while ( PeekMessageA(&_msg, 0, 0, 0, PM_REMOVE) > 0 ) {
+			TranslateMessage( &_msg );
+			DispatchMessage( &_msg );
+		}
+		Sleep(1);
+	}
+	return 0;
+}
+
+HWND pixView_createWindow( ContextInf* _context) {
+
+  HANDLE thread = CreateThread(NULL, 0, (void*)pixView_createWindow_thread, _context, 0, NULL);
+  if (thread) {
+  
+	static CRITICAL_SECTION _ct = {};
+	if(!_ct.DebugInfo){InitializeCriticalSection(&_ct);}
+	EnterCriticalSection(&_ct);
+	{
+		while(!bTh_Surface_ready){ //Wait for _context fill & creation (be sure to not modify *_context data while this thread as not finished is initialisation)
+			Sleep(1);
+		}
+		bTh_Surface_ready = false;
+	}
+	LeaveCriticalSection(&_ct);
+  }
+  return _context->hwnd_View;
+}
+
+void pixView_update(ContextInf* _context){
+	static CRITICAL_SECTION _ct = {};
+	if(!_ct.DebugInfo){InitializeCriticalSection(&_ct);}
+	EnterCriticalSection(&_ct);
+	{
+		upd_pixview = _context;
+		while(upd_pixview){ //Wait for _context update (be sure to not modify *_context data while this thread as not finished is update)
+			Sleep(1);
+		}
+	LeaveCriticalSection(&_ct);
+  }
 }

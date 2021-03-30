@@ -15,7 +15,7 @@ typedef struct {
 extern int aContext_count;
 extern ContextInf aContext[50];
 
-HWND pixView_createWindow( HINSTANCE hInstance, ContextInf* _context);
+HWND pixView_createWindow(ContextInf* _context);
 void pixView_update(ContextInf* _context);
 void pixView_MakeSurface(ContextInf* _context);	
 
