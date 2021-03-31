@@ -234,5 +234,4 @@ inl char*  W2CStr(view_t* _dest, view_t*  _src){
 	
 
 	
-
 #endif //!-----!//

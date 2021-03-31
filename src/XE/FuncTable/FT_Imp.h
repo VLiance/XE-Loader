@@ -30,31 +30,13 @@ inl HMODULE WINAPI imp_LoadLibraryW(LPCWSTR lpLibFileName){
 					.data=(byte_t*)&aVLA[sizeof(fptr_t)] ,
 					.size=len,
 					};
-
-	
 	/*
 	int len = wcslen_(lpLibFileName);
 	char aVLA[len];
 	W2CStr(aVLA, lpLibFileName,len);
 	*/
-
-	showinf("\n TODO: imp_LoadLibraryW" , "");
-
-/*
-	WStr _swFile(lpLibFileName);const char* _sFile = _swFile.ToCStr();
-	showfunc("LoadLibraryW( lpLibFileName: %s )", _sFile);
-	#ifdef USE_Windows_LoadLibrary
-		HMODULE _ret = LoadLibraryW(lpLibFileName);
-		if(!_ret){sys_GetLastError();}return _ret;
-	#else
-		if(strcmp(_sFile, "Dbghelp.dll") == 0){ //required for Mesa
-			return (HMODULE)1; //Fake availability
-		}
-		return (HMODULE)AddLibrary(_sFile);
-	#endif
-	*/
+	showinf("\nTODO: imp_LoadLibraryW" , "");
 }
-
 
 //!HMODULE LoadLibraryA(LPCSTR lpLibFileName)
 inl HMODULE WINAPI imp_LoadLibraryA(LPCSTR lpLibFileName){
@@ -67,7 +49,6 @@ inl HMODULE WINAPI imp_LoadLibraryA(LPCSTR lpLibFileName){
 		//return (HMODULE)AddLibrary("test");
 	#endif
 }
-
 
 //!HMODULE WINAPI LoadLibraryExA (LPCSTR lpLibFileName, HANDLE hFile, DWORD dwFlags)
 //!HMODULE WINAPI LoadLibraryExW (LPCWSTR lpLibFileName, HANDLE hFile, DWORD dwFlags)
@@ -83,7 +64,7 @@ HMODULE WINAPI imp_LoadLibraryExA (LPCSTR lpLibFileName, HANDLE hFile, DWORD dwF
 HMODULE WINAPI imp_LoadLibraryExW (LPCWSTR lpLibFileName, HANDLE hFile, DWORD dwFlags){
 
 	showinf("TODO imp_LoadLibraryExW", "");
-/*
+/* ==>  FIXME convert this C++ code to C VLA
 	WStr _swFile(lpLibFileName);const char* _sFile = _swFile.ToCStr();
 	showfunc("LoadLibraryExW( lpLibFileName: %s, dwFlags: %d )", _sFile, dwFlags);
 	#ifdef USE_Windows_LoadLibrary
@@ -93,7 +74,6 @@ HMODULE WINAPI imp_LoadLibraryExW (LPCWSTR lpLibFileName, HANDLE hFile, DWORD dw
 		return (HMODULE)AddLibrary(_sFile);
 	#endif
 	*/
-	
 }
 
 //!WINBOOL WINAPI FreeLibrary (HMODULE hLibModule)
@@ -113,7 +93,6 @@ FARPROC WINAPI  imp_GetProcAddress(  HMODULE hModule, LPCSTR  lpProcName){
 		return GetProcAddress(hModule, lpProcName);
 	#else
 		char* _sDllName = (char*)"unknow";
-	//	bool bOurLib = is_in_aLibList((MEMORYMODULE*)hModule);
 		bool bOurLib = aModule(contain, (XE_Module*)hModule);
 
 		FARPROC _func = 0;
@@ -126,8 +105,6 @@ FARPROC WINAPI  imp_GetProcAddress(  HMODULE hModule, LPCSTR  lpProcName){
 				if ( directory->Size == 0) {
 					 err_print("no export table found" );
 				}
-				//PIMAGE_EXPORT_DIRECTORY exports = (PIMAGE_EXPORT_DIRECTORY) ( handle->codeBase + directory->VirtualAddress);
-				//_sDllName =  (char*) ( handle->codeBase + exports->Name);
 				_sDllName =  ((XE_Module*)hModule)->name;
 			}
 			_func =  MemGetProcAddress(handle, lpProcName);
@@ -138,7 +115,7 @@ FARPROC WINAPI  imp_GetProcAddress(  HMODULE hModule, LPCSTR  lpProcName){
 		}else{
 			_printl("GetTableAddress[%s] --> %s() ...", _sDllName, lpProcName);
 			// malloc name to keep track of it ///
-			//TODO free it at end of Exeloading
+			//TODO free it at end of XE-loading
 			char* _newName = _mallocpy(lpProcName, strlen(lpProcName)+1, char);
 			return MyMemoryDefaultGetProcAddress(0, _newName); //Look in our function table
 		}
@@ -152,7 +129,6 @@ void * imp_memset ( void * ptr, int value, size_t num ){
 	return 0;
 }
 
-
 /*
 //!VOID imp_chkstk(DWORD size)
 static void* ntdll = 0;
@@ -160,7 +136,7 @@ typedef ULONG  (*funcPtr_chkstk)();
 static funcPtr_chkstk _func = 0;
 //https://metricpanda.com/rival-fortress-update-45-dealing-with-__chkstk-__chkstk_ms-when-cross-compiling-for-windows/
 //https://stackoverflow.com/questions/52406183/mingw-stack-size-reserved-or-committed
- //WINIWE: https://github.com/wine-mirror/wine/blob/master/dlls/ntdll/signal_i386.c
+//WINIWE: https://github.com/wine-mirror/wine/blob/master/dlls/ntdll/signal_i386.c
 
 //This issue was not only due to ntdll.dll. Potentially it could be on "large-address-aware" with JIT.I have missed to consider the case that JIT memory pool would not be within 2GB area.
 ULONG imp_chkstk(){
@@ -189,17 +165,14 @@ ULONG imp_chkstk(){
 }
  */
  
- 
  //!FILE * fopen ( const char * filename, const char * mode )
  FILE * imp_fopen ( const char * filename, const char * mode ){
 	showfunc("fopen( filename: %p, mode: %s )", filename,mode);
 	return fopen(filename, mode);
  }
 
- 
- 
  //!size_t wcstombs (char* dest, const wchar_t* src, size_t max);
- //Windows wchar_t is 16-bit & for Linux, wchar_t is 32 bit.
+ //Important: Windows wchar_t is 16-bit & for Linux, wchar_t is 32 bit.
  size_t imp_wcstombs(char* dest, const wchar_t* src, size_t max){
 // wprintf(L"\nTHE SOURCE! %c\n " ,src);
 	showfunc("wcstombs( dest: %p, src: %p , max: %d )", dest,src,max);
@@ -241,16 +214,13 @@ inl int imp_initterm_e(__PIFV* ppfn,__PIFV* end){
     return 0;
 }
 
-
 //!_CRTIMP char ***__cdecl __p__environ(void)
-//static  char** _environ_ = 0;
 char* _environ_[] = {"test1", "test2"};
 inl char*** imp_p__environ(void){
 	showfunc("__p__environ( )", "");
 	//return &_environ; //Standard one
 	return (char***)&_environ_; //Custom
 }
-
 
 //!void __cdecl _lock(int locknum)
 inl void  imp_lock(int locknum){
@@ -307,9 +277,6 @@ FUNC_ imp_onexit(FUNC_ _func){
 	return _func; //success?
 }
 
-//!int* __p__fmode()
-
-
 #define	_O_TEXT_	0x4000	// CR-LF in file becomes LF in memory. 
 #define	_O_BINARY_	0x8000	// Input and output is not translated. 
 int _fmode_ = _O_TEXT_;
@@ -364,7 +331,6 @@ int imp_getmainargs(int* _Argc, char*** _Argv, char*** _Env, int _DoWildCard, vo
 	lpStartupInfo->hStdOutput =0;
 	lpStartupInfo->hStdError =0;
 
-	
 	for(int i = 0; i < *_Argc; i++){
 		showinf("arg[%d]: %s", i, (*_Argv)[i]);
 	}
@@ -387,7 +353,6 @@ inl int imp_vscprintf(const char *format,va_list argptr){
     return retval;
  }
 
-
 //!char *_strdup(const char *strSource)
 inl char* imp_strdup(const char *strSource){
 	showfunc_opt("_strdup( strSource: %s )", strSource);
@@ -396,7 +361,6 @@ inl char* imp_strdup(const char *strSource){
 	if (str) {memcpy(str, strSource, size);}
 	return str;
 }
-
 
 //!char * strncpy( char * destination, const char * source, size_t num )
 inl char* imp_strncpy( char * destination, const char * source, size_t num ){
@@ -520,15 +484,6 @@ inl int imp_fwprintf (FILE* stream, const wchar_t* format, ...){
 	return ret;
 }
 
-//copy d:
-//gdb cpcldr
-//set arg nogui
-//r
-//sys /debug = 2
-//sys /debug /cpinticore = p1
-//exe/ /win32 blend2.exe
-
-
 //!int vsnprintf (char * __restrict__ __stream, size_t __n, const char * __restrict__ __format, va_list __local_argv);
 int imp_vsnprintf (char* s, size_t n, const char *  format, va_list __local_argv){
 
@@ -548,7 +503,6 @@ int imp_vsprintf (char* s, const char *  format, va_list __local_argv){
 	return ret;
 }
 
-
 //!UINT ___lc_codepage_func(void)
 UINT imp_lc_codepage_func(void){
 	showfunc_opt("___lc_codepage_func( )", ""); 
@@ -560,9 +514,6 @@ int imp_stricmp(const char *string1,const char *string2){
 	showfunc_opt("_stricmp( string1: %p, string2: %p )", ""); 
 	return stricmp(string1, string2);
 }
-
-
-//vswprintf_ARG(format, dest, max, ret)va_list _arg_;va_start (_arg_, format);int ret = vswprintf((wchar_t*)dest, max, format, _arg_);va_end (_arg_);
 
 //!int fprintf ( FILE * stream, const char * format, ... )
 //int imp_fprintf( FILE* stream, const char* format, va_list __local_argv){
@@ -617,7 +568,7 @@ size_t imp_fwrite( const void * ptr, size_t size, size_t count, FILE * stream ){
 	//printf("%s", _char);
 }
 
-//int fflush ( FILE * stream )
+//!int fflush ( FILE * stream )
 int imp_fflush( FILE * stream ){
 	showfunc("fflush( stream: %p )", stream); 
 	return 0;
@@ -683,14 +634,12 @@ long imp_lseek(int fd,long offset,int origin){
 	return ((long)-1);
 }
 
-
 //!int _write(int fd,const void *buffer, unsigned int count)
 int imp_write(int fd,const void* buffer, unsigned int count){
 	showfunc_opt("_write( fd: %d, buffer: %p, count: %d )", fd, buffer, count);
 	int _bytes = _printf ("%.*s\n",count, buffer)-1;
 	if(_bytes > count){_bytes = count;}
 	return _bytes;
-	
 }
 
 //!int _isatty( int fd )
@@ -699,7 +648,6 @@ int imp_isatty( int fd ){
 	//_isatty returns a nonzero value if the descriptor is associated with a character device. Otherwise, _isatty returns 0.
 	return 1;
 }
-
 
 //!void __register_frame(void*)
 void imp_register_frame(void* ptr){	//!__USING_SJLJ_EXCEPTIONS__
@@ -772,7 +720,6 @@ void (*imp_signal(int sig, void (*func)(int)))(int){
 
 #include <io.h> //_open / _get_osfhandle / _fileno
 
-
 //!int _access( const char *path, int mode)
 int imp_access( const char* path, int mode){
 	showfunc("_access( path: %s, mode: %d)", path, mode);
@@ -782,7 +729,6 @@ int imp_access( const char* path, int mode){
 	#endif
 	return 0;
 }
-
 
 //!int _fileno(FILE *stream)
 int imp_fileno(FILE* stream){
@@ -808,6 +754,7 @@ intptr_t imp_get_osfhandle(int fd){
 	#endif
 	return -1;
 }
+
 //!int _open(const char *filename, int oflag, [int pmode])
 int imp_open(const char *filename, int oflag, int pmode){
 	showfunc("_open(filename: '%s', oflag: %d, pmode: %d)", filename, oflag, pmode);
@@ -824,7 +771,6 @@ char* imp_strerror(int _errno){
 	showinf("strerror: %s", err);
 	return err;
 }
-
 
 //!int _stati64(const char *__path, struct stati64 *__statbuf);
 #define _dev_t uint32_t //Represents device handles.
@@ -857,7 +803,6 @@ int imp_fstati64(int fd, struct _stati64* buffer){
 }
 
 
-
 //!int _read(int const fd, void * const buffer, unsigned const buffer_size)
 int imp_read(int const fd, void* const buffer, unsigned const buffer_size){
 	showfunc("_read(fd: '%d', buffer: %p, buffer_size: %d)", fd, buffer, buffer_size);
@@ -881,12 +826,11 @@ int imp_dup(int fd){
 	return 0;
 }
 
-
 //!WINBASEAPI WINBOOL WINAPI WriteFile (HANDLE hFile, LPCVOID lpBuffer, DWORD nNumberOfBytesToWrite, LPDWORD lpNumberOfBytesWritten, LPOVERLAPPED lpOverlapped);
 WINBOOL WINAPI imp_WriteFile(HANDLE hFile, LPCVOID lpBuffer, DWORD nNumberOfBytesToWrite, LPDWORD lpNumberOfBytesWritten, LPOVERLAPPED lpOverlapped){
 	showfunc("WriteFile(hFile: %p, lpBuffer: %p, nNumberOfBytesToWrite: %d, lpNumberOfBytesWritten: %p, lpOverlapped: %p)", hFile, lpBuffer, nNumberOfBytesToWrite, lpNumberOfBytesWritten, lpOverlapped);
 	/*
-	//Is that we want?
+	//Is that what we want?
 	#ifdef Func_Win 
 		return WriteFile(hFile, lpBuffer, nNumberOfBytesToWrite, lpNumberOfBytesWritten, lpOverlapped);
 	#endif
@@ -895,7 +839,6 @@ WINBOOL WINAPI imp_WriteFile(HANDLE hFile, LPCVOID lpBuffer, DWORD nNumberOfByte
 	_printl("%.*s\n", nNumberOfBytesToWrite, lpBuffer);
 	return true;
 }
-
 
 #include <process.h>
 //int __cdecl _getpid(void);
@@ -929,9 +872,6 @@ int imp_mb_cur_max_func(void){ //Internal CRT function. Retrieves the maximum nu
 void imp_cexit(void){ //The _cexit function calls, in last-in, first-out (LIFO) order, the functions registered by atexit and _onexit. Then _cexit flushes all I/O buffers and closes all open streams before returning. _c_exit is the same as _exit but returns to the calling process without processing atexit or _onexit or flushing stream buffers
 	showfunc("_cexit( )", "");
 }
-
-
-
 
 /*
 LPVOID WINAPI LocalLock (HLOCAL hMem);

@@ -42,10 +42,7 @@ XEGI_aSysMsg aSysMsg;
 #define aSysMsg(fn, ...) XEGI_aSysMsg_##fn(&aSysMsg, ##__VA_ARGS__)
 //!-----------!//
 
-
 #include "XE/XEGI.inc"
-
-
 
 //USED?
 uint32_t Sys_ProcessMsg_ALL(){
@@ -56,8 +53,6 @@ uint32_t Sys_ProcessMsg_ALL(){
 	aSysMsg(reset);
 	return 0;
 }
-
-
 
 //IF have longjump
 #include <setjmp.h> 

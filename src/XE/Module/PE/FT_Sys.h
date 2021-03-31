@@ -24,7 +24,6 @@
 *
 */
 
-
 //!VOID WINAPI SetLastError (DWORD dwErrCode)
 DWORD last_error = 0;
 VOID WINAPI sys_SetLastError (DWORD dwErrCode){
@@ -243,7 +242,6 @@ WINBOOL WINAPI sys_DispatchMessageW(CONST MSG *lpMsg){
 	#endif
 }
 
-
 //!UINT WINAPI SetErrosrMode (UINT uMode)
 UINT WINAPI sys_SetErrorMode(UINT uMode){
  	showfunc("SetErrorMode( uMode: %p )", uMode);
@@ -253,14 +251,6 @@ UINT WINAPI sys_SetErrorMode(UINT uMode){
 		return 0;
 	#endif
 }
-
-
-
-///////////////////// HERE OK
-///////////////////// HERE OK
-///////////////////// HERE OK
-  
-
 
 //!DWORD GetFileType(HANDLE hFile)
 DWORD sys_GetFileType(HANDLE hFile){
@@ -468,13 +458,6 @@ VOID WINAPI sys_InitializeSListHead(PSLIST_HEADER ListHead){
 	//TODO
 	#endif
 }
-/*
-  WINBASEAPI VOID WINAPI InitializeSListHead (PSLIST_HEADER ListHead);
-  WINBASEAPI PSLIST_ENTRY WINAPI InterlockedPopEntrySList (PSLIST_HEADER ListHead);
-  WINBASEAPI PSLIST_ENTRY WINAPI InterlockedPushEntrySList (PSLIST_HEADER ListHead, PSLIST_ENTRY ListEntry);
-  WINBASEAPI PSLIST_ENTRY WINAPI InterlockedFlushSList (PSLIST_HEADER ListHead);
-  WINBASEAPI USHORT WINAPI QueryDepthSList (PSLIST_HEADER ListHead);
-*/
 
 //!LPCH WINAPI GetEnvironmentStrings (VOID)
 //!LPWCH WINAPI GetEnvironmentStringsW (VOID)
