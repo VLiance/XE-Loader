@@ -143,11 +143,15 @@ void pixView_MakeSurface(ContextInf* _context){
 	#ifndef USE_Transparent_PixView
 	return;
 	#endif
-	
+
 	//!Transparent!//
 	//Clear
 	_memset(_context->pixels, 0xFF, _context->mem_width*_context->mem_height*4 );
 
+	if(_context->mem_width < 100 || _context->mem_height < 40){
+		return;
+	}
+	
 	//Border
 	draw_square(0xFF555555,  _context->pixels,_context->mem_width, 0,0, _context->mem_width, _context->mem_height,1);
 	draw_square(0xFFCCCCCC,  _context->pixels,_context->mem_width, 2,2, _context->mem_width-2, 1,3);
