@@ -10,7 +10,7 @@ uint32_t Create_context(ContextInf _ctx){
 	//aContext[idx].height = nHeight;
 	
 	#ifdef ShowPixView
-	aContext[idx].hwnd_View = pixView_createWindow(xe_hInstance, &aContext[idx]);
+	aContext[idx].hwnd_View = pixView_createWindow(&aContext[idx]);
 	#endif
 	
 	/*

@@ -15,7 +15,7 @@
 */
 #ifndef HDef_xMemory
 #define HDef_xMemory
-#include "../Types.h"
+#include "Xternal/Types.h"
 
 fn void* xx_malloc   (size_t size);
 fn void*  x_malloc   (size_t num, size_t size);

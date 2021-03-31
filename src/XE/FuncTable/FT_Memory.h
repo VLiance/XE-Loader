@@ -44,8 +44,6 @@ void imp_free(void* ptr){
 	free(ptr);
 }
 
-//==== Local Alloc === //  ** ---- Not tested --- **
-
 //!HLOCAL WINAPI LocalAlloc (UINT uFlags, SIZE_T uBytes)
 inl HLOCAL WINAPI imp_LocalAlloc(UINT  uFlags, SIZE_T uBytes){
 	showfunc_opt("LocalAlloc( uFlags: %d, uBytes: %d )", uFlags, uBytes);
@@ -80,7 +78,6 @@ HLOCAL WINAPI imp_LocalReAlloc(HLOCAL hMem, SIZE_T uBytes, UINT uFlags){
 	return imp_LocalAlloc(0, uBytes);
 }
 
-
 //! void * _aligned_malloc(size_t size,size_t alignment)
 inl void* imp_aligned_malloc(size_t size,size_t alignment){
 	showfunc_opt("aligned_malloc( size: %d, alignment: %d )", size,alignment);
@@ -108,7 +105,6 @@ inl void* imp_aligned_realloc(void *memblock,size_t size,size_t alignment){
 	imp_aligned_free(memblock);
 	return imp_aligned_malloc(size, alignment);
 }
-
 
 //!LPVOID VirtualAlloc(LPVOID lpAddress,SIZE_T dwSize,DWORD flAllocationType,DWORD flProtect)
 inl LPVOID WINAPI pipe_VirtualAlloc(LPVOID lpAddress,SIZE_T dwSize,DWORD flAllocationType,DWORD flProtect){
@@ -190,12 +186,3 @@ LPVOID WINAPI mem_HeapAlloc(HANDLE hHeap, DWORD dwFlags, SIZE_T dwBytes){
 	#endif
 	
 }
-
-
-
- /*
-    LPVOID WINAPI HeapAlloc (HANDLE hHeap, DWORD dwFlags, SIZE_T dwBytes)
-   LPVOID WINAPI HeapReAlloc (HANDLE hHeap, DWORD dwFlags, LPVOID lpMem, SIZE_T dwBytes)
-   WINBOOL WINAPI HeapFree (HANDLE hHeap, DWORD dwFlags, LPVOID lpMem)
- //  SIZE_T WINAPI HeapSize (HANDLE hHeap, DWORD dwFlags, LPCVOID lpMem)
- */

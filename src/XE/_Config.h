@@ -47,7 +47,6 @@
 //Some function are irrelevant and may be annoying, but sometime we need it for debugging purpose
 //#define Show_AllFuncTable
 
-
 //Use the standard Widows VirtualAlloc allocation or the more portable ExeLoader version
 //#define USE_Windows_VirtualAlloc
 
@@ -85,20 +84,11 @@
 
 //#define No_FullWinHeader
 //#define NoSetLastError //USE_Window_LastError?
-/*
 
-#define No_vswprintf
-#define No_wprintf
 
-//#define CpcDos //TODO
-#define USE_sbrk
-#define USE_limit_on_vsnprintf  2147483647 
-#define NO_Windows_Sleep
-#undef USE_WinThread
+//Use Calloc instead of malloc + memset to 0
+#define HAVE_Calloc
 
-#define No_FullWinHeader
-
-*/
 
 #ifndef MAX_ORDINAL_FUNC
 #define MAX_ORDINAL_FUNC 512

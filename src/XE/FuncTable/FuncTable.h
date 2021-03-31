@@ -35,12 +35,6 @@
 #include "XE/XE.h"
 #include "XE/XEGI/XEGI.h"
 
-/*
-#ifndef ImWin
-#define InCpcDosCore
-#include "CPC_WPR.h"
-#endif // ImWin
-*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -55,8 +49,9 @@
 
 #include "XE/FuncTable/DummyTable.h"
 
-#include "XE/FuncTable/FT_Memory.h"
+#include "XE/FT_Custom.inc"
 
+#include "XE/FuncTable/FT_Memory.h"
 #include "XE/Module/PE/FT_pe.h"
 #include "XE/Module/ELF/FT_elf.h"
 
@@ -64,11 +59,6 @@
 #include "FT_Imp.h"
 //#include "FuncTable/FuncTable_Remap_Common.h"
 //#include "FuncTable/FuncTable_Remap_Windows.h"
-	
-#ifndef UseWinFunc
-	//onCpcDos
-//	#include "FuncTableRemap_CpcDos.h"
-#endif
 
 
 //extern "C" ULONG __chkstk();
@@ -76,8 +66,6 @@
 fn void __register_frame(void* ptr);
 fn void __deregister_frame(void* ptr);
 //fn void __unwind_resume(void* object);
-
-
 
 
 #ifdef HAVE_OPERATOR_NEW_INT
@@ -93,9 +81,6 @@ fn uint8_t* _Znam(uint32_t);//new
 fn void _ZdlPv(uint8_t*);//delete
 fn long __divdi3 (long a, long b);
 
-
-
-
 /*
 fn void* _aligned_malloc(size_t size,size_t alignment);
 fn void  _aligned_free(void *memblock);
@@ -106,12 +91,10 @@ fn void* _aligned_realloc(void *memblock,size_t size,size_t alignment);
 int optind = 1;
 char* optarg = 0;
 
-
 fn UINT ___lc_codepage_func(void);
 
 #define _IOB_ENTRIES_ 20
 FILE iob[_IOB_ENTRIES_] = {}; //TODO -> to test
-
 
 FILE* stdout_; //Not used?
 FILE* stderr_; //Not used?
@@ -121,6 +104,8 @@ FILE* stderr_; //Not used?
 //#include "FuncTable/CpcDosFuncTable.h"
 //////////////////////////////////////
 {"",			"func_NotImplemented" 		,(FUNC_) func_NotImplemented }, //Must be first
+
+#include "XE/FT_Custom.ht"
 
 {"","__initenv" 	,(FUNC_) &__initenv }, //TODO -> to test //Special
 {"","__p___initenv" 	,(FUNC_) imp_p__initenv }, //TODO -> to test //Special
@@ -190,8 +175,6 @@ FILE* stderr_; //Not used?
 //{"",			"_Unwind_Resume"  	,(FUNC_) __unwind_resume  },
 ///////////////////
 
-
-
 {"",			"GetProcAddress" 			,(FUNC_) imp_GetProcAddress }, 	//Special
 {"",			"LoadLibraryA"    			,(FUNC_) imp_LoadLibraryA },  	//Special
 {"",			"LoadLibraryW"    			,(FUNC_) imp_LoadLibraryW},  	//Special
@@ -245,18 +228,13 @@ FILE* stderr_; //Not used?
 #endif
 
 
-
 {"",			"localeconv"  	,(FUNC_) pipe_localeconv },
 {"",			"_isctype"  	,(FUNC_) imp_isctype },
 
 
 /////////////////////////////
 
-//Temp
-
 //{"wcscpy"  				,(FUNC_) wcscpy },
-
-
 //{"GetModuleFileNameW"  	,(FUNC_) GetModuleFileNameW },
 //{"_open"  				,(FUNC_) imp_open },
 
@@ -366,7 +344,6 @@ FILE* stderr_; //Not used?
 {"",			"MonitorFromRect" 			,(FUNC_) pipe_MonitorFromRect },
 {"",			"GetMonitorInfoW"  			,(FUNC_) pipe_GetMonitorInfoW },
 
-
 {"",			"OutputDebugStringA"  		,(FUNC_) pipe_OutputDebugStringA },
 {"",			"OutputDebugStringW"  		,(FUNC_) pipe_OutputDebugStringW },
 
@@ -380,9 +357,7 @@ FILE* stderr_; //Not used?
 {"",			"IsProcessorFeaturePresent" 			,(FUNC_) pipe_IsProcessorFeaturePresent },
 {"",			"InitializeCriticalSectionAndSpinCount"	,(FUNC_) pipe_InitializeCriticalSectionAndSpinCount },
 
-
 {"",			"InitializeSListHead"			,(FUNC_) sys_InitializeSListHead },
-
 
 {"",			"setlocale"  				,(FUNC_) pipe_setlocale },
 {"",			"getenv"  					,(FUNC_) pipe_getenv },
@@ -471,14 +446,9 @@ FILE* stderr_; //Not used?
 {"",			"_snwprintf"  	,(FUNC_) imp_snwprintf },
 {"",			"fwprintf"  	,(FUNC_) imp_fwprintf },
 
-
-
 {"",			"abort"  		,(FUNC_) imp_abort }, 
 
 {"",			"_stricmp"  	,(FUNC_) imp_stricmp },
-
-
-
 
 
 #ifdef USE_Platform_LocalAlloc
@@ -494,7 +464,6 @@ FILE* stderr_; //Not used?
 #endif
 
 
-
 #ifdef USE_Platform_ThreadStorage
 {"",			"TlsAlloc"  		,(FUNC_) TlsAlloc },
 {"",			"TlsGetValue" 		,(FUNC_) TlsGetValue },
@@ -507,52 +476,16 @@ FILE* stderr_; //Not used?
 {"",			"TlsFree"  			,(FUNC_) th_TlsFree },
 #endif
 
-
-
-//Todo a implémenter
-#ifdef InCpcDosCore
-#else
-/*
-	/// UNICODE (not supported on CpcDos)
-	{"",			"wcslen"  ,(FUNC_) wcslen },
-	{"",			"_strnicmp"  ,(FUNC_) _strnicmp },
-	{"",			"fwprintf"  ,(FUNC_) fwprintf },
-	{"",			"_vsnprintf"  ,(FUNC_) _vsnprintf },
-	{"",			"fputwc"  ,(FUNC_) fputwc },
-	{"",			"putwc"  ,(FUNC_) putwc },
-	{"",			"getwc"  ,(FUNC_) getwc },
-
-	{"",			"_stricmp"  ,(FUNC_) _stricmp }, //Use stricmp?
-	{"",			"GetFileAttributesW"  ,(FUNC_) GetFileAttributesW },
-	*/
-	
-#endif
-
-//{"setbuf"  ,(FUNC_) My_setbuf }, //!!!! Warning Dangerous function!
-//{"LocalFree"  			,(FUNC_) LocalFree },
-
-
-
-
-
-
-
-
 /*
 {"",			"_write"  		,(FUNC_) fwrite }, //??
 {"",			"_snwprintf"  	,(FUNC_) snprintf },//??
 {"",			"wcscpy"  		,(FUNC_) strcpy },  //??
 */
 
-
 {"",			"malloc"  	,(FUNC_) imp_malloc },
 {"",			"calloc"  	,(FUNC_) imp_calloc },
 {"",			"realloc"  	,(FUNC_) imp_realloc },
 {"",			"free"  	,(FUNC_) imp_free },
-
-
-
-
 
 {"",			"_beginthreadex"  	,(FUNC_) th_beginthreadex },
 {"",			"_errno"  			,(FUNC_) &_errno_ },
@@ -568,7 +501,6 @@ FILE* stderr_; //Not used?
 /////////////////////////////////////////////
 
 /////////// LOG ////////////////////
-
 
 {"",			"fflush"  	,(FUNC_) imp_fflush },
 {"",			"fwrite"  	,(FUNC_) imp_fwrite },
@@ -632,8 +564,6 @@ FILE* stderr_; //Not used?
 {"",			"strstr"  	,(FUNC_) strstr },
 {"",			"memchr"  	,(FUNC_) memchr },
 {"",			"strtoul"  	,(FUNC_) strtoul },
-
-
 
 ////////////////////////////////
 
@@ -730,7 +660,6 @@ FILE* stderr_; //Not used?
 {"",			"_cexit"  					,(FUNC_) imp_cexit },
 
 /////////////////////////////////	
-
 };
 
 void func_who(int id){
@@ -772,6 +701,4 @@ void*
    return (void*)aDummyFunc[current].dFunc;
 }
 
-
-
-#endif //EXELOADER_FuncTable_H
+#endif

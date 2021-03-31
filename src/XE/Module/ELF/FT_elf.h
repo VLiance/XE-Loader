@@ -258,7 +258,7 @@ XImage* imp_XShmCreateImage(Display *display, Visual* visual, unsigned int depth
 		aContext[idx].width = width;
 		aContext[idx].height = height;
 		#ifdef ShowPixView
-		aContext[idx].hwnd_View = pixView_createWindow(xe_hInstance, &aContext[idx]);
+		aContext[idx].hwnd_View = pixView_createWindow(&aContext[idx]);
 		#endif
 		showinf("PixView= idx: %d, height: %d, width: %d", idx,  aContext[idx].height,  aContext[idx].width);
 		showinf("create hwnd_View( hwnd_View: %d, idx: %d, height: %d, width: %d )", aContext[idx].hwnd_View,  idx,  aContext[idx].height,  aContext[idx].width );

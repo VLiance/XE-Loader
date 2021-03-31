@@ -96,7 +96,7 @@ int
 	}
 	_case XE_Type_ELF:
 	{
-		_printl("--=== Execute ELF ===---");
+		//_printl("--=== Execute ELF ===---");
 		//try calling gentry point
 		return  _set(CallEntryPoint_ELF(_module->handle) );
 	}

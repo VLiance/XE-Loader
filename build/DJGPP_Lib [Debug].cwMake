@@ -14,7 +14,9 @@
 	-Werror=incompatible-pointer-types
 >
 ;Generate Lib .a
--o obj/DJ_{_sOpt}/XE/ -#To Lib/DJ_{_sOpt}/libXE.a
+-o obj/DJ_{_sOpt}/XE/
+-o obj/DJ_{_sOpt}/Xternal/
+	-#To Lib/DJ_{_sOpt}/libXE.a
 >
 ;Generate executable (16 bit) [Require Main]
 -o obj/DJ_{_sOpt}/ -#To _out/DJ_{_sOpt}/XE-Loader.*

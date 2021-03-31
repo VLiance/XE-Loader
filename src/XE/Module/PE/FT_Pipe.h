@@ -162,38 +162,36 @@ inl void impl_GetMessages(HWND hWnd_Filter){ //if hWnd_Filter=0 -> all
 	}
 	aSysMsg(reset);
 }
-		/*
-		WM_MOUSEMOVE
-		GET_X_LPARAM(lParam)
-		
-		
-		WM_CLOSE
-		WM_SYSCOMMAND
-			SC_SCREENSAVE
-			SC_MONITORPOWER
-			SC_KEYMENU
-		WM_ERASEBKGND
-		WM_SIZE 
-			SIZE_MINIMIZED 
-			SAPP_EVENTTYPE_ICONIFIED
-			SAPP_EVENTTYPE_RESTORED
-		WM_SETCURSOR
-		WM_LBUTTONDOWN
-			SAPP_EVENTTYPE_MOUSE_DOWN
-			SAPP_MOUSEBUTTON_LEFT
-			SAPP_MOUSEBUTTON_RIGHT
-			SAPP_MOUSEBUTTON_MIDDLE
-		WM_MOUSEMOVE
-		WM_MBUTTONUP
-		WM_MBUTTONDOWN
-		WM_INPUT
-		WM_MOUSELEAVE
-		WM_MOUSEWHEEL
-		WM_KEYUP
-		WM_SYSKEYUP
-		WM_CHAR
-		*/
+/*
+	WM_MOUSEMOVE
+	GET_X_LPARAM(lParam)
 
+	WM_CLOSE
+	WM_SYSCOMMAND
+		SC_SCREENSAVE
+		SC_MONITORPOWER
+		SC_KEYMENU
+	WM_ERASEBKGND
+	WM_SIZE 
+		SIZE_MINIMIZED 
+		SAPP_EVENTTYPE_ICONIFIED
+		SAPP_EVENTTYPE_RESTORED
+	WM_SETCURSOR
+	WM_LBUTTONDOWN
+		SAPP_EVENTTYPE_MOUSE_DOWN
+		SAPP_MOUSEBUTTON_LEFT
+		SAPP_MOUSEBUTTON_RIGHT
+		SAPP_MOUSEBUTTON_MIDDLE
+	WM_MOUSEMOVE
+	WM_MBUTTONUP
+	WM_MBUTTONDOWN
+	WM_INPUT
+	WM_MOUSELEAVE
+	WM_MOUSEWHEEL
+	WM_KEYUP
+	WM_SYSKEYUP
+	WM_CHAR
+*/
 
 //!LRESULT WINAPI DefWindowProcA (HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
 //!LRESULT WINAPI DefWindowProcW (HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
@@ -237,7 +235,6 @@ WINBOOL WINAPI sys_PeekMessageW(LPMSG lpMsg,HWND hWnd,UINT wMsgFilterMin,UINT wM
 }
 
 
-
 //!LRESULT DispatchMessageA(const MSG *lpMsg)
 inl LRESULT WINAPI pipe_DispatchMessageA(const MSG *lpMsg){
 	showfunc_opt("DispatchMessageA( lpMsg: %s )", lpMsg);
@@ -247,14 +244,6 @@ inl LRESULT WINAPI pipe_DispatchMessageA(const MSG *lpMsg){
 		return 0;
 	#endif
 }
-
-/*
-> -->Call:  GetProcAddress( hModule: 61980000, lpProcName: wglCreateContext)
-O> -->Call: GetProcAddress( hModule: 61980000, lpProcName: wglDeleteContext)
-O> -->Call: GetProcAddress( hModule: 61980000, lpProcName: wglGetProcAddress)
-O> -->Call: GetProcAddress( hModule: 61980000, lpProcName: wglGetCurrentDC)
-O> -->Call: GetProcAddress( hModule: 61980000, lpProcName: wglMakeCurrent)
-*/
 
 extern funcPtr_int _dFunc_wglGetPixelFormat;
 //!int GetPixelFormat(HDC hdc)
@@ -284,7 +273,6 @@ inl BOOL WINAPI pipe_SetPixelFormat(void* hdc, int format, void* ppfd){
 		return true;
 	#endif
 }
-
 
 extern funcPtrPtr_int _dFunc_wglChoosePixelFormat;
 //!int ChoosePixelFormat( HDC hdc, const PIXELFORMATDESCRIPTOR *ppfd)
@@ -335,7 +323,6 @@ BOOL WINAPI pipe_SwapBuffers(HDC hdc){
 		return true;
 	#endif
 }
-
 
 //!BOOL AdjustWindowRectEx(LPRECT lpRect,DWORD  dwStyle,BOOL bMenu,DWORD  dwExStyle)
 inl BOOL WINAPI pipe_AdjustWindowRectEx(LPRECT lpRect, DWORD dwStyle, BOOL bMenu, DWORD dwExStyle){
@@ -633,7 +620,6 @@ WINBOOL WINAPI pipe_FlushInstructionCache (HANDLE hProcess, LPCVOID lpBaseAddres
 	//return FlushInstructionCache(hProcess, lpBaseAddress, dwSize); //TODO
 	return true;
 	#endif
-
 }
  
 //!BOOL ClientToScreen(HWND    hWnd,LPPOINT lpPoint)
@@ -834,10 +820,6 @@ const char* pipe_getenv(const char* name){
 	
 	return 0;
 	
-	
-	
-	
-	
 	if(strcmp(name, "MESA_DEBUG") == 0 ){
 	 // { "silent", DEBUG_SILENT }, /* turn off debug messages */
      // { "flush", DEBUG_ALWAYS_FLUSH }, /* flush after each drawing command */
@@ -855,7 +837,6 @@ const char* pipe_getenv(const char* name){
 	if(strcmp(name, "LIBGL_SHOW_FPS") == 0 ){
 		return "yes";
 	}
-
 	
 	return getenv(name);
 }
@@ -945,7 +926,6 @@ WINBOOL WINAPI pipe_GetConsoleScreenBufferInfo(HANDLE hConsoleOutput,PCONSOLE_SC
 	return 0;
 	#endif	
 } 
-
 
 //!WINBOOL WINAPI DuplicateHandle (HANDLE hSourceProcessHandle, HANDLE hSourceHandle, HANDLE hTargetProcessHandle, LPHANDLE lpTargetHandle, DWORD dwDesiredAccess, WINBOOL bInheritHandle, DWORD dwOptions);
 WINBOOL WINAPI pipe_DuplicateHandle(HANDLE hSourceProcessHandle, HANDLE hSourceHandle, HANDLE hTargetProcessHandle, LPHANDLE lpTargetHandle, DWORD dwDesiredAccess, WINBOOL bInheritHandle, DWORD dwOptions){

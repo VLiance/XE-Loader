@@ -32,7 +32,6 @@ VOID WINAPI th_Sleep (DWORD dwMilliseconds){
 	XeGI_Sleep(dwMilliseconds);
 }
 
-
 //==== TLS === //
 
 void** aTlsNewMem = 0;
@@ -130,7 +129,6 @@ VOID WINAPI thread_WakeConditionVariable (PCONDITION_VARIABLE ConditionVariable)
 	showfunc("WakeConditionVariable( ConditionVariable: %p)",ConditionVariable);
 }
 
-
  //!uintptr_t _beginthreadex( void *security, unsigned stack_size, unsigned ( __stdcall *start_address )( void * ),void *arglist,unsigned initflag,unsigned *thrdaddr)
 uintptr_t th_beginthreadex( void *security, unsigned stack_size, unsigned ( WINAPI* start_address )( void * ),void* arglist,unsigned initflag,unsigned *thrdaddr){
 	showfunc("beginthreadex( security: %p, stack_size: %p, start_address: %p, arglist: %p, initflag: %d, thrdaddr: %d )", security,stack_size,start_address,arglist, initflag, thrdaddr); 
@@ -146,7 +144,6 @@ uintptr_t th_beginthreadex( void *security, unsigned stack_size, unsigned ( WINA
 	*/
 	return XeGI_CreateThread((XEGI_THREAD_START_ROUTINE)start_address,stack_size,(LPVOID)arglist);
 }
-
 
 /*
 typedef struct _RTL_CRITICAL_SECTION {
@@ -176,7 +173,6 @@ VOID WINAPI th_InitializeCriticalSection(LPCRITICAL_SECTION lpCriticalSection){
 	//criticalSection_thread_ ++; //fake to bypass mesa assert
 	#endif
 }
-
 
 //!VOID WINAPI EnterCriticalSection (LPCRITICAL_SECTION lpCriticalSection)
 VOID WINAPI th_EnterCriticalSection(LPCRITICAL_SECTION lpCriticalSection){
@@ -263,7 +259,6 @@ BOOL WINAPI th_ReleaseSemaphore(HANDLE hSemaphore,LONG   lReleaseCount,LPLONG lp
 	#endif	
  }
  
- 
 //!int WINAPI GetThreadPriority (HANDLE hThread)
 int WINAPI th_GetThreadPriority(HANDLE hThread){
 	showfunc("GetThreadPriority( hHandle: %p )", hThread);
@@ -275,7 +270,6 @@ int WINAPI th_GetThreadPriority(HANDLE hThread){
 	#endif	
 	//return THREAD_PRIORITY_ERROR_RETURN; //THREAD_PRIORITY_ERROR_RETURN.
 }
-
 
 //!HANDLE WINAPI GetCurrentThread (VOID)
 HANDLE WINAPI th_GetCurrentThread(VOID){

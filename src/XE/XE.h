@@ -88,11 +88,7 @@ extern XE_aModule aModule;
 	#define PFUNC_ FUNC_*
 #endif
 
-
 #include "Module/PE/win.h"
-
-
-
 
 #ifdef Show_AllFuncTable
 #define showfunc_opt showfunc
@@ -238,5 +234,4 @@ inl char*  W2CStr(view_t* _dest, view_t*  _src){
 	
 
 	
-
 #endif //!-----!//

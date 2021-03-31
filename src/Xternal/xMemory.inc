@@ -13,7 +13,6 @@
  * You can obtain one at https://www.apache.org/licenses/LICENSE-2.0.html
  *
 */
-/*
 #include "xMemory.h"
 #include "xIO.h"
 
@@ -52,7 +51,16 @@ fn void* xx_malloc(size_t size){
 	#ifdef D_MemoryCheck
 	Alloc_Add();
 	#endif
-	return malloc(size);
+	
+	void* ret = malloc(size);
+		
+	#ifdef D_Debug
+	if(!ret) {
+		err_print("Unable to malloc: size[%d]", size);
+	}
+	#endif
+	
+	return ret;
 };
 fn void* x_malloc(size_t num, size_t size){
 	return xx_malloc(num * size);
@@ -61,7 +69,21 @@ fn void* x_calloc(size_t num, size_t size){
 	#ifdef D_MemoryCheck
 	Alloc_Add();
 	#endif
-	return calloc(num, size);
+	
+	#if HAVE_Calloc
+		return calloc(num, size);
+	#else
+		void* ret = malloc(size*num);
+		 memset(ret, 0, size*num);
+	#endif
+	
+	#ifdef D_Debug
+	if(!ret) {
+		err_print("Unable to calloc: num[%d] size[%d]", num, size);
+	}
+	#endif
+	
+	return ret;
 };
 fn void* x_mallocpy(void* src, size_t num, size_t size){
 	#ifdef D_MemoryCheck
@@ -93,4 +115,3 @@ fn void* x_memset (void* ptr, int value, size_t num ){return memset(ptr,value,nu
 fn void* x_memmove(void* destination, const void * source, size_t num ){return memmove(destination,source,num);};
 fn void* x_memcpy (void* destination, const void * source, size_t num ){return memcpy(destination,source,num);};
 #endif
-*/
