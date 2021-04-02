@@ -658,12 +658,17 @@ FILE* stderr_; //Not used?
 {"",			"clock"  					,(FUNC_) imp_clock },
 {"",			"___mb_cur_max_func"  		,(FUNC_) imp_mb_cur_max_func },
 {"",			"_cexit"  					,(FUNC_) imp_cexit },
+{"",			"DragAcceptFiles"  			,(FUNC_) sys_DragAcceptFiles},
 
 /////////////////////////////////	
 };
 
 void func_who(int id){
-err_print("Out of table: %s : %s(), %d", aDummyFunc[id].DLL,  aDummyFunc[id].Who, id );
+	err_print("Out of table: %s : %s(), %d", aDummyFunc[id].DLL,  aDummyFunc[id].Who, id );
+	#ifndef NO_GDB_BreakOn_out_of_table
+	fn void GDB_Func_Break();
+	GDB_Func_Break();
+	#endif
 }
 
 void* 

@@ -953,5 +953,14 @@ typedef struct _MEMORYSTATUSEX_ {
 	#endif
 }
 
+//!SHSTDAPI_(void) DragAcceptFiles (HWND hWnd, WINBOOL fAccept)
+WINAPI void sys_DragAcceptFiles(HWND hWnd, WINBOOL fAccept){
+	showfunc("DragAcceptFiles( hWnd: %p, fAccept: %d )", hWnd, fAccept );
+	#ifdef Func_Win
+		DragAcceptFiles( hWnd, fAccept );
+	#else
+	#endif
+}
+
 
 
