@@ -106,14 +106,13 @@ FILE* stderr_; //Not used?
 {"",			"func_NotImplemented" 		,(FUNC_) func_NotImplemented }, //Must be first
 
 #include "XE/FT_Custom.ht"
+#include "XE/Module/ELF/FT_elf.ht"
+#include "XE/Module/PE/FT_pe.ht"
 
-{"","__initenv" 	,(FUNC_) &__initenv }, //TODO -> to test //Special
-{"","__p___initenv" 	,(FUNC_) imp_p__initenv }, //TODO -> to test //Special
-
-{"","_iob" 			,(FUNC_) iob }, 	  //TODO -> to test //Special
-
+{"","__initenv" 	,(FUNC_) &__initenv }, 
+{"","__p___initenv" ,(FUNC_) imp_p__initenv },
+{"","_iob" 			,(FUNC_) iob }, 	
 {"","_fmode" 		,(FUNC_) &_fmode_ }, 
-
 {"","_commode" 		,(FUNC_) &_commode },
 {"","__p__commode" 	,(FUNC_) &imp_p__commode }, 
 
@@ -129,7 +128,7 @@ FILE* stderr_; //Not used?
 {"",			"_environ"  		,(FUNC_) (char***)&_environ_ },
 {"",			"__p__environ"  	,(FUNC_) imp_p__environ },
 
-/////// Linux /////
+
 #ifdef HAVE_OPERATOR_NEW_INT
 {"",			"_Znwj"  	,(FUNC_) _Znwj },//new
 {"",			"_Znaj"  	,(FUNC_) _Znaj },//new
@@ -141,39 +140,10 @@ FILE* stderr_; //Not used?
 {"",			"_ZdlPv"  	,(FUNC_) _ZdlPv },//delete
 
 {"",			"__cxa_finalize" ,(FUNC_)  imp_cxa_finalize }, //global destructor
-
 {"",			"__divdi3"  		,(FUNC_) __divdi3 },
-{"",			"__libc_start_main" ,(FUNC_) imp_libc_start_main },
-{"",			"XOpenDisplay"  	,(FUNC_) imp_XOpenDisplay },
-{"",			"XMatchVisualInfo"  ,(FUNC_) imp_XMatchVisualInfo },
-{"",			"XCreateColormap"  	,(FUNC_) imp_XCreateColormap },
-{"",			"XCreateWindow"  	,(FUNC_) imp_XCreateWindow },
-{"",			"XAllocWMHints"  	,(FUNC_) imp_XAllocWMHints },
-{"",			"XShmCreateImage"  	,(FUNC_) imp_XShmCreateImage},
-{"",			"XShmCreateImage"  	,(FUNC_) imp_XShmCreateImage},
-{"",			"pthread_create"  	,(FUNC_) imp_pthread_create},
-{"",			"clock_gettime" 	,(FUNC_) imp_clock_gettime},
-{"",			"usleep" 			,(FUNC_) imp_usleep},
-{"",			"XTranslateCoordinates" 	,(FUNC_) imp_XTranslateCoordinates},
-{"",			"shmget" 		,(FUNC_) imp_shmget},
-{"",			"shmat" 		,(FUNC_) imp_shmat},
-{"",			"sleep" 		,(FUNC_) imp_sleep},
-{"",			"usleep" 		,(FUNC_) imp_usleep},
-{"",			"XPending" 		,(FUNC_) imp_XPending},
-{"",			"XShmPutImage" 	,(FUNC_) imp_XShmPutImage},
-{"",			"getopt" 		,(FUNC_) imp_getopt},
-{"",			"optind" 		,(FUNC_) &optind}, 
-{"",			"optarg" 		,(FUNC_) &optarg}, 
-{"",			"stderr" 		,(FUNC_) &stderr_}, 
-{"",			"stdout" 		,(FUNC_) &stdout_}, 
-{"",			"__gmon_start__" ,(FUNC_)imp_gmon_start__}, //weak ref
-{"",			"_Jv_RegisterClasses" ,(FUNC_)imp_Jv_RegisterClasses}, //weak ref
-{"",			"fopen64" 		,(FUNC_) imp_fopen64}, 
-{"",			"__stack_chk_fail" 		,(FUNC_) imp_stack_chk_fail}, 
-{"",			"perror" 		,(FUNC_) imp_perror}, 
-{"",			"__errno_location" 		,(FUNC_) imp_errno_location}, 
+
+
 //{"",			"_Unwind_Resume"  	,(FUNC_) __unwind_resume  },
-///////////////////
 
 {"",			"GetProcAddress" 			,(FUNC_) imp_GetProcAddress }, 	//Special
 {"",			"LoadLibraryA"    			,(FUNC_) imp_LoadLibraryA },  	//Special
@@ -227,10 +197,8 @@ FILE* stderr_; //Not used?
 {"",			"___lc_codepage_func"  ,(FUNC_) imp_lc_codepage_func },
 #endif
 
-
 {"",			"localeconv"  	,(FUNC_) pipe_localeconv },
 {"",			"_isctype"  	,(FUNC_) imp_isctype },
-
 
 /////////////////////////////
 
@@ -375,29 +343,10 @@ FILE* stderr_; //Not used?
 
 {"",			"CreateWindowExA"  				,(FUNC_) sys_CreateWindowExA },
 {"",			"CreateWindowExW"  				,(FUNC_) pipe_CreateWindowExW },
-{"",			"GetClientRect"  				,(FUNC_) sys_GetClientRect },
-{"",			"GetWindowRect"  				,(FUNC_) sys_GetWindowRect },
 
-//Win Ini
-{"",			"QueryPerformanceFrequency"  	,(FUNC_) sys_QueryPerformanceFrequency },
-{"",			"QueryPerformanceCounter"  		,(FUNC_) sys_QueryPerformanceCounter },
-{"",			"GetTickCount"  				,(FUNC_) sys_GetTickCount },
 {"",			"GetCurrentThread"  			,(FUNC_) th_GetCurrentThread },
 {"",			"GetCurrentThreadId"  			,(FUNC_) sys_GetCurrentThreadId },
 {"",			"GetThreadPriority"  			,(FUNC_) th_GetThreadPriority },
-{"",			"GetCurrentProcessId"  			,(FUNC_) sys_GetCurrentProcessId },
-{"",			"GetSystemTimeAsFileTime"  		,(FUNC_) sys_GetSystemTimeAsFileTime },
-{"",			"SetUnhandledExceptionFilter"  	,(FUNC_) sys_SetUnhandledExceptionFilter },
-{"",			"CreateEventA"  				,(FUNC_) sys_CreateEventA },
-{"",			"CreateEventW"  				,(FUNC_) sys_CreateEventW },
-
-/////////
-{"",			"TranslateMessage" 				,(FUNC_) sys_TranslateMessage },
-{"",			"DispatchMessageW" 				,(FUNC_) sys_DispatchMessageW },
-{"",			"DispatchMessageA" 				,(FUNC_) sys_DispatchMessageA },
-{"",			"PeekMessageA"					,(FUNC_) sys_PeekMessageA },
-{"",			"PeekMessageW"					,(FUNC_) sys_PeekMessageW },
-
 
 
 {"",			"InitializeCriticalSection" 	,(FUNC_) th_InitializeCriticalSection },
@@ -406,34 +355,11 @@ FILE* stderr_; //Not used?
 {"",			"LeaveCriticalSection" 			,(FUNC_) th_LeaveCriticalSection },
 {"",			"DeleteCriticalSection" 		,(FUNC_) th_DeleteCriticalSection },
 
-{"",			"EnumerateLoadedModules64" 		,(FUNC_) sys_EnumerateLoadedModules64 },
 
-
-{"",			"GetModuleFileNameA" 			,(FUNC_) sys_GetModuleFileNameA },
-{"",			"GetModuleFileNameW" 			,(FUNC_) sys_GetModuleFileNameW },
-
-{"",			"GetEnvironmentStrings" 		,(FUNC_) sys_GetEnvironmentStrings },
-{"",			"GetEnvironmentStringsW" 		,(FUNC_) sys_GetEnvironmentStringsW },
-{"",			"FreeEnvironmentStringsA" 		,(FUNC_) sys_FreeEnvironmentStringsA },
-{"",			"FreeEnvironmentStringsW" 		,(FUNC_) sys_FreeEnvironmentStringsW },
-
-
-{"",			"SetErrorMode"  			,(FUNC_) sys_SetErrorMode },
-
-{"",			"DefWindowProcA"  			,(FUNC_) sys_DefWindowProcA },
-{"",			"DefWindowProcW"  			,(FUNC_) sys_DefWindowProcW },
 {"",			"Sleep"						,(FUNC_) th_Sleep },
 
-{"",			"GetLastError"  			,(FUNC_) sys_GetLastError },
-{"",			"SetLastError"  			,(FUNC_) sys_SetLastError },
-{"",			"GetFileType"  				,(FUNC_) sys_GetFileType },
-{"",			"GetCurrentDirectoryA"  	,(FUNC_) sys_GetCurrentDirectoryA },
-{"",			"GetCurrentDirectoryW"  	,(FUNC_) sys_GetCurrentDirectoryW },
-{"",			"VerSetConditionMask"  		,(FUNC_) sys_VerSetConditionMask },
-{"",			"VerifyVersionInfoW"  		,(FUNC_) sys_VerifyVersionInfoW },
 {"",			"DuplicateHandle"  			,(FUNC_) pipe_DuplicateHandle },
-{"",			"GetKeyState"  				,(FUNC_) sys_GetKeyState },
-{"",			"TrackMouseEvent"  			,(FUNC_) sys_TrackMouseEvent },
+
 
 
 {"",			"_get_osfhandle"  			,(FUNC_) imp_get_osfhandle },
@@ -595,46 +521,6 @@ FILE* stderr_; //Not used?
 {"",			"rewind"  	,(FUNC_) rewind },
 #endif
 
-{"",			"GetSystemMetrics"  		,(FUNC_) sys_GetSystemMetrics },
-{"",			"SystemParametersInfoA"  	,(FUNC_) sys_SystemParametersInfoA },
-{"",			"SystemParametersInfoW"  	,(FUNC_) sys_SystemParametersInfoW },
-{"",			"GetCursorPos"  			,(FUNC_) sys_GetCursorPos },
-{"",			"GetVersionExA"  			,(FUNC_) sys_GetVersionExA },
-{"",			"GetVersionExW"  			,(FUNC_) sys_GetVersionExW },
-{"",			"MonitorFromPoint"  		,(FUNC_) sys_MonitorFromPoint },
-{"",			"SetConsoleTextAttribute"  	,(FUNC_) sys_SetConsoleTextAttribute },
-{"",			"GetMonitorInfoA"  			,(FUNC_) sys_GetMonitorInfoA },
-{"",			"GetMonitorInfoW"  			,(FUNC_) sys_GetMonitorInfoW },
-{"",			"AdjustWindowRect"  		,(FUNC_) sys_AdjustWindowRect },
-{"",			"MapWindowPoints"  			,(FUNC_) sys_MapWindowPoints },
-{"",			"PtInRect"  				,(FUNC_) sys_PtInRect },
-{"",			"SetForegroundWindow"  		,(FUNC_) sys_SetForegroundWindow },
-{"",			"GetDeviceCaps"  			,(FUNC_) sys_GetDeviceCaps },
-{"",			"CreatePalette"  			,(FUNC_) sys_CreatePalette },
-{"",			"ReleaseDC"  				,(FUNC_) sys_ReleaseDC },
-{"",			"SetEvent"  				,(FUNC_) sys_SetEvent },
-{"",			"SetDIBitsToDevice"  		,(FUNC_) sys_SetDIBitsToDevice },
-{"",			"GetKeyboardState"  		,(FUNC_) sys_GetKeyboardState},
-{"",			"SetCursor"  				,(FUNC_) sys_SetCursor},
-{"",			"BeginPaint"  				,(FUNC_) sys_BeginPaint},
-{"",			"EndPaint"  				,(FUNC_) sys_EndPaint},
-{"",			"SelectPalette"  			,(FUNC_) sys_SelectPalette},
-{"",			"RealizePalette"  			,(FUNC_) sys_RealizePalette},
-{"",			"InvalidateRect"  			,(FUNC_) sys_InvalidateRect},
-{"",			"DestroyWindow"  			,(FUNC_) sys_DestroyWindow},
-{"",			"DeleteObject"  			,(FUNC_) sys_DeleteObject},
-{"",			"KillTimer"  				,(FUNC_) sys_KillTimer},
-{"",			"ChangeDisplaySettingsExA"  ,(FUNC_) sys_ChangeDisplaySettingsExA},
-{"",			"GetConsoleMode"  			,(FUNC_) sys_GetConsoleMode},
-{"",			"SetConsoleMode"  			,(FUNC_) sys_SetConsoleMode},
-{"",			"ReadConsoleInputA"  		,(FUNC_) sys_ReadConsoleInputA},
-{"",			"ReadConsoleInputW"  		,(FUNC_) sys_ReadConsoleInputW},
-{"",			"PeekConsoleInputA"  		,(FUNC_) sys_PeekConsoleInputA},
-{"",			"PeekConsoleInputW"  		,(FUNC_) sys_PeekConsoleInputW},
-{"",			"SetConsoleCtrlHandler"  	,(FUNC_) sys_SetConsoleCtrlHandler},
-
-{"",			"GetFullPathNameA"  		,(FUNC_) sys_GetFullPathNameA},
-{"",			"GetConsoleMode"  			,(FUNC_) sys_GetConsoleMode},
 {"",			"_fileno"  					,(FUNC_) imp_fileno},
 {"",			"_access"  					,(FUNC_) imp_access},
 {"",			"signal"  					,(FUNC_) imp_signal},
@@ -647,18 +533,13 @@ FILE* stderr_; //Not used?
 {"",			"_read"  					,(FUNC_) imp_read},
 {"",			"_close"  					,(FUNC_) imp_close},
 {"",			"WriteFile"  				,(FUNC_) imp_WriteFile},
-{"",			"CreateFileA"  				,(FUNC_) sys_CreateFileA},
 
-{"",			"GetTempPathA"  			,(FUNC_) sys_GetTempPathA},
-{"",			"CreateProcessA"  			,(FUNC_) sys_CreateProcessA},
 {"",			"_dup"  					,(FUNC_) imp_dup},
 {"",			"_getpid"  					,(FUNC_) imp_getpid},
-{"",			"GetExitCodeProcess"  		,(FUNC_) sys_GetExitCodeProcess},
-{"",			"GlobalMemoryStatusEx"  	,(FUNC_) sys_GlobalMemoryStatusEx},
+
 {"",			"clock"  					,(FUNC_) imp_clock },
 {"",			"___mb_cur_max_func"  		,(FUNC_) imp_mb_cur_max_func },
 {"",			"_cexit"  					,(FUNC_) imp_cexit },
-{"",			"DragAcceptFiles"  			,(FUNC_) sys_DragAcceptFiles},
 
 /////////////////////////////////	
 };
