@@ -113,7 +113,7 @@ export XE_Module*
 	stdout_ = (FILE*)stdout;
 	stderr_ = (FILE*)stderr;
 
-	dbg_printl(" -- Xe_Load2 -- [%s]", _sPath);
+	dbg_printl(" -- Xe_Load -- [%s]", _sPath);
 	if(strlen(_sPath) <= 0){
 		err_printl("No Input files");
 		return false;
