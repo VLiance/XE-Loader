@@ -1,5 +1,5 @@
 //Here is your custom table implementetation
 
 //Example:
-//{"",			"sleep" 		,(FUNC_) imp_sleep},
+//{"",			"sleep" 		,(FUNC_) impl_sleep},
 //{"",			"GetDC"  		,(FUNC_) sys_GetDC },

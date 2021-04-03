@@ -10,7 +10,7 @@
 
 
  //!FILE * fopen ( const char * filename, const char * mode )
- FILE * imp_fopen64 ( const char * filename, const char * mode ){
+ FILE * impl_fopen64 ( const char * filename, const char * mode ){
 	showfunc("fopen64( filename: %p, mode: %s )", filename,mode);
 	return fopen(filename, mode);
  }
@@ -21,7 +21,7 @@
  #define pthread_t void 
  #define pthread_attr_t void 
 //! int pthread_create(pthread_t *thread, const pthread_attr_t *attr, void *(*start_routine) (void *), void *arg)
-int imp_pthread_create(pthread_t* thread, const pthread_attr_t* attr, void *(*start_routine) (void *), void *arg){
+int impl_pthread_create(pthread_t* thread, const pthread_attr_t* attr, void *(*start_routine) (void *), void *arg){
 	showfunc("pthread_create( attr: %p, start_routine: %p, arg: %p)", attr, start_routine, arg);
 
 	//#if defined(Func_Win) || defined(USE_WinThread)
@@ -41,7 +41,7 @@ int imp_pthread_create(pthread_t* thread, const pthread_attr_t* attr, void *(*st
 }
 
 //!int getopt(int argc, char * const argv[], const char *optstring)
-int imp_getopt(int argc, char * const argv[], const char *optstring){
+int impl_getopt(int argc, char * const argv[], const char *optstring){
 	showfunc("getopt( argc: %d, argv: %p, optstring: %p)", argc, argv, optstring);
 	//TODO
 	return -1;//f all command-line options have been parsed, then getopt() returns -1.
@@ -55,7 +55,7 @@ struct timespec_ {
 };
 struct timespec_ _timespec = {};
 //|int clock_gettime(clockid_t clk_id, struct timespec_ *tp)
-int imp_clock_gettime(clockid_t_ clk_id, struct timespec_ *tp) {
+int impl_clock_gettime(clockid_t_ clk_id, struct timespec_ *tp) {
 	showfunc("clock_gettime( clk_id: %d, timespec_: %p)", clk_id, tp);
 	
 	//Simulate 1 seconde?
@@ -169,23 +169,23 @@ Screen screen = {};
 Display display = {.screens=&screen};
 
 //!Display* XOpenDisplay(char* display_name)
-Display* imp_XOpenDisplay(char* display_name){
+Display* impl_XOpenDisplay(char* display_name){
 	showfunc("XOpenDisplay( display_name: %s )", display_name);
 	
 	return &display;
 }
-Status  imp_XMatchVisualInfo(Display* display, int screen, int depth, int class,  XVisualInfo* vinfo_return){
+Status  impl_XMatchVisualInfo(Display* display, int screen, int depth, int class,  XVisualInfo* vinfo_return){
 	showfunc("XMatchVisualInfo( display: %p, screen: %d, depth: %d: class: %d, vinfo_return: %p )", display, screen, depth, class, vinfo_return);
 	
 	return 0;
 }  
 //!Colormap XCreateColormap( Display *, Window w, Visual * visual, int alloc)
-Colormap imp_XCreateColormap( Display* d, Window w, Visual* visual, int alloc){
+Colormap impl_XCreateColormap( Display* d, Window w, Visual* visual, int alloc){
 	showfunc("XCreateColormap( display: %p, w: %d, visual: %p: alloc: %d)", d, w, visual, alloc);
 	return 0;
 }
 #define XSetWindowAttributes void
-Window imp_XCreateWindow( Display* display, Window parent, int x, int y, unsigned int width, unsigned int height,  unsigned int border_width, int depth, unsigned int class, Visual* visual, unsigned long valuemask, XSetWindowAttributes* attributes){
+Window impl_XCreateWindow( Display* display, Window parent, int x, int y, unsigned int width, unsigned int height,  unsigned int border_width, int depth, unsigned int class, Visual* visual, unsigned long valuemask, XSetWindowAttributes* attributes){
 	showfunc("XCreateWindow( parent: %p, x: %d,  y,: %p, width: %d, height,: %d, border_width: %d, depth: %d)", parent, x, y, width, height, border_width, depth);			
 	///Window win = {};
 	return 0;
@@ -203,7 +203,7 @@ typedef struct {
 } XWMHints;
 XWMHints xwmHints = {};
 //!XWMHints *XAllocWMHints(void)
-XWMHints* imp_XAllocWMHints(void){
+XWMHints* impl_XAllocWMHints(void){
 	showfunc("XAllocWMHints( )", "");			
 	return &xwmHints;
 }
@@ -247,7 +247,7 @@ typedef struct _XImage {
 XImage ximage = {.bytes_per_line=800*4,  .height= 600};
 
 //!XImage *XShmCreateImage (Display *display, Visual* visual, unsigned int depth, int format, char *data, XShmSegmentInfo *shminfo, unsigned int width, height){
-XImage* imp_XShmCreateImage(Display *display, Visual* visual, unsigned int depth, int format, char *data, XShmSegmentInfo *shminfo, unsigned int width, unsigned int  height){
+XImage* impl_XShmCreateImage(Display *display, Visual* visual, unsigned int depth, int format, char *data, XShmSegmentInfo *shminfo, unsigned int width, unsigned int  height){
 	showfunc("XShmCreateImage( display: %p, visual: %p, depth: %d, format: %d, data: %p, shminfo,: %p, width: %d, height: %d )", display, visual,  depth, format, data, shminfo, width, height);			
 
 //bytes_per_lines
@@ -269,7 +269,7 @@ XImage* imp_XShmCreateImage(Display *display, Visual* visual, unsigned int depth
 	
 
 //!Bool XShmPutImage(Display *display, Drawable d, GC gc, XImage *image, int src_x, src_y, dest_x, dest_y, unsigned int width, height, bool send_event){
-bool imp_XShmPutImage(Display *display, Drawable d, GC gc, XImage* image, int src_x, int src_y, int dest_x, int dest_y, unsigned int width, unsigned int  height, bool send_event){
+bool impl_XShmPutImage(Display *display, Drawable d, GC gc, XImage* image, int src_x, int src_y, int dest_x, int dest_y, unsigned int width, unsigned int  height, bool send_event){
 	showfunc("XShmPutImage( display: %p, d: %d, gc: %d, image: %p, src_x: %d, src_y: %d, dest_x: %d, dest_y: %d, width: %d, height: %d,  send_event: %d)", display, d, gc, image, src_x, src_y, dest_x, dest_y, width, height, send_event);
 	
 	int idx = 1; //HDC is same as HWND (not necessary to dissociate them)
@@ -282,7 +282,7 @@ bool imp_XShmPutImage(Display *display, Drawable d, GC gc, XImage* image, int sr
 
 
 //!Bool XTranslateCoordinates( Display* display, Window src_w, int dest_w, int src_x, int src_y, int* dest_x_return, int* dest_y_return, Window* child_return)
-bool imp_XTranslateCoordinates( Display* display, Window src_w, int dest_w, int src_x, int src_y, int* dest_x_return, int* dest_y_return, Window* child_return){
+bool impl_XTranslateCoordinates( Display* display, Window src_w, int dest_w, int src_x, int src_y, int* dest_x_return, int* dest_y_return, Window* child_return){
 	showfunc("XTranslateCoordinates( display: %p, ...)", display);			
 	
 	return true;
@@ -292,7 +292,7 @@ bool imp_XTranslateCoordinates( Display* display, Window src_w, int dest_w, int 
 static void* aShmget[20] = {};
 static int aShmget_idx = 0;
 //!int shmget(key_t key, size_t size, int shmflg){
-int imp_shmget(key_t key, size_t size, int shmflg){
+int impl_shmget(key_t key, size_t size, int shmflg){
 	//TODO: size rounded up to a multiple of PAGE_SIZE
 	if(size == 0){size = 4096;} //temp
 
@@ -302,7 +302,7 @@ int imp_shmget(key_t key, size_t size, int shmflg){
 	return aShmget_idx-1;
 }
 //!void *shmat(int shmid, const void *shmaddr, int shmflg)
-void* imp_shmat(int shmid, const void *shmaddr, int shmflg){
+void* impl_shmat(int shmid, const void *shmaddr, int shmflg){
 	showfunc("shmat( shmid: %d, shmaddr: %p, shmflg: %d)", shmid, shmaddr, shmflg);		
 	return aShmget[shmid];
 //	return (void*)_malloc(4096*4096, char); //TODO
@@ -310,18 +310,18 @@ void* imp_shmat(int shmid, const void *shmaddr, int shmflg){
 }
 
 //!int XPending(Display*display)
-int imp_XPending(Display*display){
+int impl_XPending(Display*display){
 	showfunc("XPending( display: %p", display);	
 	return 0;
 }
 
 //!unsigned int sleep(unsigned int seconds)
-unsigned int imp_sleep(unsigned int seconds){
+unsigned int impl_sleep(unsigned int seconds){
 	showfunc_opt("sleep( seconds: %d)", seconds);
 	XeGI_Sleep(seconds*1000);
 }
 //!int usleep(useconds_t useec)
-int imp_usleep(useconds_t usec){
+int impl_usleep(useconds_t usec){
 	showfunc_opt("usleep( usec: %d)", usec);
 	XeGI_Sleep(usec/1000);
 }
@@ -335,7 +335,7 @@ void fini(void){
 }
 */
 
-fn int imp_libc_start_main(int (*main)(int, char**, char**), int argc, char** argv, void (*init) (void), void (*fini) (void), void (*rtld_fini) (void), void (* stack_end)){
+fn int impl_libc_start_main(int (*main)(int, char**, char**), int argc, char** argv, void (*init) (void), void (*fini) (void), void (*rtld_fini) (void), void (* stack_end)){
 	showfunc("_libc_start_main( main: %p, argc: %d,  argv: %p)", main, argc, argv);
 
 /*
@@ -454,34 +454,34 @@ __attribute__ ((weak, visibility ("hidden")));
  
  
  //!int usleep(useconds_t useec)
-void imp_cxa_finalize(void* d){  //global destructor
+void impl_cxa_finalize(void* d){  //global destructor
 	showfunc("__cxa_finalize( d: %p)", d);
 
 }
 
 //!void __stack_chk_fail (void)
-void imp_stack_chk_fail(void){
+void impl_stack_chk_fail(void){
 	showfunc("imp_stack_chk_fail", "");
 	err_print("Stack Overflow!");
 }
 
 //Weak ref not really used
 //!void __gmon_start__ (void)
-void imp_gmon_start__(void){
+void impl_gmon_start__(void){
 	showfunc("__gmon_start__", "");
 }
 //!_Jv_RegisterClasses
-void imp_Jv_RegisterClasses(void){
+void impl_Jv_RegisterClasses(void){
 	showfunc("_Jv_RegisterClasses", "");
 }
 
 //!void perror(const char *s){
-void imp_perror(const char *s){
+void impl_perror(const char *s){
 	err_print("perror: %s", s);
 }
 
 //int * __errno_location(void)
-int * imp_errno_location(void){
+int * impl_errno_location(void){
 	err_print("errno_location", "");
 //TODO return the adress of the errno variable
 }

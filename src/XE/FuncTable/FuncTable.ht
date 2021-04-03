@@ -32,23 +32,23 @@
 
 
 {"","__initenv" 	,(FUNC_) &__initenv }, 
-{"","__p___initenv" ,(FUNC_) imp_p__initenv },
+{"","__p___initenv" ,(FUNC_) impl_p__initenv },
 {"","_iob" 			,(FUNC_) iob }, 	
 {"","_fmode" 		,(FUNC_) &_fmode_ }, 
 {"","_commode" 		,(FUNC_) &_commode },
-{"","__p__commode" 	,(FUNC_) &imp_p__commode }, 
+{"","__p__commode" 	,(FUNC_) &impl_p__commode }, 
 
 /////////// CRT /////////////
-{"",			"_initterm"  		,(FUNC_) imp_initterm },
-{"",			"_initterm_e"  		,(FUNC_) imp_initterm_e },
-{"",			"__set_app_type"	,(FUNC_) imp_set_app_type },
-{"",			"__p__fmode"  		,(FUNC_) imp_p__fmode },
-{"",			"__lconv_init"  	,(FUNC_) imp_lconv_init },
+{"",			"_initterm"  		,(FUNC_) impl_initterm },
+{"",			"_initterm_e"  		,(FUNC_) impl_initterm_e },
+{"",			"__set_app_type"	,(FUNC_) impl_set_app_type },
+{"",			"__p__fmode"  		,(FUNC_) impl_p__fmode },
+{"",			"__lconv_init"  	,(FUNC_) impl_lconv_init },
 {"",			"_acmdln"  			,(FUNC_) &__acmdln },
-{"",			"__p__acmdln"  		,(FUNC_) imp_p__acmdln },
-{"",			"__getmainargs"  	,(FUNC_) imp_getmainargs },
+{"",			"__p__acmdln"  		,(FUNC_) impl_p__acmdln },
+{"",			"__getmainargs"  	,(FUNC_) impl_getmainargs },
 {"",			"_environ"  		,(FUNC_) (char***)&_environ_ },
-{"",			"__p__environ"  	,(FUNC_) imp_p__environ },
+{"",			"__p__environ"  	,(FUNC_) impl_p__environ },
 
 
 #ifdef HAVE_OPERATOR_NEW_INT
@@ -61,24 +61,24 @@
 #endif
 {"",			"_ZdlPv"  	,(FUNC_) _ZdlPv },//delete
 
-{"",			"__cxa_finalize" ,(FUNC_)  imp_cxa_finalize }, //global destructor
+{"",			"__cxa_finalize" ,(FUNC_)  impl_cxa_finalize }, //global destructor
 {"",			"__divdi3"  		,(FUNC_) __divdi3 },
 
 
 //{"",			"_Unwind_Resume"  	,(FUNC_) __unwind_resume  },
 
-{"",			"GetProcAddress" 			,(FUNC_) imp_GetProcAddress }, 	//Special
-{"",			"LoadLibraryA"    			,(FUNC_) imp_LoadLibraryA },  	//Special
-{"",			"LoadLibraryW"    			,(FUNC_) imp_LoadLibraryW},  	//Special
-{"",			"LoadLibraryExA"    		,(FUNC_) imp_LoadLibraryExA},  	//Special
-{"",			"LoadLibraryExW"    		,(FUNC_) imp_LoadLibraryExW},  	//Special
-{"",			"FreeLibrary"    			,(FUNC_) imp_FreeLibrary},  	
+{"",			"GetProcAddress" 			,(FUNC_) impl_GetProcAddress }, 	//Special
+{"",			"LoadLibraryA"    			,(FUNC_) impl_LoadLibraryA },  	//Special
+{"",			"LoadLibraryW"    			,(FUNC_) impl_LoadLibraryW},  	//Special
+{"",			"LoadLibraryExA"    		,(FUNC_) impl_LoadLibraryExA},  	//Special
+{"",			"LoadLibraryExW"    		,(FUNC_) impl_LoadLibraryExW},  	//Special
+{"",			"FreeLibrary"    			,(FUNC_) impl_FreeLibrary},  	
 //{"LoadLibraryExW"  			,(FUNC_) LoadLibraryExW }, 			//TODO
 
-{"",			"CommandLineToArgvW"  		,(FUNC_) imp_CommandLineToArgvW },
-{"",			"GetCommandLineA"  			,(FUNC_) imp_GetCommandLineA },
-{"",			"GetCommandLineW"  			,(FUNC_) imp_GetCommandLineW },
-//{"chkstk"  					,(FUNC_) imp_chkstk },
+{"",			"CommandLineToArgvW"  		,(FUNC_) impl_CommandLineToArgvW },
+{"",			"GetCommandLineA"  			,(FUNC_) impl_GetCommandLineA },
+{"",			"GetCommandLineW"  			,(FUNC_) impl_GetCommandLineW },
+//{"chkstk"  					,(FUNC_) impl_chkstk },
 #ifdef ImWin
 //{"",			"chkstk"  					,(FUNC_) __chkstk }, //not in build x64
 #endif
@@ -87,8 +87,8 @@
 {"",			"__register_frame"  	,(FUNC_) __register_frame },
 {"",			"__deregister_frame"  	,(FUNC_) __deregister_frame },
 #else
-{"",			"__register_frame"  	,(FUNC_) imp_register_frame },
-{"",			"__deregister_frame"  	,(FUNC_) imp_deregister_frame },
+{"",			"__register_frame"  	,(FUNC_) impl_register_frame },
+{"",			"__deregister_frame"  	,(FUNC_) impl_deregister_frame },
 #endif
 
 
@@ -97,9 +97,9 @@
 {"",			"_aligned_realloc"	,(FUNC_) _aligned_realloc },
 {"",			"_aligned_free"  	,(FUNC_) _aligned_free },
 #else
-{"",			"_aligned_malloc"	,(FUNC_) imp_aligned_malloc },
-{"",			"_aligned_realloc"	,(FUNC_) imp_aligned_realloc },
-{"",			"_aligned_free"  	,(FUNC_) imp_aligned_free },
+{"",			"_aligned_malloc"	,(FUNC_) impl_aligned_malloc },
+{"",			"_aligned_realloc"	,(FUNC_) impl_aligned_realloc },
+{"",			"_aligned_free"  	,(FUNC_) impl_aligned_free },
 #endif
 
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -110,23 +110,23 @@
 #ifdef Func_Win 
 {"",			"_onexit"  		,(FUNC_) _onexit },
 #else
-{"",			"_onexit"  		,(FUNC_) imp_onexit },
+{"",			"_onexit"  		,(FUNC_) impl_onexit },
 #endif
 
 #ifdef Func_Win 
 {"",			"___lc_codepage_func"  ,(FUNC_) ___lc_codepage_func },
 #else
-{"",			"___lc_codepage_func"  ,(FUNC_) imp_lc_codepage_func },
+{"",			"___lc_codepage_func"  ,(FUNC_) impl_lc_codepage_func },
 #endif
 
 {"",			"localeconv"  	,(FUNC_) sys_localeconv },
-{"",			"_isctype"  	,(FUNC_) imp_isctype },
+{"",			"_isctype"  	,(FUNC_) impl_isctype },
 
 /////////////////////////////
 
 //{"wcscpy"  				,(FUNC_) wcscpy },
 //{"GetModuleFileNameW"  	,(FUNC_) GetModuleFileNameW },
-//{"_open"  				,(FUNC_) imp_open },
+//{"_open"  				,(FUNC_) impl_open },
 
 /*
 {"",			"InitOnceExecuteOnce"  		,(FUNC_) InitOnceExecuteOnce },
@@ -144,14 +144,14 @@
 
 //////// Implemented ////////////////////////////////////////
 
-{"",			"_strdup"  		,(FUNC_) imp_strdup },
-{"",			"strncpy"  		,(FUNC_) imp_strncpy },
-{"",			"isspace"  		,(FUNC_) imp_isspace },
-{"",			"isupper"  		,(FUNC_ )imp_isupper },
-{"",			"islower"  		,(FUNC_) imp_islower },
+{"",			"_strdup"  		,(FUNC_) impl_strdup },
+{"",			"strncpy"  		,(FUNC_) impl_strncpy },
+{"",			"isspace"  		,(FUNC_) impl_isspace },
+{"",			"isupper"  		,(FUNC_) impl_isupper },
+{"",			"islower"  		,(FUNC_) impl_islower },
 
-{"",			"_lock"  		,(FUNC_) imp_lock },
-{"",			"_unlock"  		,(FUNC_) imp_unlock },
+{"",			"_lock"  		,(FUNC_) impl_lock },
+{"",			"_unlock"  		,(FUNC_) impl_unlock },
 
 
 ////////////////////////////////////////////////////////////
@@ -251,7 +251,7 @@
 
 {"",			"setlocale"  				,(FUNC_) sys_setlocale },
 {"",			"getenv"  					,(FUNC_) sys_getenv },
-{"",			"_putenv"  					,(FUNC_) imp_putenv },
+{"",			"_putenv"  					,(FUNC_) impl_putenv },
 
 {"",			"IsDebuggerPresent"  	 	,(FUNC_) sys_IsDebuggerPresent },
 {"",			"UnhandledExceptionFilter" 	,(FUNC_) sys_UnhandledExceptionFilter },
@@ -284,19 +284,19 @@
 
 
 
-{"",			"_get_osfhandle"  			,(FUNC_) imp_get_osfhandle },
-{"",			"_lseek"  					,(FUNC_) imp_lseek },
-{"",			"_write"  					,(FUNC_) imp_write},
-{"",			"_isatty"  					,(FUNC_) imp_isatty},
+{"",			"_get_osfhandle"  			,(FUNC_) impl_get_osfhandle },
+{"",			"_lseek"  					,(FUNC_) impl_lseek },
+{"",			"_write"  					,(FUNC_) impl_write},
+{"",			"_isatty"  					,(FUNC_) impl_isatty},
 
 
-{"",			"_vsnprintf"  	,(FUNC_) imp_vsnprintf },
-{"",			"_snwprintf"  	,(FUNC_) imp_snwprintf },
-{"",			"fwprintf"  	,(FUNC_) imp_fwprintf },
+{"",			"_vsnprintf"  	,(FUNC_) impl_vsnprintf },
+{"",			"_snwprintf"  	,(FUNC_) impl_snwprintf },
+{"",			"fwprintf"  	,(FUNC_) impl_fwprintf },
 
-{"",			"abort"  		,(FUNC_) imp_abort }, 
+{"",			"abort"  		,(FUNC_) impl_abort }, 
 
-{"",			"_stricmp"  	,(FUNC_) imp_stricmp },
+{"",			"_stricmp"  	,(FUNC_) impl_stricmp },
 
 
 #ifdef USE_Platform_LocalAlloc
@@ -305,10 +305,10 @@
 {"",			"LocalSize"  		,(FUNC_) LocalSize },
 {"",			"LocalFree"  		,(FUNC_) LocalFree },
 #else
-{"",			"LocalAlloc"  		,(FUNC_) imp_LocalAlloc },
-{"",			"LocalReAlloc"		,(FUNC_) imp_LocalReAlloc },
-{"",			"LocalSize"  		,(FUNC_) imp_LocalSize },
-{"",			"LocalFree"  		,(FUNC_) imp_LocalFree },
+{"",			"LocalAlloc"  		,(FUNC_) impl_LocalAlloc },
+{"",			"LocalReAlloc"		,(FUNC_) impl_LocalReAlloc },
+{"",			"LocalSize"  		,(FUNC_) impl_LocalSize },
+{"",			"LocalFree"  		,(FUNC_) impl_LocalFree },
 #endif
 
 
@@ -330,17 +330,17 @@
 {"",			"wcscpy"  		,(FUNC_) strcpy },  //??
 */
 
-{"",			"malloc"  	,(FUNC_) imp_malloc },
-{"",			"calloc"  	,(FUNC_) imp_calloc },
-{"",			"realloc"  	,(FUNC_) imp_realloc },
-{"",			"free"  	,(FUNC_) imp_free },
+{"",			"malloc"  	,(FUNC_) impl_malloc },
+{"",			"calloc"  	,(FUNC_) impl_calloc },
+{"",			"realloc"  	,(FUNC_) impl_realloc },
+{"",			"free"  	,(FUNC_) impl_free },
 
 {"",			"_beginthreadex"  	,(FUNC_) th_beginthreadex },
 {"",			"_errno"  			,(FUNC_) &_errno_ },
 
 //{"",			"strlen"  	,(FUNC_) strlen },
-{"",			"strlen"  	,(FUNC_) imp_strlen }, //safer strlen
-{"",			"strpbrk"  	,(FUNC_) imp_strpbrk }, 
+{"",			"strlen"  	,(FUNC_) impl_strlen }, //safer strlen
+{"",			"strpbrk"  	,(FUNC_) impl_strpbrk }, 
 
 /////////////////////////////////////////////
 /////////// DIRECT MAPPING //////////////////
@@ -350,20 +350,20 @@
 
 /////////// LOG ////////////////////
 
-{"",			"fflush"  	,(FUNC_) imp_fflush },
-{"",			"fwrite"  	,(FUNC_) imp_fwrite },
+{"",			"fflush"  	,(FUNC_) impl_fflush },
+{"",			"fwrite"  	,(FUNC_) impl_fwrite },
 
-{"",			"printf"  			,(FUNC_) imp_printf },
-{"",			"fprintf"  			,(FUNC_) imp_fprintf },
-{"",			"sprintf"  			,(FUNC_) imp_sprintf },
-{"",			"vsprintf"  		,(FUNC_) imp_vsprintf },
-{"",			"_vscprintf"  		,(FUNC_) imp_vscprintf },
+{"",			"printf"  			,(FUNC_) impl_printf },
+{"",			"fprintf"  			,(FUNC_) impl_fprintf },
+{"",			"sprintf"  			,(FUNC_) impl_sprintf },
+{"",			"vsprintf"  		,(FUNC_) impl_vsprintf },
+{"",			"_vscprintf"  		,(FUNC_) impl_vscprintf },
 
-{"",			"putc"  	,(FUNC_) imp_putc },
-{"",			"fputc"  	,(FUNC_) imp_fputc },
-{"",			"puts"  	,(FUNC_) imp_puts },
-{"",			"fputs"  	,(FUNC_) imp_fputs },
-{"",			"putchar"	,(FUNC_) imp_putchar },
+{"",			"putc"  	,(FUNC_) impl_putc },
+{"",			"fputc"  	,(FUNC_) impl_fputc },
+{"",			"puts"  	,(FUNC_) impl_puts },
+{"",			"fputs"  	,(FUNC_) impl_fputs },
+{"",			"putchar"	,(FUNC_) impl_putchar },
 
 ////////////////////////////////////
 
@@ -386,8 +386,8 @@
 
 /////////// STRING ///////////////
 {"",			"wcslen"  	,(FUNC_) wcslen_ },
-//{"",			"wcstombs"  ,(FUNC_) imp_wcstombs },
-{"",			"wcstombs"  ,(FUNC_) imp_wcstombs },
+//{"",			"wcstombs"  ,(FUNC_) impl_wcstombs },
+{"",			"wcstombs"  ,(FUNC_) impl_wcstombs },
 
 
 {"",			"isalnum"  ,(FUNC_) isalnum},
@@ -431,11 +431,11 @@
 {"",			"qsort"  	,(FUNC_) qsort },
 {"",			"tan"  		,(FUNC_) tan },
 {"",			"rand"  	,(FUNC_) rand },
-{"",			"abs"  		,(FUNC_) imp_abs }, 
+{"",			"abs"  		,(FUNC_) impl_abs }, 
 /////////////////////////////////
 
 /////////// FILE ////////////////
-{"",			"fopen"  	,(FUNC_) imp_fopen },
+{"",			"fopen"  	,(FUNC_) impl_fopen },
 {"",			"fread"  	,(FUNC_) fread },
 {"",			"fclose"  	,(FUNC_) fclose },
 {"",			"fseek"  	,(FUNC_) fseek },
@@ -443,22 +443,22 @@
 {"",			"rewind"  	,(FUNC_) rewind },
 #endif
 
-{"",			"_fileno"  					,(FUNC_) imp_fileno},
-{"",			"_access"  					,(FUNC_) imp_access},
-{"",			"signal"  					,(FUNC_) imp_signal},
-{"",			"_open"  					,(FUNC_) imp_open},
-{"",			"strerror"  				,(FUNC_) imp_strerror},
-{"",			"exit"  					,(FUNC_) imp_exit},
+{"",			"_fileno"  					,(FUNC_) impl_fileno},
+{"",			"_access"  					,(FUNC_) impl_access},
+{"",			"signal"  					,(FUNC_) impl_signal},
+{"",			"_open"  					,(FUNC_) impl_open},
+{"",			"strerror"  				,(FUNC_) impl_strerror},
+{"",			"exit"  					,(FUNC_) impl_exit},
 
-{"",			"_stati64"  				,(FUNC_) imp_stati64},   //File info
-{"",			"_fstati64"  				,(FUNC_) imp_fstati64},  //File info
-{"",			"_read"  					,(FUNC_) imp_read},
-{"",			"_close"  					,(FUNC_) imp_close},
-{"",			"WriteFile"  				,(FUNC_) imp_WriteFile},
+{"",			"_stati64"  				,(FUNC_) impl_stati64},   //File info
+{"",			"_fstati64"  				,(FUNC_) impl_fstati64},  //File info
+{"",			"_read"  					,(FUNC_) impl_read},
+{"",			"_close"  					,(FUNC_) impl_close},
+{"",			"WriteFile"  				,(FUNC_) impl_WriteFile},
 
-{"",			"_dup"  					,(FUNC_) imp_dup},
-{"",			"_getpid"  					,(FUNC_) imp_getpid},
+{"",			"_dup"  					,(FUNC_) impl_dup},
+{"",			"_getpid"  					,(FUNC_) impl_getpid},
 
-{"",			"clock"  					,(FUNC_) imp_clock },
-{"",			"___mb_cur_max_func"  		,(FUNC_) imp_mb_cur_max_func },
-{"",			"_cexit"  					,(FUNC_) imp_cexit },
+{"",			"clock"  					,(FUNC_) impl_clock },
+{"",			"___mb_cur_max_func"  		,(FUNC_) impl_mb_cur_max_func },
+{"",			"_cexit"  					,(FUNC_) impl_cexit },

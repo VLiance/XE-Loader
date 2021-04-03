@@ -49,7 +49,6 @@
 
 
 //extern "C" ULONG __chkstk();
-
 fn void __register_frame(void* ptr);
 fn void __deregister_frame(void* ptr);
 //fn void __unwind_resume(void* object);
