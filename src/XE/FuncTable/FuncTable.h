@@ -197,7 +197,7 @@ FILE* stderr_; //Not used?
 {"",			"___lc_codepage_func"  ,(FUNC_) imp_lc_codepage_func },
 #endif
 
-{"",			"localeconv"  	,(FUNC_) pipe_localeconv },
+{"",			"localeconv"  	,(FUNC_) sys_localeconv },
 {"",			"_isctype"  	,(FUNC_) imp_isctype },
 
 /////////////////////////////
@@ -235,11 +235,11 @@ FILE* stderr_; //Not used?
 ////////////////////////////////////////////////////////////
 
 ////// Special fn WGL ////////////////////////////////////
-{"",			"GetPixelFormat"  		,(FUNC_) pipe_GetPixelFormat }, 
-{"",			"SetPixelFormat"  		,(FUNC_) pipe_SetPixelFormat }, 
-{"",			"ChoosePixelFormat"  	,(FUNC_) pipe_ChoosePixelFormat },
-{"",			"DescribePixelFormat"  	,(FUNC_) pipe_DescribePixelFormat },
-{"",			"SwapBuffers"  			,(FUNC_) pipe_SwapBuffers },
+{"",			"GetPixelFormat"  		,(FUNC_) sys_GetPixelFormat }, 
+{"",			"SetPixelFormat"  		,(FUNC_) sys_SetPixelFormat }, 
+{"",			"ChoosePixelFormat"  	,(FUNC_) sys_ChoosePixelFormat },
+{"",			"DescribePixelFormat"  	,(FUNC_) sys_DescribePixelFormat },
+{"",			"SwapBuffers"  			,(FUNC_) sys_SwapBuffers },
 ////////////////////////////////////////////////////////////
 
 ///////////////// System //////////////
@@ -248,101 +248,101 @@ FILE* stderr_; //Not used?
 {"",			"SetProcessDPIAware"  		,(FUNC_) sys_SetProcessDPIAware }, //Shcore.dll
 ////////////////////////////////////////
 
-{"",			"VirtualAlloc"  			,(FUNC_) pipe_VirtualAlloc },
-{"",			"VirtualFree"  				,(FUNC_) pipe_VirtualFree },
-{"",			"VirtualProtect"  			,(FUNC_) pipe_VirtualProtect },
+{"",			"VirtualAlloc"  			,(FUNC_) sys_VirtualAlloc },
+{"",			"VirtualFree"  				,(FUNC_) sys_VirtualFree },
+{"",			"VirtualProtect"  			,(FUNC_) sys_VirtualProtect },
 {"",			"HeapCreate"  				,(FUNC_) mem_HeapCreate },
 {"",			"HeapAlloc"  				,(FUNC_) mem_HeapAlloc },
 {"",			"HeapFree"  				,(FUNC_) mem_HeapFree },
 
-{"",			"FlushInstructionCache"		,(FUNC_) pipe_FlushInstructionCache },
+{"",			"FlushInstructionCache"		,(FUNC_) sys_FlushInstructionCache },
 	
-{"",			"setvbuf"  					,(FUNC_) pipe_setvbuf },
-{"",			"_set_error_mode" 			,(FUNC_) pipe_set_error_mode },
+{"",			"setvbuf"  					,(FUNC_) sys_setvbuf },
+{"",			"_set_error_mode" 			,(FUNC_) sys_set_error_mode },
 
-{"",			"RegisterClassA"  			,(FUNC_) pipe_RegisterClassA }, 
-{"",			"RegisterClassW"  			,(FUNC_) pipe_RegisterClassW }, 
-{"",			"UnregisterClassA"  		,(FUNC_) pipe_UnregisterClassA }, 
-{"",			"UnregisterClassW"  		,(FUNC_) pipe_UnregisterClassW }, 
-{"",			"UnregisterClassW"  		,(FUNC_) pipe_UnregisterClassW }, 
+{"",			"RegisterClassA"  			,(FUNC_) sys_RegisterClassA }, 
+{"",			"RegisterClassW"  			,(FUNC_) sys_RegisterClassW }, 
+{"",			"UnregisterClassA"  		,(FUNC_) sys_UnregisterClassA }, 
+{"",			"UnregisterClassW"  		,(FUNC_) sys_UnregisterClassW }, 
+{"",			"UnregisterClassW"  		,(FUNC_) sys_UnregisterClassW }, 
 
 
-{"",			"AdjustWindowRectEx"  		,(FUNC_) pipe_AdjustWindowRectEx }, 
+{"",			"AdjustWindowRectEx"  		,(FUNC_) sys_AdjustWindowRectEx }, 
 
-{"",			"DispatchMessageA"  		,(FUNC_) pipe_DispatchMessageA }, 
+{"",			"DispatchMessageA"  		,(FUNC_) sys_DispatchMessageA }, 
 
-{"",			"GetSystemInfo"  			,(FUNC_) pipe_GetSystemInfo }, 
-{"",			"GetNativeSystemInfo"  		,(FUNC_) pipe_GetNativeSystemInfo }, 
-{"",			"WindowFromDC"  			,(FUNC_) pipe_WindowFromDC }, 
-{"",			"ClientToScreen"  			,(FUNC_) pipe_ClientToScreen }, 
+{"",			"GetSystemInfo"  			,(FUNC_) sys_GetSystemInfo }, 
+{"",			"GetNativeSystemInfo"  		,(FUNC_) sys_GetNativeSystemInfo }, 
+{"",			"WindowFromDC"  			,(FUNC_) sys_WindowFromDC }, 
+{"",			"ClientToScreen"  			,(FUNC_) sys_ClientToScreen }, 
 
-{"",			"StretchDIBits"  			,(FUNC_) pipe_StretchDIBits },
+{"",			"StretchDIBits"  			,(FUNC_) sys_StretchDIBits },
 
-{"",			"CallNextHookEx"  			,(FUNC_) pipe_CallNextHookEx },
-{"",			"EnumDisplaySettingsA" 		,(FUNC_) pipe_EnumDisplaySettingsA },
+{"",			"CallNextHookEx"  			,(FUNC_) sys_CallNextHookEx },
+{"",			"EnumDisplaySettingsA" 		,(FUNC_) sys_EnumDisplaySettingsA },
 
-{"",			"CreateToolhelp32Snapshot"  ,(FUNC_) pipe_CreateToolhelp32Snapshot },
+{"",			"CreateToolhelp32Snapshot"  ,(FUNC_) sys_CreateToolhelp32Snapshot },
 {"",			"Thread32First"  			,(FUNC_) th_Thread32First },
 {"",			"Thread32Next"  			,(FUNC_) th_Thread32Next },
 {"",			"InterlockedIncrement"  	,(FUNC_) th_InterlockedIncrement },
 {"",			"InterlockedDecrement"  	,(FUNC_) th_InterlockedDecrement },
 
-{"",			"ShowWindow"  				,(FUNC_) pipe_ShowWindow },
+{"",			"ShowWindow"  				,(FUNC_) sys_ShowWindow },
 
-{"",			"SetWindowsHookExA" 		,(FUNC_) pipe_SetWindowsHookExA },
-{"",			"GetModuleHandleA" 			,(FUNC_) pipe_GetModuleHandleA },
-{"",			"GetModuleHandleW"  		,(FUNC_) pipe_GetModuleHandleW },
+{"",			"SetWindowsHookExA" 		,(FUNC_) sys_SetWindowsHookExA },
+{"",			"GetModuleHandleA" 			,(FUNC_) sys_GetModuleHandleA },
+{"",			"GetModuleHandleW"  		,(FUNC_) sys_GetModuleHandleW },
 
 {"",			"GetDC"  					,(FUNC_) sys_GetDC },
-{"",			"CloseHandle"  				,(FUNC_) pipe_CloseHandle },
+{"",			"CloseHandle"  				,(FUNC_) sys_CloseHandle },
 
-{"",			"LoadCursorA" 				,(FUNC_) pipe_LoadCursorA },
-{"",			"LoadCursorW" 				,(FUNC_) pipe_LoadCursorW },
-{"",			"LoadIconA"   				,(FUNC_) pipe_LoadIconA },
-{"",			"LoadIconW"   				,(FUNC_) pipe_LoadIconW },
-
-
-{"",			"ScreenToClient"  			,(FUNC_) pipe_ScreenToClient },
-{"",			"WideCharToMultiByte"  		,(FUNC_) pipe_WideCharToMultiByte },
-{"",			"MultiByteToWideChar"  		,(FUNC_) pipe_MultiByteToWideChar },
-
-{"",			"GetCursorInfo"  			,(FUNC_) pipe_GetCursorInfo },
-{"",			"SetWindowPos"  			,(FUNC_) pipe_SetWindowPos },
-
-{"",			"MonitorFromRect" 			,(FUNC_) pipe_MonitorFromRect },
-{"",			"GetMonitorInfoW"  			,(FUNC_) pipe_GetMonitorInfoW },
-
-{"",			"OutputDebugStringA"  		,(FUNC_) pipe_OutputDebugStringA },
-{"",			"OutputDebugStringW"  		,(FUNC_) pipe_OutputDebugStringW },
-
-{"",			"GetConsoleWindow"  		,(FUNC_) pipe_GetConsoleWindow },
-
-{"",			"GetStdHandle"  						,(FUNC_) pipe_GetStdHandle },
-{"",			"GetConsoleScreenBufferInfo"			,(FUNC_) pipe_GetConsoleScreenBufferInfo },
+{"",			"LoadCursorA" 				,(FUNC_) sys_LoadCursorA },
+{"",			"LoadCursorW" 				,(FUNC_) sys_LoadCursorW },
+{"",			"LoadIconA"   				,(FUNC_) sys_LoadIconA },
+{"",			"LoadIconW"   				,(FUNC_) sys_LoadIconW },
 
 
-{"",			"InitializeCriticalSectionEx" 			,(FUNC_) pipe_InitializeCriticalSectionEx },
-{"",			"IsProcessorFeaturePresent" 			,(FUNC_) pipe_IsProcessorFeaturePresent },
-{"",			"InitializeCriticalSectionAndSpinCount"	,(FUNC_) pipe_InitializeCriticalSectionAndSpinCount },
+{"",			"ScreenToClient"  			,(FUNC_) sys_ScreenToClient },
+{"",			"WideCharToMultiByte"  		,(FUNC_) sys_WideCharToMultiByte },
+{"",			"MultiByteToWideChar"  		,(FUNC_) sys_MultiByteToWideChar },
+
+{"",			"GetCursorInfo"  			,(FUNC_) sys_GetCursorInfo },
+{"",			"SetWindowPos"  			,(FUNC_) sys_SetWindowPos },
+
+{"",			"MonitorFromRect" 			,(FUNC_) sys_MonitorFromRect },
+{"",			"GetMonitorInfoW"  			,(FUNC_) sys_GetMonitorInfoW },
+
+{"",			"OutputDebugStringA"  		,(FUNC_) sys_OutputDebugStringA },
+{"",			"OutputDebugStringW"  		,(FUNC_) sys_OutputDebugStringW },
+
+{"",			"GetConsoleWindow"  		,(FUNC_) sys_GetConsoleWindow },
+
+{"",			"GetStdHandle"  						,(FUNC_) sys_GetStdHandle },
+{"",			"GetConsoleScreenBufferInfo"			,(FUNC_) sys_GetConsoleScreenBufferInfo },
+
+
+{"",			"InitializeCriticalSectionEx" 			,(FUNC_) sys_InitializeCriticalSectionEx },
+{"",			"IsProcessorFeaturePresent" 			,(FUNC_) sys_IsProcessorFeaturePresent },
+{"",			"InitializeCriticalSectionAndSpinCount"	,(FUNC_) sys_InitializeCriticalSectionAndSpinCount },
 
 {"",			"InitializeSListHead"			,(FUNC_) sys_InitializeSListHead },
 
-{"",			"setlocale"  				,(FUNC_) pipe_setlocale },
-{"",			"getenv"  					,(FUNC_) pipe_getenv },
+{"",			"setlocale"  				,(FUNC_) sys_setlocale },
+{"",			"getenv"  					,(FUNC_) sys_getenv },
 {"",			"_putenv"  					,(FUNC_) imp_putenv },
 
-{"",			"IsDebuggerPresent"  	 	,(FUNC_) pipe_IsDebuggerPresent },
-{"",			"UnhandledExceptionFilter" 	,(FUNC_) pipe_UnhandledExceptionFilter },
+{"",			"IsDebuggerPresent"  	 	,(FUNC_) sys_IsDebuggerPresent },
+{"",			"UnhandledExceptionFilter" 	,(FUNC_) sys_UnhandledExceptionFilter },
 
-{"",			"GetCurrentProcess"  		,(FUNC_) pipe_GetCurrentProcess },
-{"",			"TerminateProcess"  		,(FUNC_) pipe_TerminateProcess },
-{"",			"GetStartupInoA"  			,(FUNC_) pipe_GetStartupInfoA },
-{"",			"GetStartupInoW"  			,(FUNC_) pipe_GetStartupInfoW },
+{"",			"GetCurrentProcess"  		,(FUNC_) sys_GetCurrentProcess },
+{"",			"TerminateProcess"  		,(FUNC_) sys_TerminateProcess },
+{"",			"GetStartupInoA"  			,(FUNC_) sys_GetStartupInfoA },
+{"",			"GetStartupInoW"  			,(FUNC_) sys_GetStartupInfoW },
 
 //Windows
 
 {"",			"CreateWindowExA"  				,(FUNC_) sys_CreateWindowExA },
-{"",			"CreateWindowExW"  				,(FUNC_) pipe_CreateWindowExW },
+{"",			"CreateWindowExW"  				,(FUNC_) sys_CreateWindowExW },
 
 {"",			"GetCurrentThread"  			,(FUNC_) th_GetCurrentThread },
 {"",			"GetCurrentThreadId"  			,(FUNC_) sys_GetCurrentThreadId },
@@ -358,7 +358,7 @@ FILE* stderr_; //Not used?
 
 {"",			"Sleep"						,(FUNC_) th_Sleep },
 
-{"",			"DuplicateHandle"  			,(FUNC_) pipe_DuplicateHandle },
+{"",			"DuplicateHandle"  			,(FUNC_) sys_DuplicateHandle },
 
 
 

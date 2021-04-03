@@ -107,7 +107,7 @@ inl void* imp_aligned_realloc(void *memblock,size_t size,size_t alignment){
 }
 
 //!LPVOID VirtualAlloc(LPVOID lpAddress,SIZE_T dwSize,DWORD flAllocationType,DWORD flProtect)
-inl LPVOID WINAPI pipe_VirtualAlloc(LPVOID lpAddress,SIZE_T dwSize,DWORD flAllocationType,DWORD flProtect){
+inl LPVOID WINAPI sys_VirtualAlloc(LPVOID lpAddress,SIZE_T dwSize,DWORD flAllocationType,DWORD flProtect){
 	showfunc_opt("VirtualAlloc( lpAddress %p, dwSize: %d, flAllocationType: %d, flProtect:%d )", lpAddress, dwSize, flAllocationType, flProtect);
 	#ifdef USE_Windows_VirtualAlloc
 	return VirtualAlloc(lpAddress, dwSize, flAllocationType, flProtect); 
@@ -124,7 +124,7 @@ inl LPVOID WINAPI pipe_VirtualAlloc(LPVOID lpAddress,SIZE_T dwSize,DWORD flAlloc
 }
   
 //!WINBOOL WINAPI VirtualProtect (LPVOID lpAddress, SIZE_T dwSize, DWORD flNewProtect, PDWORD lpflOldProtect)
-inl WINBOOL WINAPI pipe_VirtualProtect (LPVOID lpAddress, SIZE_T dwSize, DWORD flNewProtect, PDWORD lpflOldProtect){
+inl WINBOOL WINAPI sys_VirtualProtect (LPVOID lpAddress, SIZE_T dwSize, DWORD flNewProtect, PDWORD lpflOldProtect){
 	showfunc_opt("VirtualProtect( lpAddress %p, dwSize: %d, flNewProtect: %d, lpflOldProtect:%p )", lpAddress, dwSize, flNewProtect, lpflOldProtect);
 	#ifdef USE_Windows_VirtualAlloc
     return VirtualProtect(lpAddress, dwSize, flNewProtect, lpflOldProtect); 
@@ -134,7 +134,7 @@ inl WINBOOL WINAPI pipe_VirtualProtect (LPVOID lpAddress, SIZE_T dwSize, DWORD f
 }
 
 //!BOOL VirtualFree(LPVOID lpAddress,SIZE_T dwSize,DWORD  dwFreeType)
-inl BOOL WINAPI pipe_VirtualFree(LPVOID lpAddress,SIZE_T dwSize,DWORD  dwFreeType){
+inl BOOL WINAPI sys_VirtualFree(LPVOID lpAddress,SIZE_T dwSize,DWORD  dwFreeType){
 	showfunc_opt("VirtualFree( lpAddress %p, dwSize: %d, dwFreeType:%d )", lpAddress, dwSize, dwFreeType);
 	#ifdef USE_Windows_VirtualAlloc
     return VirtualFree(lpAddress, dwSize, dwFreeType); 
