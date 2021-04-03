@@ -54,9 +54,14 @@ That said, XE-Loader will not run every existing executable, instead, it gives y
 ![Doc_generic](wiki/doc/img/Doc_FileFormat.png)
 
 
+## How to build?
+
+[See our wiki](https://github.com/VLiance/XE-Loader/wiki)
+
+
 ## How to create an XE-Loader compatible binary?
 
-See our wiki
+[See our wiki](https://github.com/VLiance/XE-Loader/wiki)
 
 
 ## Examples
