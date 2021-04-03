@@ -41,7 +41,7 @@
 
 #include "XE/FT_Custom.inc"
 
-#include "XE/FuncTable/FT_Memory.h"
+#include "XE/FuncTable/FT_mem.h"
 #include "XE/Module/PE/FT_pe.h"
 #include "XE/Module/ELF/FT_elf.h"
 
@@ -56,7 +56,7 @@ fn void __deregister_frame(void* ptr);
 
 #ifdef HAVE_OPERATOR_NEW_INT
 fn uint8_t* _Znwj(uint32_t);//new
-fn uint8_t* _Znaj(uint32_t);//new
+fn uint8_t* _Znaj(uint32_t);//ne
 #endif
 
 #ifdef HAVE_OPERATOR_NEW_LONG
