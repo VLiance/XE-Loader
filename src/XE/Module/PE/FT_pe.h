@@ -17,5 +17,4 @@
  
 #include "FT_Thread.h"
 #include "FT_Sys.h"
-#include "FT_Pipe.h"
 

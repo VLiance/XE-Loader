@@ -21,7 +21,7 @@
 */
 
 //!HMODULE LoadLibraryW(LPCWSTR lpLibFileName)
-inl HMODULE WINAPI imp_LoadLibraryW(LPCWSTR lpLibFileName){
+inl HMODULE WINAPI impl_LoadLibraryW(LPCWSTR lpLibFileName){
 
 	int len = wcslen_(lpLibFileName);
 	byte_t aVLA[len + sizeof(fptr_t)];
@@ -35,11 +35,11 @@ inl HMODULE WINAPI imp_LoadLibraryW(LPCWSTR lpLibFileName){
 	char aVLA[len];
 	W2CStr(aVLA, lpLibFileName,len);
 	*/
-	showinf("\nTODO: imp_LoadLibraryW" , "");
+	showinf("\nTODO: impl_LoadLibraryW" , "");
 }
 
 //!HMODULE LoadLibraryA(LPCSTR lpLibFileName)
-inl HMODULE WINAPI imp_LoadLibraryA(LPCSTR lpLibFileName){
+inl HMODULE WINAPI impl_LoadLibraryA(LPCSTR lpLibFileName){
 	showfunc("LoadLibraryA( lpLibFileName: %s )", lpLibFileName);
 	#ifdef USE_Windows_LoadLibrary
 		HMODULE _ret = LoadLibraryA(lpLibFileName);
@@ -52,7 +52,7 @@ inl HMODULE WINAPI imp_LoadLibraryA(LPCSTR lpLibFileName){
 
 //!HMODULE WINAPI LoadLibraryExA (LPCSTR lpLibFileName, HANDLE hFile, DWORD dwFlags)
 //!HMODULE WINAPI LoadLibraryExW (LPCWSTR lpLibFileName, HANDLE hFile, DWORD dwFlags)
-HMODULE WINAPI imp_LoadLibraryExA (LPCSTR lpLibFileName, HANDLE hFile, DWORD dwFlags){
+HMODULE WINAPI impl_LoadLibraryExA (LPCSTR lpLibFileName, HANDLE hFile, DWORD dwFlags){
 	showfunc("LoadLibraryExA( lpLibFileName: %s, dwFlags: %d )", lpLibFileName, dwFlags);
 	#ifdef USE_Windows_LoadLibrary
 		HMODULE _ret = LoadLibraryExA(lpLibFileName, dwFlags);
@@ -61,9 +61,9 @@ HMODULE WINAPI imp_LoadLibraryExA (LPCSTR lpLibFileName, HANDLE hFile, DWORD dwF
 		return (HMODULE)Xe_AddLibrary(lpLibFileName);
 	#endif
 }
-HMODULE WINAPI imp_LoadLibraryExW (LPCWSTR lpLibFileName, HANDLE hFile, DWORD dwFlags){
+HMODULE WINAPI impl_LoadLibraryExW (LPCWSTR lpLibFileName, HANDLE hFile, DWORD dwFlags){
 
-	showinf("TODO imp_LoadLibraryExW", "");
+	showinf("TODO impl_LoadLibraryExW", "");
 /* ==>  FIXME convert this C++ code to C VLA
 	WStr _swFile(lpLibFileName);const char* _sFile = _swFile.ToCStr();
 	showfunc("LoadLibraryExW( lpLibFileName: %s, dwFlags: %d )", _sFile, dwFlags);
@@ -77,7 +77,7 @@ HMODULE WINAPI imp_LoadLibraryExW (LPCWSTR lpLibFileName, HANDLE hFile, DWORD dw
 }
 
 //!WINBOOL WINAPI FreeLibrary (HMODULE hLibModule)
-WINBOOL WINAPI imp_FreeLibrary(HMODULE hLibModule){
+WINBOOL WINAPI impl_FreeLibrary(HMODULE hLibModule){
 	#ifdef USE_Windows_LoadLibrary
 		WINBOOL _ret = FreeLibrary(hLibModule);
 		if(!_ret){sys_GetLastError();}return _ret;
@@ -87,7 +87,7 @@ WINBOOL WINAPI imp_FreeLibrary(HMODULE hLibModule){
 }
 
 //!FARPROC GetProcAddress(HMODULE hModule,LPCSTR  lpProcName)
-FARPROC WINAPI  imp_GetProcAddress(  HMODULE hModule, LPCSTR  lpProcName){
+FARPROC WINAPI  impl_GetProcAddress(  HMODULE hModule, LPCSTR  lpProcName){
 	showfunc("GetProcAddress( hModule: %p, lpProcName: %s)",hModule, lpProcName);
 	#ifdef USE_Windows_GetProcAddress
 		return GetProcAddress(hModule, lpProcName);
@@ -122,7 +122,7 @@ FARPROC WINAPI  imp_GetProcAddress(  HMODULE hModule, LPCSTR  lpProcName){
 	#endif
 }
 
-void * imp_memset ( void * ptr, int value, size_t num ){
+void * impl_memset ( void * ptr, int value, size_t num ){
 	printf("\n Memest!\n ");
 	printf("\n -Memest!\n ");
 	printf("\n -Memest!\n ");
@@ -130,7 +130,7 @@ void * imp_memset ( void * ptr, int value, size_t num ){
 }
 
 /*
-//!VOID imp_chkstk(DWORD size)
+//!VOID impl_chkstk(DWORD size)
 static void* ntdll = 0;
 typedef ULONG  (*funcPtr_chkstk)();
 static funcPtr_chkstk _func = 0;
@@ -139,7 +139,7 @@ static funcPtr_chkstk _func = 0;
 //WINIWE: https://github.com/wine-mirror/wine/blob/master/dlls/ntdll/signal_i386.c
 
 //This issue was not only due to ntdll.dll. Potentially it could be on "large-address-aware" with JIT.I have missed to consider the case that JIT memory pool would not be within 2GB area.
-ULONG imp_chkstk(){
+ULONG impl_chkstk(){
 	//Windows pages in extra stack for your thread as it is used. At the end of the stack, there is one guard page mapped as inaccessible memory -- if the program accesses it (because it is trying to use more stack than is currently mapped), there's an access violation. The OS catches the fault, maps in another page of stack at the same address as the old guard page, creates a new guard page just beyond the old one, and resumes from the instruction that caused the violation.
 	//alloca is partially intrinsic function, implemented by compiler. but internally it call _alloca_probe_16 (for x86) or __chkstk(x64) for move guard page down on stack. implementation of this functions exist in alloca16.obj and chkstk.objwhich can be found in VC subfolder (where exacly depended from VC version) - you can add this obj for link process or even first convert it to lib. also in latest WDK libs - exist ntdllp.lib (not confuse with ntdll.lib) - it also containing all need for implementation ( ntdll.dll export _chkstk (for x86) and __chkstk (for x64))
 	showfunc("chkstk( )", "");
@@ -166,14 +166,14 @@ ULONG imp_chkstk(){
  */
  
  //!FILE * fopen ( const char * filename, const char * mode )
- FILE * imp_fopen ( const char * filename, const char * mode ){
+ FILE * impl_fopen ( const char * filename, const char * mode ){
 	showfunc("fopen( filename: %p, mode: %s )", filename,mode);
 	return fopen(filename, mode);
  }
 
  //!size_t wcstombs (char* dest, const wchar_t* src, size_t max);
  //Important: Windows wchar_t is 16-bit & for Linux, wchar_t is 32 bit.
- size_t imp_wcstombs(char* dest, const wchar_t* src, size_t max){
+ size_t impl_wcstombs(char* dest, const wchar_t* src, size_t max){
 // wprintf(L"\nTHE SOURCE! %c\n " ,src);
 	showfunc("wcstombs( dest: %p, src: %p , max: %d )", dest,src,max);
 	if(!dest){ return 0;}
@@ -187,7 +187,7 @@ ULONG imp_chkstk(){
  
 //!void __cdecl _initterm(PVFV *,PVFV *);
 typedef void (CDECL *__PVFV)();
-inl void imp_initterm(__PVFV* ppfn,__PVFV* end){
+inl void impl_initterm(__PVFV* ppfn,__PVFV* end){
 	showfunc("_initterm( ppfn: %p, end: %p )", ppfn,end);
 	do {
        __PVFV pfn =  *++ppfn;
@@ -199,7 +199,7 @@ inl void imp_initterm(__PVFV* ppfn,__PVFV* end){
 
 //!void __cdecl _initterm(PVFV *,PVFV *);
 typedef int  (CDECL *__PIFV)();
-inl int imp_initterm_e(__PIFV* ppfn,__PIFV* end){
+inl int impl_initterm_e(__PIFV* ppfn,__PIFV* end){
 	showfunc("_initterm_e( ppfn: %p, end: %p )", ppfn,end);
 	do {
         __PIFV pfn = *++ppfn;
@@ -216,20 +216,20 @@ inl int imp_initterm_e(__PIFV* ppfn,__PIFV* end){
 
 //!_CRTIMP char ***__cdecl __p__environ(void)
 char* _environ_[] = {"test1", "test2"};
-inl char*** imp_p__environ(void){
+inl char*** impl_p__environ(void){
 	showfunc("__p__environ( )", "");
 	//return &_environ; //Standard one
 	return (char***)&_environ_; //Custom
 }
 
 //!void __cdecl _lock(int locknum)
-inl void  imp_lock(int locknum){
+inl void  impl_lock(int locknum){
 	showfunc_opt("_lock( locknum: %d )", locknum);
 	//_lock(locknum);
 }
 
 //!void __cdecl _unlock(int locknum)
-inl void  imp_unlock(int locknum){
+inl void  impl_unlock(int locknum){
 	showfunc_opt("_unlock( locknum: %d )", locknum);
 	//_unlock(locknum);
 }
@@ -238,7 +238,7 @@ inl void  imp_unlock(int locknum){
 #define _UNKNOWN_APP    0
 #define _CONSOLE_APP    1
 #define _GUI_APP        2
-void imp_set_app_type (int at){
+void impl_set_app_type (int at){
 	switch(at){
 		case _GUI_APP:showfunc("_set_app_type( at: %d [_GUI_APP] )",at);break;
 		case _CONSOLE_APP:showfunc("_set_app_type( at: %d [_CONSOLE_APP] )",at);break;
@@ -249,7 +249,7 @@ void imp_set_app_type (int at){
 // struct MSVCRT_lconv * CDECL MSVCRT_localeconv(void)
 // __declspec(dllimport) int __cdecl __lconv_init (void);
 //!int __lconv_init(void)
-int imp_lconv_init(void){
+int impl_lconv_init(void){
 	showfunc("__lconv_init( )", "");
 	/* char Char = (char) UCHAR_MAX;
 	  _lconv.int_frac_digits = Char;
@@ -262,7 +262,7 @@ int imp_lconv_init(void){
 
 //!const char** __p__acmdln( void )
 const char* __acmdln = "Test cmdLine";
-char** imp_p__acmdln( void ){
+char** impl_p__acmdln( void ){
 	showfunc("p__acmdln( )","");
 	//__acmdln = (char*)malloc(8192);
     return (char**)&__acmdln;
@@ -270,7 +270,7 @@ char** imp_p__acmdln( void ){
 }	
 
 //!_onexit_t _onexit(_onexit_t function)
-FUNC_ imp_onexit(FUNC_ _func){
+FUNC_ impl_onexit(FUNC_ _func){
 	showfunc("_onexit( fn: %p )", _func);
 	//TODO _onexit can have multiple functions, must be added to a list
 	//https://github.com/shihyu/learn_c/blob/master/vc_lib_src/src/onexit.c
@@ -280,18 +280,18 @@ FUNC_ imp_onexit(FUNC_ _func){
 #define	_O_TEXT_	0x4000	// CR-LF in file becomes LF in memory. 
 #define	_O_BINARY_	0x8000	// Input and output is not translated. 
 int _fmode_ = _O_TEXT_;
-int* imp_p__fmode(){
+int* impl_p__fmode(){
 	showfunc("__p__fmode( )", "");
 	_fmode_ = _O_TEXT_;
 	return &_fmode_;
 }
 #define _IOCOMMIT   0x4000
 int _commode = _IOCOMMIT;
-int * imp_p__commode(){
+int * impl_p__commode(){
 	return &_commode;
 }
 char *__initenv = NULL;     /* pointer to initial environment block */
-int * imp_p__initenv(){
+int * impl_p__initenv(){
 	return &_commode;
 }
 
@@ -308,7 +308,7 @@ const char* envp_[] = { "env0", "env1", "env2" };
 const char* argv_[] = { "cwc", "-c", "ddd.c" };
 
 //!int __getmainargs(int * _Argc,char *** _Argv,char *** _Env,int _DoWildCard,_startupinfo * _StartInfo)
-int imp_getmainargs(int* _Argc, char*** _Argv, char*** _Env, int _DoWildCard, void* _StartInfo){ //_StartInfo :Other information to be passed to the CRT DLL.
+int impl_getmainargs(int* _Argc, char*** _Argv, char*** _Env, int _DoWildCard, void* _StartInfo){ //_StartInfo :Other information to be passed to the CRT DLL.
 	showfunc("__getmainargs( _Argc: %p, _Argv: %p, _Env: %p, _DoWildCard: %d, _StartInfo: %p )", _Argc, _Argv, _Env, _DoWildCard, _StartInfo);
 	
 	LPSTARTUPINFO lpStartupInfo = _StartInfo;
@@ -343,7 +343,7 @@ int imp_getmainargs(int* _Argc, char*** _Argv, char*** _Env, int _DoWildCard, vo
 }
 
 //!int _vscprintf(const char *format,va_list argptr)
-inl int imp_vscprintf(const char *format,va_list argptr){
+inl int impl_vscprintf(const char *format,va_list argptr){
 	showfunc_opt("_vscprintf( )", "");
     int retval = 0; 
     va_list argcopy;
@@ -354,7 +354,7 @@ inl int imp_vscprintf(const char *format,va_list argptr){
  }
 
 //!char *_strdup(const char *strSource)
-inl char* imp_strdup(const char *strSource){
+inl char* impl_strdup(const char *strSource){
 	showfunc_opt("_strdup( strSource: %s )", strSource);
 	size_t size = strlen(strSource) + 1;
 	char* str = (char*)malloc(size);
@@ -363,7 +363,7 @@ inl char* imp_strdup(const char *strSource){
 }
 
 //!char * strncpy( char * destination, const char * source, size_t num )
-inl char* imp_strncpy( char * destination, const char * source, size_t num ){
+inl char* impl_strncpy( char * destination, const char * source, size_t num ){
 	showfunc_opt("strncpy( destination: %p, source: %p, num: %d )", destination, source, num);
 	size_t i = 0;
 	while(i++ != num && (*destination++ = *source++));
@@ -371,25 +371,25 @@ inl char* imp_strncpy( char * destination, const char * source, size_t num ){
 }
 
 //!int isspace ( int c )
-inl int imp_isspace( int c ){
+inl int impl_isspace( int c ){
 	showfunc_opt("isspace( c %d )", c);
 	return c == ' ' || c == '\t' || c == '\n' || c == '\v' || c == '\f' || c == '\r'; // || whatever other char you consider space
 }
 
 //!int isupper ( int c )
-inl int  imp_isupper( int c ){
+inl int  impl_isupper( int c ){
 	showfunc_opt("isupper( c %d )", c);
 	return (c >= 'A' && c <= 'Z');
 }
 
 //!int islower ( int c )
-inl int  imp_islower( int c ){
+inl int  impl_islower( int c ){
 	showfunc_opt("islower( c %d )", c);
 	return (c >= 'a' && c <= 'z');
 }
 
 //!int abs(int x)
-inl int imp_abs(int x){
+inl int impl_abs(int x){
 	showfunc_opt("abs( x %d )", x);
 	if(x < 0){return x*-1;}return x;
 }
@@ -398,27 +398,27 @@ inl int imp_abs(int x){
 
 //!LPSTR GetCommandLineA(){
 //!LPWSTR GetCommandLineW(){
-LPSTR imp_GetCommandLineA(){
+LPSTR impl_GetCommandLineA(){
 	showfunc("GetCommandLineA( )", "");
 	#ifdef Func_Win
 	return GetCommandLineA();
 	#else
 	//TODO Real Arg
 	wchar_t* arg = (wchar_t*)L"Test ExeLoader winMain input arg";
-	wchar_t* alloc = (wchar_t*)imp_LocalAlloc(0, sizeof(L"Test ExeLoader winMain input arg") ); //We must alloc with LocalAlloc because windows will call LocalFree later
+	wchar_t* alloc = (wchar_t*) impl_LocalAlloc(0, sizeof(L"Test ExeLoader winMain input arg") ); //We must alloc with LocalAlloc because windows will call LocalFree later
 	memcpy(alloc, arg, sizeof(L"Test ExeLoader winMain input arg"));
 	showfunc_ret("GetCommandLineA[LPSTR: %p]", alloc);
 	return (LPSTR)alloc; 
 	#endif
 }
-LPWSTR WINAPI imp_GetCommandLineW(){
+LPWSTR WINAPI impl_GetCommandLineW(){
 	showfunc("GetCommandLineW( )", "");
 	#ifdef Func_Win
 	return GetCommandLineW();
 	#else
 	//TODO Real Arg
 	wchar_t* arg = (wchar_t*)L"Test ExeLoader winMain input arg";
-	wchar_t* alloc = (wchar_t*)imp_LocalAlloc(0, sizeof(L"Test ExeLoader winMain input arg") ); //We must alloc with LocalAlloc because windows will call LocalFree later
+	wchar_t* alloc = (wchar_t*) impl_LocalAlloc(0, sizeof(L"Test ExeLoader winMain input arg") ); //We must alloc with LocalAlloc because windows will call LocalFree later
 	memcpy(alloc, arg, sizeof(L"Test ExeLoader winMain input arg"));
 	showfunc_ret("GetCommandLineW[LPWSTR: %p]", alloc);
 	return (LPWSTR)alloc; 
@@ -426,7 +426,7 @@ LPWSTR WINAPI imp_GetCommandLineW(){
 }
 
 //!LPWSTR* CommandLineToArgvW(LPCWSTR lpCmdLine,int* pNumArgs)
-inl LPWSTR* WINAPI imp_CommandLineToArgvW(LPCWSTR lpCmdLine,int* pNumArgs){
+inl LPWSTR* WINAPI impl_CommandLineToArgvW(LPCWSTR lpCmdLine,int* pNumArgs){
 	showfunc("CommandLineToArgvW( lpCmdLine: %p, pNumArgs: %p )", lpCmdLine, pNumArgs);
 	#ifdef Func_Win
 	return CommandLineToArgvW(lpCmdLine, pNumArgs);
@@ -441,7 +441,7 @@ inl LPWSTR* WINAPI imp_CommandLineToArgvW(LPCWSTR lpCmdLine,int* pNumArgs){
 //============ //
 
 //!int snprintf ( char * s, size_t n, const char * format, ... )
-inl int  imp_snwprintf( wchar_t* s, size_t n, const wchar_t* format, ... ){
+inl int  impl_snwprintf( wchar_t* s, size_t n, const wchar_t* format, ... ){
 	showfunc_opt("snwprintf( s: %p, n: %d, format: %p, ... )", s,n,format); 
 /*
 	size_t len = wcslen(format);
@@ -467,9 +467,8 @@ inl int  imp_snwprintf( wchar_t* s, size_t n, const wchar_t* format, ... ){
 }
 
 
-
 //!int fwprintf (FILE* stream, const wchar_t* format, ...)
-inl int imp_fwprintf (FILE* stream, const wchar_t* format, ...){
+inl int impl_fwprintf (FILE* stream, const wchar_t* format, ...){
 	showfunc("fwprintf( stream: %p, format: %p, ... )", stream, format); 
 	
 	wchar_t BUFFER[8192]; //TODO GLOBAL BUFF or malloc?
@@ -485,7 +484,7 @@ inl int imp_fwprintf (FILE* stream, const wchar_t* format, ...){
 }
 
 //!int vsnprintf (char * __restrict__ __stream, size_t __n, const char * __restrict__ __format, va_list __local_argv);
-int imp_vsnprintf (char* s, size_t n, const char *  format, va_list __local_argv){
+int impl_vsnprintf (char* s, size_t n, const char *  format, va_list __local_argv){
 
 	showfunc_opt("vsnprintf( s: %p, n: %u, format: %s, ... )", s, n, format);
 	#ifdef USE_limit_on_vsnprintf
@@ -496,7 +495,7 @@ int imp_vsnprintf (char* s, size_t n, const char *  format, va_list __local_argv
 }
 
 //!int vsprintf (char * s, const char * format, va_list arg )
-int imp_vsprintf (char* s, const char *  format, va_list __local_argv){
+int impl_vsprintf (char* s, const char *  format, va_list __local_argv){
 	showfunc_opt("vsprintf( s: %p, format: %s, ... )", s,  format);
 	int ret = vsprintf(s, format, __local_argv);
 	showinf("vsprintf_result: %s", s);
@@ -504,20 +503,20 @@ int imp_vsprintf (char* s, const char *  format, va_list __local_argv){
 }
 
 //!UINT ___lc_codepage_func(void)
-UINT imp_lc_codepage_func(void){
+UINT impl_lc_codepage_func(void){
 	showfunc_opt("___lc_codepage_func( )", ""); 
 	return 0; //TODO validate?
 }
 
 //!int _stricmp(const char *string1,const char *string2)
-int imp_stricmp(const char *string1,const char *string2){
+int impl_stricmp(const char *string1,const char *string2){
 	showfunc_opt("_stricmp( string1: %p, string2: %p )", ""); 
 	return stricmp(string1, string2);
 }
 
 //!int fprintf ( FILE * stream, const char * format, ... )
-//int imp_fprintf( FILE* stream, const char* format, va_list __local_argv){
-int imp_fprintf( FILE* stream, const char* format, ...){
+//int impl_fprintf( FILE* stream, const char* format, va_list __local_argv){
+int impl_fprintf( FILE* stream, const char* format, ...){
 	showfunc_opt("fprintf( stream: %p, format: %s, ... )", stream,format); 
 	va_list _arg_;va_start (_arg_, format);
 
@@ -540,8 +539,8 @@ int imp_fprintf( FILE* stream, const char* format, ...){
 }
 
 //!int printf ( const char * format, ... )
-//int imp_printf( const char* format, va_list __local_argv){
-int imp_printf( const char* format, ...){
+//int impl_printf( const char* format, va_list __local_argv){
+int impl_printf( const char* format, ...){
 	showfunc_opt("printf( stream: %p, format: %s, ... )",format); 
 	va_list _arg_;va_start (_arg_, format);
 	#ifdef USE_PRINTF
@@ -562,72 +561,72 @@ int imp_printf( const char* format, ...){
 }
 
 //!size_t fwrite ( const void * ptr, size_t size, size_t count, FILE * stream )
-size_t imp_fwrite( const void * ptr, size_t size, size_t count, FILE * stream ){
+size_t impl_fwrite( const void * ptr, size_t size, size_t count, FILE * stream ){
 	showfunc_opt("fwrite( ptr: %p, size: %d, count: %d, stream: %p )", ptr,size, count, stream); 
 	return fwrite(ptr,size, count, stdout);
 	//printf("%s", _char);
 }
 
 //!int fflush ( FILE * stream )
-int imp_fflush( FILE * stream ){
+int impl_fflush( FILE * stream ){
 	showfunc("fflush( stream: %p )", stream); 
 	return 0;
 }
 
 //!int fputc(int char, FILE *stream)
-int imp_fputc(int _char, FILE *stream){
+int impl_fputc(int _char, FILE *stream){
 	showfunc_opt("fputc( _char: %d, stream: %p, ... )", _char,stream); 
 	_printf("%c", _char);
 	return _char;
 }
 
 //!int putc(int char, FILE *stream)
-int imp_putc(int _char, FILE *stream){
+int impl_putc(int _char, FILE *stream){
 	showfunc_opt("putc( _char: %d, stream: %p, ... )", _char,stream); 
 	_printf("%c", _char);
 	return _char;
 }
 //!int putchar ( int character )
-int imp_putchar( int _char ){
+int impl_putchar( int _char ){
 	showfunc_opt("putc( character: %c )", _char); 
 	_printf("%c", _char);
 	return _char;
 }
 
 //!int puts ( const char * str )
-int imp_puts( const char * str ){
+int impl_puts( const char * str ){
 	showfunc_opt("puts( _char: %s )", str); 
 	return _printf(str);
 }
 
 //!int fputs ( const char * str, FILE * stream )
-int imp_fputs ( const char * str, FILE * stream ){
+int impl_fputs ( const char * str, FILE * stream ){
 	showfunc_opt("puts( _char: %s, stream: %p)", str, stream); 
 	return _printf(str);
 }
 
 //!int sprintf ( char * str, const char * format, ... )
-int imp_sprintf( char * str, const char * format, va_list __local_argv){
+int impl_sprintf( char * str, const char * format, va_list __local_argv){
 	showfunc_opt("sprintf( s: %p, format: %p, ... )", str,format); 
 	return sprintf(str, format, __local_argv);
 }
 
 //!int sprintf ( char * str, const char * format, ... )
-int imp_snprintf( char * str, size_t n, const char * format, va_list __local_argv){
+int impl_snprintf( char * str, size_t n, const char * format, va_list __local_argv){
 	showfunc_opt("snprintf( s: %p, format: %p, ... )", str,format); 
 	return snprintf(str, n, format, __local_argv);
 }
 
 //!int* CDECL _errno(void )
 static int _errno_ = 0;
-int* imp_errno(void ){
+int* impl_errno(void ){
 	showfunc_opt("errno()", ""); 
 	//  return &(msvcrt_get_thread_data()->thread_errno);
 	return &_errno_;
 }
 
 //!long _lseek(int fd,long offset,int origin)
-long imp_lseek(int fd,long offset,int origin){
+long impl_lseek(int fd,long offset,int origin){
 	showfunc_opt("_lseek( fd: %d, offset: %d, origin: %d )", fd, offset, origin); 
 	//File descriptor 0 stdint, 1 stdout, 2 strerr
 	//If execution is allowed to continue, these functions set errno to EBADF and return -1L.
@@ -635,7 +634,7 @@ long imp_lseek(int fd,long offset,int origin){
 }
 
 //!int _write(int fd,const void *buffer, unsigned int count)
-int imp_write(int fd,const void* buffer, unsigned int count){
+int impl_write(int fd,const void* buffer, unsigned int count){
 	showfunc_opt("_write( fd: %d, buffer: %p, count: %d )", fd, buffer, count);
 	int _bytes = _printf ("%.*s\n",count, buffer)-1;
 	if(_bytes > count){_bytes = count;}
@@ -643,14 +642,14 @@ int imp_write(int fd,const void* buffer, unsigned int count){
 }
 
 //!int _isatty( int fd )
-int imp_isatty( int fd ){
+int impl_isatty( int fd ){
 	showfunc_opt("isatty( fd: %d)", fd);
 	//_isatty returns a nonzero value if the descriptor is associated with a character device. Otherwise, _isatty returns 0.
 	return 1;
 }
 
 //!void __register_frame(void*)
-void imp_register_frame(void* ptr){	//!__USING_SJLJ_EXCEPTIONS__
+void impl_register_frame(void* ptr){	//!__USING_SJLJ_EXCEPTIONS__
 	// libgcc defines the __register_frame function to dynamically register new
 	// dwarf frames for exception handling. This functionality is not portable
 	// across compilers and is only provided by GCC. We use the __register_frame
@@ -660,12 +659,12 @@ void imp_register_frame(void* ptr){	//!__USING_SJLJ_EXCEPTIONS__
 	showfunc_opt("__register_frame( ptr: %p)", ptr);
 }
 //!void __deregister_frame(void*)	
-void imp_deregister_frame(void* ptr){
+void impl_deregister_frame(void* ptr){
 	showfunc_opt("__deregister_frame( ptr: %p)", ptr);
 }
 
 //!void exit(int status)
-void imp_exit(int status){
+void impl_exit(int status){
 	showfunc("exit(status: %d)", status);
 	fn void GDB_Func_Break();
 	GDB_Func_Break();
@@ -674,7 +673,7 @@ void imp_exit(int status){
 }
 
 //!void abort (void)
-void imp_abort (void){
+void impl_abort (void){
 	showfunc("abort", "");
 	fn void GDB_Func_Break();
 	GDB_Func_Break();
@@ -683,14 +682,14 @@ void imp_abort (void){
 }
 
 //! int __cdecl _isctype(int _C,int _Type)
-int imp_isctype(int _C,int _Type){
+int impl_isctype(int _C,int _Type){
 	showfunc("_isctype( _C: %d, _Type: %d)", _C, _Type);
 	//return _isctype(_C, _Type);
 	return 1; //or 0?
 }
 
 //!size_t strlen ( const char * str )
-int imp_strlen(const char * str ){
+int impl_strlen(const char * str ){
 	showfunc_opt("strlen( str: %s)", str);
 	if(str == 0){ //Std will not check for null ptr!
 		err_print("strlen on null ptr!");
@@ -700,20 +699,20 @@ int imp_strlen(const char * str ){
 }
 
 //!char* strpbrk( const char * str1, const char * str2 )
-char* imp_strpbrk( const char* str1, const char* str2 ){
+char* impl_strpbrk( const char* str1, const char* str2 ){
 	showfunc("strpbrk( str1: %s, str2: %s)", str1, str2);
 	return strpbrk(str1, str2);
 }
 
 //!int _putenv(const char *envstring)
-int imp_putenv(const char *envstring){
+int impl_putenv(const char *envstring){
 	showfunc("putenv( envstring: %s)", envstring);
 	return 0;//successful 
 }
 
 
 //!void (*signal(int sig, void (*func)(int)))(int)
-void (*imp_signal(int sig, void (*func)(int)))(int){
+void (*impl_signal(int sig, void (*func)(int)))(int){
 	showfunc("signal(signal: %d, func: %p)", sig, func);
 	signal(sig, func);
 }
@@ -721,7 +720,7 @@ void (*imp_signal(int sig, void (*func)(int)))(int){
 #include <io.h> //_open / _get_osfhandle / _fileno
 
 //!int _access( const char *path, int mode)
-int imp_access( const char* path, int mode){
+int impl_access( const char* path, int mode){
 	showfunc("_access( path: %s, mode: %d)", path, mode);
 	//return 0;//Each function returns 0 if the file has the given mode. The function returns -1 if the named file does not exist or does not have the given mode; in this case, errno is set as shown in the following table.
 	#ifdef Func_Win
@@ -731,7 +730,7 @@ int imp_access( const char* path, int mode){
 }
 
 //!int _fileno(FILE *stream)
-int imp_fileno(FILE* stream){
+int impl_fileno(FILE* stream){
 	showfunc("_fileno( stream: %p)", stream);
 	#ifdef Func_Win
 	return _fileno(stream);//continue? 
@@ -743,7 +742,7 @@ int imp_fileno(FILE* stream){
 #ifndef EBADF
 #define EBADF            9      /* Bad file number */
 #endif
-intptr_t imp_get_osfhandle(int fd){
+intptr_t impl_get_osfhandle(int fd){
 	showfunc("_get_osfhandle( fd: %d )", fd); 
 	#ifdef Func_Win
 	intptr_t handle = _get_osfhandle(fd);
@@ -756,7 +755,7 @@ intptr_t imp_get_osfhandle(int fd){
 }
 
 //!int _open(const char *filename, int oflag, [int pmode])
-int imp_open(const char *filename, int oflag, int pmode){
+int impl_open(const char *filename, int oflag, int pmode){
 	showfunc("_open(filename: '%s', oflag: %d, pmode: %d)", filename, oflag, pmode);
 	#ifdef Func_Win
 	return _open(filename, oflag, pmode);
@@ -765,7 +764,7 @@ int imp_open(const char *filename, int oflag, int pmode){
 }
 
 //!char *__cdecl strerror(int) __MINGW_ATTRIB_DEPRECATED_SEC_WARN;
-char* imp_strerror(int _errno){
+char* impl_strerror(int _errno){
 	showfunc("strerror(_errno: %d)", _errno);
 	char* err  = strerror(_errno);
 	showinf("strerror: %s", err);
@@ -788,14 +787,14 @@ struct _stati64 {
     time_t st_mtime; //Time of the last modification of the file.
     time_t st_ctime; //Time of the creation of the file.
 };
-int imp_stati64(const char* __path, struct _stati64* __statbuf){
+int impl_stati64(const char* __path, struct _stati64* __statbuf){
 	showfunc("_stati64(__path: '%s', __statbuf: %p)", __path, __statbuf);
 	//TODO get  last modification of the file.
 	return 0;
 	//The return value is 0 if the call was successful, otherwise -1 is returned and errno contains the reason. The buffer is not touched unless the call is successful. 
 }
 //!int _fstati64(int fd, struct _stati64 *buffer)
-int imp_fstati64(int fd, struct _stati64* buffer){
+int impl_fstati64(int fd, struct _stati64* buffer){
 	showfunc("_fstati64(fd: '%d', buffer: %p)", fd, buffer);
 	//TODO get  last modification of the file.
 	return 0;
@@ -804,19 +803,19 @@ int imp_fstati64(int fd, struct _stati64* buffer){
 
 
 //!int _read(int const fd, void * const buffer, unsigned const buffer_size)
-int imp_read(int const fd, void* const buffer, unsigned const buffer_size){
+int impl_read(int const fd, void* const buffer, unsigned const buffer_size){
 	showfunc("_read(fd: '%d', buffer: %p, buffer_size: %d)", fd, buffer, buffer_size);
 	return _read( fd, buffer, buffer_size);
 }
 
 //!int _close(int fd)
-int imp_close(int fd){
+int impl_close(int fd){
 	showfunc("_close(fd: %d )", fd);
 	return _close( fd);
 }
 
-//!int imp_dup(int fd)
-int imp_dup(int fd){
+//!int impl_dup(int fd)
+int impl_dup(int fd){
 	showfunc("_dup((fd: %d )", fd);
 	#ifdef Func_Win
 	int ret = _dup( fd);
@@ -827,7 +826,7 @@ int imp_dup(int fd){
 }
 
 //!WINBASEAPI WINBOOL WINAPI WriteFile (HANDLE hFile, LPCVOID lpBuffer, DWORD nNumberOfBytesToWrite, LPDWORD lpNumberOfBytesWritten, LPOVERLAPPED lpOverlapped);
-WINBOOL WINAPI imp_WriteFile(HANDLE hFile, LPCVOID lpBuffer, DWORD nNumberOfBytesToWrite, LPDWORD lpNumberOfBytesWritten, LPOVERLAPPED lpOverlapped){
+WINBOOL WINAPI impl_WriteFile(HANDLE hFile, LPCVOID lpBuffer, DWORD nNumberOfBytesToWrite, LPDWORD lpNumberOfBytesWritten, LPOVERLAPPED lpOverlapped){
 	showfunc("WriteFile(hFile: %p, lpBuffer: %p, nNumberOfBytesToWrite: %d, lpNumberOfBytesWritten: %p, lpOverlapped: %p)", hFile, lpBuffer, nNumberOfBytesToWrite, lpNumberOfBytesWritten, lpOverlapped);
 	/*
 	//Is that what we want?
@@ -843,7 +842,7 @@ WINBOOL WINAPI imp_WriteFile(HANDLE hFile, LPCVOID lpBuffer, DWORD nNumberOfByte
 #include <process.h>
 //int __cdecl _getpid(void);
 //!int _getpid( void )
-int imp_getpid( void ){
+int impl_getpid( void ){
 	showfunc("_getpid( )", "");
 	#ifdef Func_Win
 	int ret = _getpid( );
@@ -855,7 +854,7 @@ int imp_getpid( void ){
 
 //!clock_t clock (void)
 #include <time.h> 
-clock_t imp_clock(void){ //Returns the processor time consumed by the program.
+clock_t impl_clock(void){ //Returns the processor time consumed by the program.
 	showfunc("clock( )", "");
 	clock_t _ret = clock();
 	showinf("ret: %d ", _ret);
@@ -863,13 +862,13 @@ clock_t imp_clock(void){ //Returns the processor time consumed by the program.
 }
 
 //!int ___mb_cur_max_func(void)
-int imp_mb_cur_max_func(void){ //Internal CRT function. Retrieves the maximum number of bytes in a multibyte character for the current or specified locale.
+int impl_mb_cur_max_func(void){ //Internal CRT function. Retrieves the maximum number of bytes in a multibyte character for the current or specified locale.
 	showfunc("___mb_cur_max_func( )", "");
 	return 1;
 }
 
 //!void _cexit( void )
-void imp_cexit(void){ //The _cexit function calls, in last-in, first-out (LIFO) order, the functions registered by atexit and _onexit. Then _cexit flushes all I/O buffers and closes all open streams before returning. _c_exit is the same as _exit but returns to the calling process without processing atexit or _onexit or flushing stream buffers
+void impl_cexit(void){ //The _cexit function calls, in last-in, first-out (LIFO) order, the functions registered by atexit and _onexit. Then _cexit flushes all I/O buffers and closes all open streams before returning. _c_exit is the same as _exit but returns to the calling process without processing atexit or _onexit or flushing stream buffers
 	showfunc("_cexit( )", "");
 }
 

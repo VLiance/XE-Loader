@@ -16,7 +16,7 @@
 */
 
 //!void* malloc( size_t size )
-void* imp_malloc( size_t size ){
+void* impl_malloc( size_t size ){
 	showfunc_opt("malloc( size: %d )", size); 
 
 	void* ret =  malloc(size);
@@ -27,25 +27,25 @@ void* imp_malloc( size_t size ){
 }
 
 //!void *calloc(size_t nitems, size_t size)
-void* imp_calloc(size_t nitems, size_t size){
+void* impl_calloc(size_t nitems, size_t size){
 	showfunc_opt("calloc( nitems : %d, size: %d )", nitems, size); 
 	return calloc(nitems, size);
 }
 
 //!void *realloc(void *ptr, size_t size)
-void* imp_realloc(void *ptr, size_t size){
+void* impl_realloc(void *ptr, size_t size){
 	showfunc_opt("calloc( ptr : %p, size: %d )", ptr, size); 
 	return realloc(ptr, size);
 }
 
 //!void free (void* ptr)
-void imp_free(void* ptr){
+void impl_free(void* ptr){
 	showfunc_opt("free( ptr : %p )", ptr); 
 	free(ptr);
 }
 
 //!HLOCAL WINAPI LocalAlloc (UINT uFlags, SIZE_T uBytes)
-inl HLOCAL WINAPI imp_LocalAlloc(UINT  uFlags, SIZE_T uBytes){
+inl HLOCAL WINAPI impl_LocalAlloc(UINT  uFlags, SIZE_T uBytes){
 	showfunc_opt("LocalAlloc( uFlags: %d, uBytes: %d )", uFlags, uBytes);
 //	SIZE_T* _alloc = (SIZE_T*)instance_AllocManager.ManagedCalloc(uBytes + sizeof(SIZE_T), sizeof(char));
 	SIZE_T* _alloc =     (SIZE_T*)_calloc(uBytes + sizeof(SIZE_T), char);
@@ -54,14 +54,14 @@ inl HLOCAL WINAPI imp_LocalAlloc(UINT  uFlags, SIZE_T uBytes){
 }
 
 //!SIZE_T WINAPI LocalSize (HLOCAL hMem)
-SIZE_T WINAPI imp_LocalSize(HLOCAL hMem){
+SIZE_T WINAPI impl_LocalSize(HLOCAL hMem){
 	showfunc_opt("LocalSize( hMem: %p)", hMem);
 	SIZE_T* _alloc = (SIZE_T*)hMem;_alloc--;
 	return _alloc[0];
 }
 
 //!HLOCAL WINAPI LocalFree (HLOCAL hMem)
-inl SIZE_T WINAPI imp_LocalFree(HLOCAL hMem){
+inl SIZE_T WINAPI impl_LocalFree(HLOCAL hMem){
 	showfunc_opt("LocalFree( hMem: %p)", hMem);
 	if(hMem != 0){
 		SIZE_T* _alloc = (SIZE_T*)hMem;_alloc--;
@@ -72,14 +72,14 @@ inl SIZE_T WINAPI imp_LocalFree(HLOCAL hMem){
 }
 
 //!HLOCAL WINAPI LocalReAlloc (HLOCAL hMem, SIZE_T uBytes, UINT uFlags)
-HLOCAL WINAPI imp_LocalReAlloc(HLOCAL hMem, SIZE_T uBytes, UINT uFlags){
+HLOCAL WINAPI impl_LocalReAlloc(HLOCAL hMem, SIZE_T uBytes, UINT uFlags){
 	showfunc_opt("LocalReAlloc( hMem: %p, uFlags: %d, uBytes: %d )", hMem, uFlags, uBytes);
-	imp_LocalFree(hMem);
-	return imp_LocalAlloc(0, uBytes);
+	impl_LocalFree(hMem);
+	return impl_LocalAlloc(0, uBytes);
 }
 
 //! void * _aligned_malloc(size_t size,size_t alignment)
-inl void* imp_aligned_malloc(size_t size,size_t alignment){
+inl void* impl_aligned_malloc(size_t size,size_t alignment){
 	showfunc_opt("aligned_malloc( size: %d, alignment: %d )", size,alignment);
 	void* p1; // original block
     void** p2; // aligned block
@@ -93,21 +93,21 @@ inl void* imp_aligned_malloc(size_t size,size_t alignment){
     return p2;
 }
 //!void _aligned_free (void *memblock)
-inl void imp_aligned_free(void *memblock){
+inl void impl_aligned_free(void *memblock){
 	showfunc_opt("aligned_free( memblock: %p )", memblock);
 	if(memblock != 0){
 		free(((void**)memblock)[-1]);
 	}
 }
 //! void * _aligned_realloc(void *memblock,size_t size,size_t alignment);
-inl void* imp_aligned_realloc(void *memblock,size_t size,size_t alignment){
+inl void* impl_aligned_realloc(void *memblock,size_t size,size_t alignment){
 	showfunc_opt("aligned_realloc( size: %d, alignment: %d )", size,alignment);
-	imp_aligned_free(memblock);
-	return imp_aligned_malloc(size, alignment);
+	impl_aligned_free(memblock);
+	return impl_aligned_malloc(size, alignment);
 }
 
 //!LPVOID VirtualAlloc(LPVOID lpAddress,SIZE_T dwSize,DWORD flAllocationType,DWORD flProtect)
-inl LPVOID WINAPI pipe_VirtualAlloc(LPVOID lpAddress,SIZE_T dwSize,DWORD flAllocationType,DWORD flProtect){
+inl LPVOID WINAPI sys_VirtualAlloc(LPVOID lpAddress,SIZE_T dwSize,DWORD flAllocationType,DWORD flProtect){
 	showfunc_opt("VirtualAlloc( lpAddress %p, dwSize: %d, flAllocationType: %d, flProtect:%d )", lpAddress, dwSize, flAllocationType, flProtect);
 	#ifdef USE_Windows_VirtualAlloc
 	return VirtualAlloc(lpAddress, dwSize, flAllocationType, flProtect); 
@@ -124,7 +124,7 @@ inl LPVOID WINAPI pipe_VirtualAlloc(LPVOID lpAddress,SIZE_T dwSize,DWORD flAlloc
 }
   
 //!WINBOOL WINAPI VirtualProtect (LPVOID lpAddress, SIZE_T dwSize, DWORD flNewProtect, PDWORD lpflOldProtect)
-inl WINBOOL WINAPI pipe_VirtualProtect (LPVOID lpAddress, SIZE_T dwSize, DWORD flNewProtect, PDWORD lpflOldProtect){
+inl WINBOOL WINAPI sys_VirtualProtect (LPVOID lpAddress, SIZE_T dwSize, DWORD flNewProtect, PDWORD lpflOldProtect){
 	showfunc_opt("VirtualProtect( lpAddress %p, dwSize: %d, flNewProtect: %d, lpflOldProtect:%p )", lpAddress, dwSize, flNewProtect, lpflOldProtect);
 	#ifdef USE_Windows_VirtualAlloc
     return VirtualProtect(lpAddress, dwSize, flNewProtect, lpflOldProtect); 
@@ -134,7 +134,7 @@ inl WINBOOL WINAPI pipe_VirtualProtect (LPVOID lpAddress, SIZE_T dwSize, DWORD f
 }
 
 //!BOOL VirtualFree(LPVOID lpAddress,SIZE_T dwSize,DWORD  dwFreeType)
-inl BOOL WINAPI pipe_VirtualFree(LPVOID lpAddress,SIZE_T dwSize,DWORD  dwFreeType){
+inl BOOL WINAPI sys_VirtualFree(LPVOID lpAddress,SIZE_T dwSize,DWORD  dwFreeType){
 	showfunc_opt("VirtualFree( lpAddress %p, dwSize: %d, dwFreeType:%d )", lpAddress, dwSize, dwFreeType);
 	#ifdef USE_Windows_VirtualAlloc
     return VirtualFree(lpAddress, dwSize, dwFreeType); 

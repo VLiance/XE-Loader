@@ -20,5 +20,6 @@
 ;-Wl,--image-base=0x8000000
 -Wl,--image-base=0x10000000
 >
--#Run _out/{_sOpt}/XE-Loader.exe   shapes-sapp.exe
+;-#Run _out/{_sOpt}/XE-Loader.exe  Test_Bin_XE-Loader/linux_pareted/parted
+-#Run _out/{_sOpt}/XE-Loader.exe  debugtext-context-sapp.exe
 >
