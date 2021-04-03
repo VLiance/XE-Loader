@@ -45,7 +45,7 @@
 #include "XE/Module/PE/FT_pe.h"
 #include "XE/Module/ELF/FT_elf.h"
 
-#include "FT_Imp.h"
+#include "FT_impl.h"
 
 
 //extern "C" ULONG __chkstk();

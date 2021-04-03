@@ -467,7 +467,6 @@ inl int  impl_snwprintf( wchar_t* s, size_t n, const wchar_t* format, ... ){
 }
 
 
-
 //!int fwprintf (FILE* stream, const wchar_t* format, ...)
 inl int impl_fwprintf (FILE* stream, const wchar_t* format, ...){
 	showfunc("fwprintf( stream: %p, format: %p, ... )", stream, format); 
