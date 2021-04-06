@@ -23,8 +23,8 @@
 #include <stdio.h>
 #include <errno.h>
 
-#include "XE/File.inc"  //Can be overrided
-#include "XE/Debug.inc" //Can be overrided
+#include "Xternal/xFile.inc"  //Can be overrided
+#include "Xternal/xDebug.inc" //Can be overrided
 
 extern FILE* stdout_; 
 extern FILE* stderr_;
@@ -112,6 +112,7 @@ export XE_Module*
 	
 	stdout_ = (FILE*)stdout;
 	stderr_ = (FILE*)stderr;
+
 
 	dbg_printl(" -- Xe_Load -- [%s]", _sPath);
 	if(strlen(_sPath) <= 0){
