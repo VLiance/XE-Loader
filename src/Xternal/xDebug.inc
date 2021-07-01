@@ -23,7 +23,7 @@
 #ifndef HDef_Debug
 #define HDef_Debug
 
-
+#warning ssss
 int exe_err = 0;
 
 #include <setjmp.h> 

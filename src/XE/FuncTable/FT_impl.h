@@ -432,9 +432,11 @@ inl LPWSTR* WINAPI impl_CommandLineToArgvW(LPCWSTR lpCmdLine,int* pNumArgs){
 	return CommandLineToArgvW(lpCmdLine, pNumArgs);
 	#else
 	*pNumArgs = xe_arg_nb;
-	showfunc_ret("CommandLineToArgvW(pNumArgs: %d)[exe_arg:]", *pNumArgs, *xe_arg);
+	showfunc_ret("CommandLineToArgvW(pNumArgs: %d)[exe_arg:%s]", *pNumArgs, *xe_arg);
 	//TODO convert to wide
-	return (LPWSTR*)xe_arg;
+	LPWSTR test[5] = {L"aa", L"bbb", L"CC"};
+	return (LPWSTR*)test;
+	//return (LPWSTR*)xe_arg; //CRASH!
 	#endif
 }
 
