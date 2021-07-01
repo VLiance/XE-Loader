@@ -124,7 +124,9 @@
 
 /////////////////////////////
 
-//{"wcscpy"  				,(FUNC_) wcscpy },
+{"",			"wcscpy"  				,(FUNC_) imp_wcscpy },
+
+
 //{"GetModuleFileNameW"  	,(FUNC_) GetModuleFileNameW },
 //{"_open"  				,(FUNC_) impl_open },
 

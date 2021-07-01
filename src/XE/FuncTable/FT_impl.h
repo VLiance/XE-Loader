@@ -432,11 +432,12 @@ inl LPWSTR* WINAPI impl_CommandLineToArgvW(LPCWSTR lpCmdLine,int* pNumArgs){
 	return CommandLineToArgvW(lpCmdLine, pNumArgs);
 	#else
 	*pNumArgs = xe_arg_nb;
-	showfunc_ret("CommandLineToArgvW(pNumArgs: %d)[exe_arg:%s]", *pNumArgs, *xe_arg);
+	showfunc_ret("CommandLineToArgvW(pNumArgs: %d)[exe_arg:]", *pNumArgs, *xe_arg);
 	//TODO convert to wide
-	LPWSTR test[5] = {L"aa", L"bbb", L"CC"};
-	return (LPWSTR*)test;
-	//return (LPWSTR*)xe_arg; //CRASH!
+	// LPWSTR* w_argv = CommandLineToArgvW(w_command_line, &argc);
+	// LocalFree(w_argv);
+	return (LPWSTR*)malloc(1); 
+	//return (LPWSTR*)xe_arg; 
 	#endif
 }
 
@@ -502,6 +503,15 @@ int impl_vsprintf (char* s, const char *  format, va_list __local_argv){
 	int ret = vsprintf(s, format, __local_argv);
 	showinf("vsprintf_result: %s", s);
 	return ret;
+}
+
+//#include <wchar.h>
+//!wchar_t *wcscpy(wchar_t *d, const wchar_t *s)
+uint16_t* imp_wcscpy(uint16_t* d, const uint16_t* s){
+	showfunc_opt("wcscpy( ... )");
+	uint16_t* a = d;
+	while ((*d++ = *s++));
+	return a;
 }
 
 //!UINT ___lc_codepage_func(void)
