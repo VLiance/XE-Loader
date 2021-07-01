@@ -509,6 +509,7 @@ int impl_vsprintf (char* s, const char *  format, va_list __local_argv){
 //!wchar_t *wcscpy(wchar_t *d, const wchar_t *s)
 uint16_t* imp_wcscpy(uint16_t* d, const uint16_t* s){
 	showfunc_opt("wcscpy( ... )");
+	//wprintf(L"\nSource%s\n", s);
 	uint16_t* a = d;
 	while ((*d++ = *s++));
 	return a;
