@@ -425,7 +425,7 @@ HANDLE WINAPI sys_CreateEventA(LPSECURITY_ATTRIBUTES lpEventAttributes, WINBOOL 
 	#ifdef Func_Win
 		return CreateEventA(lpEventAttributes, bManualReset, bInitialState, lpName);
 	#else
-		return 0;
+		return malloc(sizeof(HANDLE)); //new handle // TODO delete
 	#endif
 }
 HANDLE WINAPI sys_CreateEventW(LPSECURITY_ATTRIBUTES lpEventAttributes, WINBOOL bManualReset, WINBOOL bInitialState, LPCWSTR lpName){
@@ -433,7 +433,7 @@ HANDLE WINAPI sys_CreateEventW(LPSECURITY_ATTRIBUTES lpEventAttributes, WINBOOL 
 	#ifdef Func_Win
 		return CreateEventW(lpEventAttributes, bManualReset, bInitialState, lpName);
 	#else
-		return 0;
+		return malloc(sizeof(HANDLE)); //new handle // TODO delete
 	#endif
 }
 
