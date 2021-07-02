@@ -75,7 +75,20 @@ void signalHandler(int signum) {
 	//exit(signum);
 }
 
+
+void GDB_BreakAssert(){
+    fprintf(stderr,"Cmd[GDB]:break _assert\n");
+    fprintf(stderr,"Cmd[GDB]:break _wassert\n");
+    fflush(stderr);
+    GDB_Func_ExecuteCmds();
+}
+
+
  void registerSignal() {
+	
+	//set breakpoint on assert
+	 GDB_BreakAssert();
+
 	/* //No sigaction on Windows !?
 	int *foo = NULL;
 		struct sigaction sa;
