@@ -138,6 +138,17 @@ void
 	#endif
 }
 
+
+//// FILE ////
+size_t 
+	XeGI_GetFileSize(uint32_t handle) //or path?
+{
+	return 0;
+}
+
+//////////////
+
+
 #ifdef ShowPixView
 #include "XE/Utils/PixView.h"
 #endif

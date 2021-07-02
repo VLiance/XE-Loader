@@ -669,7 +669,7 @@ WINBOOL WINAPI sys_SetEvent (HANDLE hEvent){
 	#ifdef Func_Win
 		return SetEvent(hEvent);
 	#else
-		return false;
+		return true;//Todo
 	#endif
 }
 
@@ -905,6 +905,26 @@ HANDLE WINAPI sys_CreateFileA (LPCSTR lpFileName, DWORD dwDesiredAccess, DWORD d
 		return 0;
 	#endif
  }
+  
+//!WINBASEAPI DWORD WINAPI GetFileSize (HANDLE hFile, LPDWORD lpFileSizeHigh)
+WINBASEAPI DWORD WINAPI sys_GetFileSize (HANDLE hFile, LPDWORD lpFileSizeHigh){
+	showfunc("GetFileSize( hFile: %p, lpFileSizeHigh: %d )", hFile, lpFileSizeHigh );
+	#ifdef Func_Win
+		return GetFileSize( hFile, lpFileSizeHigh );
+	#else
+		return XeGI_GetFileSize((uint32_t)hFile);
+	#endif
+}
+
+//!WINBASEAPI WINBOOL WINAPI SetFilePointerEx (HANDLE hFile, LARGE_INTEGER liDistanceToMove, PLARGE_INTEGER lpNewFilePointer, DWORD dwMoveMethod)
+WINBOOL WINAPI sys_SetFilePointerEx(HANDLE hFile, LARGE_INTEGER liDistanceToMove, PLARGE_INTEGER lpNewFilePointer, DWORD dwMoveMethod){
+	showfunc("SetFilePointerEx( hFile: %p, liDistanceToMove: %d, lpNewFilePointer %p, dwMoveMethod: %d )", hFile, liDistanceToMove, lpNewFilePointer, dwMoveMethod);
+	#ifdef Func_Win
+		return SetFilePointerEx( hFile, liDistanceToMove, lpNewFilePointer, dwMoveMethod );
+	#else
+		return false;
+	#endif
+}
 
 //!WINBASEAPI WINBOOL WINAPI CreateProcessA (LPCSTR lpApplicationName, LPSTR lpCommandLine, LPSECURITY_ATTRIBUTES lpProcessAttributes, LPSECURITY_ATTRIBUTES lpThreadAttributes, WINBOOL bInheritHandles, DWORD dwCreationFlags, LPVOID lpEnvironment, LPCSTR lpCurrentDirectory, LPSTARTUPINFOA lpStartupInfo, LPPROCESS_INFORMATION lpProcessInformation)
 //!WINBASEAPI WINBOOL WINAPI CreateProcessW (LPCWSTR lpApplicationName, LPWSTR lpCommandLine, LPSECURITY_ATTRIBUTES lpProcessAttributes, LPSECURITY_ATTRIBUTES lpThreadAttributes, WINBOOL bInheritHandles, DWORD dwCreationFlags, LPVOID lpEnvironment, LPCWSTR lpCurrentDirectory, LPSTARTUPINFOW lpStartupInfo, LPPROCESS_INFORMATION lpProcessInformation)
