@@ -139,7 +139,13 @@ void
 }
 
 typedef  uint32_t hdl_t;
-ARRAY(XEGI_aFileHandle, hdl_t, 512);
+typedef struct {
+	hdl_t handle;
+	uint32_t  pos;
+
+} XEGI_FileOp;
+
+ARRAY(XEGI_aFileHandle, XEGI_FileOp, 512);
 // -- Instance -- //
 XEGI_aFileHandle aFileHandle;
 #define aFileHandle(fn, ...) XEGI_aFileHandle_##fn(&aFileHandle, ##__VA_ARGS__)
@@ -150,14 +156,22 @@ XEGI_aFileHandle aFileHandle;
 hdl_t 
 	XeGI_OpenFile(char* _lpFileName) //or path?
 {
-	hdl_t* handle = aFileHandle(add, aFileHandle.size);
-	return *handle;
+	XEGI_FileOp* file = aFileHandle(add, (XEGI_FileOp){.handle=aFileHandle.size});
+	return file->handle;
 }
 
 size_t 
 	XeGI_GetFileSize(hdl_t handle) //or path?
 {
 	return 0;
+}
+
+hdl_t 
+	XeGI_ReadFile(hdl_t handle, void* dest, size_t nNumberOfBytesToRead) //or path?
+{
+	//hdl_t* handle = aFileHandle(add, aFileHandle.size);
+	//return *handle;
+	return true;
 }
 
 //////////////

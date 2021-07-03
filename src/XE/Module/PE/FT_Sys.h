@@ -947,7 +947,17 @@ WINBOOL WINAPI sys_SetFilePointerEx(HANDLE hFile, LARGE_INTEGER liDistanceToMove
 	#ifdef Func_Win
 		return SetFilePointerEx( hFile, liDistanceToMove, lpNewFilePointer, dwMoveMethod );
 	#else
-		return true;
+		return true; //TODO file seek
+	#endif
+}
+
+//!WINBASEAPI WINBOOL WINAPI ReadFile (HANDLE hFile, LPVOID lpBuffer, DWORD nNumberOfBytesToRead, LPDWORD lpNumberOfBytesRead, LPOVERLAPPED lpOverlapped);
+WINBOOL WINAPI sys_ReadFile (HANDLE hFile, LPVOID lpBuffer, DWORD nNumberOfBytesToRead, LPDWORD lpNumberOfBytesRead, LPOVERLAPPED lpOverlapped){
+	showfunc("ReadFile( hFile: %p, lpBuffer: %d, nNumberOfBytesToRead %d, lpNumberOfBytesRead: %p, lpOverlapped: %p )", hFile, lpBuffer, nNumberOfBytesToRead, lpNumberOfBytesRead, lpOverlapped);
+	#ifdef Func_Win
+		return ReadFile( hFile, lpBuffer, nNumberOfBytesToRead, lpNumberOfBytesRead, lpOverlapped );
+	#else
+		return XeGI_ReadFile((hdl_t)hFile, lpBuffer, nNumberOfBytesToRead); //TODO file seek
 	#endif
 }
 

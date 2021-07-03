@@ -269,10 +269,6 @@
 {"",			"CreateWindowExW"  				,(FUNC_) sys_CreateWindowExW },
 
 
-{"",			"GetFileSize"  					,(FUNC_) sys_GetFileSize },
-{"",			"SetFilePointerEx"  			,(FUNC_) sys_SetFilePointerEx },
-
-
 {"",			"CreateThread"  				,(FUNC_) th_CreateThread },
 {"",			"GetCurrentThread"  			,(FUNC_) th_GetCurrentThread },
 {"",			"GetCurrentThreadId"  			,(FUNC_) sys_GetCurrentThreadId },
