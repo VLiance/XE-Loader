@@ -138,16 +138,29 @@ void
 	#endif
 }
 
+typedef  uint32_t hdl_t;
+ARRAY(XEGI_aFileHandle, hdl_t, 512);
+// -- Instance -- //
+XEGI_aFileHandle aFileHandle;
+#define aFileHandle(fn, ...) XEGI_aFileHandle_##fn(&aFileHandle, ##__VA_ARGS__)
+//!-----------!//
+
 
 //// FILE ////
+hdl_t 
+	XeGI_OpenFile(char* _lpFileName) //or path?
+{
+	hdl_t* handle = aFileHandle(add, aFileHandle.size);
+	return *handle;
+}
+
 size_t 
-	XeGI_GetFileSize(uint32_t handle) //or path?
+	XeGI_GetFileSize(hdl_t handle) //or path?
 {
 	return 0;
 }
 
 //////////////
-
 
 #ifdef ShowPixView
 #include "XE/Utils/PixView.h"

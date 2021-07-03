@@ -905,7 +905,32 @@ HANDLE WINAPI sys_CreateFileA (LPCSTR lpFileName, DWORD dwDesiredAccess, DWORD d
 		return 0;
 	#endif
  }
-  
+HANDLE WINAPI sys_CreateFileW (LPCWSTR lpFileName, DWORD dwDesiredAccess, DWORD dwShareMode, LPSECURITY_ATTRIBUTES lpSecurityAttributes, DWORD dwCreationDisposition, DWORD dwFlagsAndAttributes, HANDLE hTemplateFile){
+ 	Vla_WstrC(_lpFileName, lpFileName);
+	showfunc("CreateFileW( lpFileName: %s, dwDesiredAccess: %d, dwShareMode: %d, lpSecurityAttributes: %p, dwCreationDisposition: %d, dwFlagsAndAttributes: %d, hTemplateFile: %p )", _lpFileName, dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwCreationDisposition, dwFlagsAndAttributes, hTemplateFile );
+	#ifdef Func_Win
+		return CreateFileW( lpFileName, dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwCreationDisposition, dwFlagsAndAttributes, hTemplateFile );
+	#else
+	/*
+	    _sfetch_file_handle_t h = CreateFileW(
+			w_path,                // lpFileName 
+			GENERIC_READ,           // dwDesiredAccess 
+			FILE_SHARE_READ,       // dwShareMode 
+			NULL,                   // lpSecurityAttributes 
+			OPEN_EXISTING,          // dwCreationDisposition 
+			FILE_ATTRIBUTE_NORMAL|FILE_FLAG_SEQUENTIAL_SCAN,   // dwFlagsAndAttributes 
+			NULL);                  // hTemplateFile 
+		return h;
+	*/
+		if(dwCreationDisposition == OPEN_EXISTING){
+			printf("\n OPEN_EXISTING %s: ", _lpFileName);
+			
+		}
+		
+		return 0;
+	#endif
+ } 
+
 //!WINBASEAPI DWORD WINAPI GetFileSize (HANDLE hFile, LPDWORD lpFileSizeHigh)
 WINBASEAPI DWORD WINAPI sys_GetFileSize (HANDLE hFile, LPDWORD lpFileSizeHigh){
 	showfunc("GetFileSize( hFile: %p, lpFileSizeHigh: %d )", hFile, lpFileSizeHigh );
