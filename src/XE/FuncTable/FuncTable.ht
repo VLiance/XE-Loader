@@ -269,7 +269,6 @@
 {"",			"CreateWindowExW"  				,(FUNC_) sys_CreateWindowExW },
 
 
-
 {"",			"GetFileSize"  					,(FUNC_) sys_GetFileSize },
 {"",			"SetFilePointerEx"  			,(FUNC_) sys_SetFilePointerEx },
 

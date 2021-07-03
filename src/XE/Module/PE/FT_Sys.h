@@ -922,7 +922,7 @@ WINBOOL WINAPI sys_SetFilePointerEx(HANDLE hFile, LARGE_INTEGER liDistanceToMove
 	#ifdef Func_Win
 		return SetFilePointerEx( hFile, liDistanceToMove, lpNewFilePointer, dwMoveMethod );
 	#else
-		return false;
+		return true;
 	#endif
 }
 
@@ -1790,14 +1790,34 @@ int WINAPI sys_WideCharToMultiByte(UINT CodePage, DWORD dwFlags, LPCWCH lpWideCh
 	#endif	
 }
 
+#define CP_UTF8 65001
 //!int WINAPI MultiByteToWideChar (UINT CodePage, DWORD dwFlags, LPCCH lpMultiByteStr, int cbMultiByte, LPWSTR lpWideCharStr, int cchWideChar)
 int WINAPI sys_MultiByteToWideChar (UINT CodePage, DWORD dwFlags, LPCCH lpMultiByteStr, int cbMultiByte, LPWSTR lpWideCharStr, int cchWideChar){
 	showfunc_opt("MultiByteToWideChar( ... )", "");
 	#ifdef Func_Win 
 	return MultiByteToWideChar(CodePage, dwFlags, lpMultiByteStr, cbMultiByte, lpWideCharStr, cchWideChar);
 	#else
+	// MultiByteToWideChar(CP_UTF8, 0, src, -1, dst, dst_chars);
+	//printf("\nlpMultiByteStr: %s\n", lpMultiByteStr);
+	
+	//Minimal implementation  src
+	//if(lpMultiByteStr[0] != 0){
+	if(CodePage == CP_UTF8 && dwFlags == 0){//For UTF-8, dwFlags must be set to either 0
+		//cbMultiByte -> Size, in bytes, of the string indicated by the lpMultiByteStr parameter. Alternatively, this parameter can be set to -1 if the string is null-terminated.
+		//cchWideChar -> Size, in characters, of the buffer indicated by lpWideCharStr. If this value is 0, the function returns the required buffer size, in characters, including any terminating null character, and makes no use of the lpWideCharStr buffer.
+		if(cchWideChar == 0){
+			//return required size
+			//Use x4 size to be sure we can fit all char in UTF8 (length UTF16 x 4), 
+			return strlen(lpMultiByteStr) * 4;
+		}else{
+			//Fill dest buffer
+			CStrW2_(lpWideCharStr, lpMultiByteStr, strlen(lpMultiByteStr),cchWideChar);
+			//wprintf(L"\nRESULT! %s", lpWideCharStr);
+			return cchWideChar;
+		}
+	}
 	//return MultiByteToWideChar(CodePage, dwFlags, lpMultiByteStr, cbMultiByte, lpWideCharStr, cchWideChar);
-	return 0;//TODO
+	return 0;//TODO better implementetaion?
 	#endif	
 }
 
