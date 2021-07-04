@@ -14,7 +14,7 @@
  *
 */
 #include "XE/_Config.h"
-#include "View.inc"
-#include "xIO.inc"
-#include "xDebug.inc"
-#include "xMemory.inc"
+#include "Xternal/View.inc"
+#include "Xternal/xIO.inc"
+#include "Xternal/xDebug.inc"
+#include "Xternal/xMemory.inc"

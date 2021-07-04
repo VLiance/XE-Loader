@@ -21,7 +21,6 @@
 #undef _WIN32_WINNT
 #define _WIN32_WINNT 0x0600
 //#include <windows.h>
-#error
 #include "full_windows.h"
 
 #define HDEF_Win  //Desactivate following
@@ -58,7 +57,6 @@
 	#define CONST const
 	#define VOID void
 	
-
 
 #ifndef __LP64__
 #define __LONG32 long
