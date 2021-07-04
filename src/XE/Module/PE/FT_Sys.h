@@ -932,7 +932,7 @@ HANDLE WINAPI sys_CreateFileW (LPCWSTR lpFileName, DWORD dwDesiredAccess, DWORD 
  } 
 
 //!WINBASEAPI DWORD WINAPI GetFileSize (HANDLE hFile, LPDWORD lpFileSizeHigh)
-WINBASEAPI DWORD WINAPI sys_GetFileSize (HANDLE hFile, LPDWORD lpFileSizeHigh){
+DWORD WINAPI sys_GetFileSize (HANDLE hFile, LPDWORD lpFileSizeHigh){
 	showfunc("GetFileSize( hFile: %p, lpFileSizeHigh: %d )", hFile, lpFileSizeHigh );
 	#ifdef Func_Win
 		return GetFileSize( hFile, lpFileSizeHigh );

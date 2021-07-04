@@ -13,6 +13,7 @@
  * You can obtain one at https://www.apache.org/licenses/LICENSE-2.0.html
  *
 */
+#include "XE/_Config.h"
 #include "View.inc"
 #include "xIO.inc"
 #include "xDebug.inc"

@@ -23,7 +23,6 @@
 #ifndef HDef_Debug
 #define HDef_Debug
 
-#warning ssss
 int exe_err = 0;
 
 #include <setjmp.h> 
@@ -105,7 +104,7 @@ void GDB_BreakAssert(){
 
 #ifdef ImWin
 	#include "XE/Module/PE/win.h"
-	void MemVirtualQueryInfo(LPCVOID* _adr, int _size){
+	void MemVirtualQueryInfo(void* _adr, int _size){
 
 		MEMORY_BASIC_INFORMATION meminf;
 		LPCVOID* _end =	_adr + (_size>>2);
@@ -201,7 +200,7 @@ void GDB_BreakAssert(){
 		}
 	}
 #else
-	void MemVirtualQueryInfo(LPCVOID* _adr, int _size){
+	void MemVirtualQueryInfo(void* _adr, int _size){
 		dbg_printl("MemVirtualQueryInfo not implemented");
 	}
 #endif

@@ -151,7 +151,7 @@ HANDLE WINAPI th_CreateThread(LPSECURITY_ATTRIBUTES lpThreadAttributes, SIZE_T d
 	#if defined(Func_Win) || defined(USE_WinThread)
 		CreateThread(lpThreadAttributes,dwStackSize,lpStartAddress,lpParameter, dwCreationFlags, lpThreadId);
 	#else
-		return XeGI_CreateThread((XEGI_THREAD_START_ROUTINE)lpStartAddress,dwStackSize,(LPVOID)lpParameter);
+		return (HANDLE)XeGI_CreateThread((XEGI_THREAD_START_ROUTINE)lpStartAddress,dwStackSize,(LPVOID)lpParameter);
 	#endif
 	
 }
