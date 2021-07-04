@@ -13,8 +13,8 @@
  * You can obtain one at https://www.apache.org/licenses/LICENSE-2.0.html
  *
 */
-#include "xMemory.h"
-#include "xIO.h"
+#include "Xternal/xMemory.h"
+#include "Xternal/xIO.h"
 
 #include <stdlib.h>
 #include <string.h>
