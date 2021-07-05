@@ -508,7 +508,8 @@ DWORD WINAPI sys_GetModuleFileNameA (HMODULE hModule, LPSTR lpFilename, DWORD nS
 	#endif
 }
 DWORD WINAPI sys_GetModuleFileNameW (HMODULE hModule, LPWSTR lpFilename, DWORD nSize){
-	showfunc("GetModuleFileNameW( hModule: %p, lpFilename: %p, nSize: %d )", hModule, lpFilename, nSize);
+	Vla_WstrC(_lpFilename, lpFilename);
+	showfunc("GetModuleFileNameW( hModule: %p, _lpFilename: %s, nSize: %d )", hModule, _lpFilename, nSize);
 	#ifdef Func_Win
 		return GetModuleFileNameW(hModule, lpFilename, nSize);
 	#else
