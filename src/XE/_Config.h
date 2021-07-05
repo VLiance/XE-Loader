@@ -116,7 +116,7 @@
 	#undef ShowPixView
 	#undef ImWin
 	#define No_vswprintf
-	#define No_wprintf
+	//#define No_wprintf
 	#define NoSetLastError
 	#define CpcDos //TODO
 	#define USE_sbrk
