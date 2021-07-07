@@ -257,6 +257,9 @@ typedef __LONG32 LONG;
 	#ifndef WINBASEAPI
 	#define WINBASEAPI
 	#endif
+	#ifndef WINGDIAPI
+	#define WINGDIAPI
+	#endif
 
 	#define DECLARE_HANDLE(name) typedef HANDLE name
 	DECLARE_HANDLE (HINSTANCE);
@@ -1526,7 +1529,7 @@ typedef __LONG32 LONG;
     HICON hIconSm;
   } WNDCLASSEXW,*PWNDCLASSEXW,*NPWNDCLASSEXW,*LPWNDCLASSEXW;
 
-  typedef struct tagWNDCLASSA {
+  __MINGW_TYPEDEF_AW(WNDCLASSEX) __MINGW_TYPEDEF_AW(PWNDCLASSEX) __MINGW_TYPEDEF_AW(NPWNDCLASSEX) __MINGW_TYPEDEF_AW(LPWNDCLASSEX) typedef struct tagWNDCLASSA {
     UINT style;
     WNDPROC lpfnWndProc;
     int cbClsExtra;
@@ -6108,10 +6111,554 @@ NCCALCSIZE_PARAMS,*LPNCCALCSIZE_PARAMS;
 #define HOVER_DEFAULT 0xFFFFFFFF
 #endif
 
+#ifndef NOSYSCOMMANDS
+#define SC_SIZE 0xF000
+#define SC_MOVE 0xF010
+#define SC_MINIMIZE 0xF020
+#define SC_MAXIMIZE 0xF030
+#define SC_NEXTWINDOW 0xF040
+#define SC_PREVWINDOW 0xF050
+#define SC_CLOSE 0xF060
+#define SC_VSCROLL 0xF070
+#define SC_HSCROLL 0xF080
+#define SC_MOUSEMENU 0xF090
+#define SC_KEYMENU 0xF100
+#define SC_ARRANGE 0xF110
+#define SC_RESTORE 0xF120
+#define SC_TASKLIST 0xF130
+#define SC_SCREENSAVE 0xF140
+#define SC_HOTKEY 0xF150
+#define SC_DEFAULT 0xF160
+#define SC_MONITORPOWER 0xF170
+#define SC_CONTEXTHELP 0xF180
+#define SC_SEPARATOR 0xF00F
+#if WINVER >= 0x0600
+#define SCF_ISSECURE 0x00000001
+#endif
+#define GET_SC_WPARAM(wParam) ((int)wParam &0xfff0)
+#define SC_ICON SC_MINIMIZE
+#define SC_ZOOM SC_MAXIMIZE
+#endif
 
+typedef WORD ATOM;
+typedef int HFILE;
+DECLARE_HANDLE (HINSTANCE);
+DECLARE_HANDLE (HKEY);
+typedef HKEY *PHKEY;
+DECLARE_HANDLE (HKL);
+DECLARE_HANDLE (HLSURF);
+DECLARE_HANDLE (HMETAFILE);
+typedef HINSTANCE HMODULE;
+DECLARE_HANDLE (HRGN);
+DECLARE_HANDLE (HRSRC);
+DECLARE_HANDLE (HSPRITE);
+DECLARE_HANDLE (HSTR);
+DECLARE_HANDLE (HTASK);
+DECLARE_HANDLE (HWINSTA);
 
+WINUSERAPI HDC WINAPI GetWindowDC(HWND hWnd);
+WINUSERAPI int WINAPI ReleaseDC(HWND hWnd,HDC hDC);
+WINUSERAPI HDC WINAPI BeginPaint(HWND hWnd,LPPAINTSTRUCT lpPaint);
+WINUSERAPI WINBOOL WINAPI EndPaint(HWND hWnd,CONST PAINTSTRUCT *lpPaint);
+WINUSERAPI WINBOOL WINAPI GetUpdateRect(HWND hWnd,LPRECT lpRect,WINBOOL bErase);
+WINUSERAPI int WINAPI GetUpdateRgn(HWND hWnd,HRGN hRgn,WINBOOL bErase);
+WINUSERAPI int WINAPI SetWindowRgn(HWND hWnd,HRGN hRgn,WINBOOL bRedraw);
+WINUSERAPI int WINAPI GetWindowRgn(HWND hWnd,HRGN hRgn);
+WINUSERAPI int WINAPI GetWindowRgnBox(HWND hWnd,LPRECT lprc);
+WINUSERAPI int WINAPI ExcludeUpdateRgn(HDC hDC,HWND hWnd);
+WINUSERAPI WINBOOL WINAPI InvalidateRect(HWND hWnd,CONST RECT *lpRect,WINBOOL bErase);
+WINUSERAPI WINBOOL WINAPI ValidateRect(HWND hWnd,CONST RECT *lpRect);
+WINUSERAPI WINBOOL WINAPI InvalidateRgn(HWND hWnd,HRGN hRgn,WINBOOL bErase);
+WINUSERAPI WINBOOL WINAPI ValidateRgn(HWND hWnd,HRGN hRgn);
+WINUSERAPI WINBOOL WINAPI RedrawWindow(HWND hWnd,CONST RECT *lprcUpdate,HRGN hrgnUpdate,UINT flags);
 
+typedef PVOID HDEVNOTIFY;
+typedef HDEVNOTIFY *PHDEVNOTIFY;
+WINUSERAPI HDEVNOTIFY WINAPI RegisterDeviceNotificationA(HANDLE hRecipient,LPVOID NotificationFilter,DWORD Flags);
+WINUSERAPI HDEVNOTIFY WINAPI RegisterDeviceNotificationW(HANDLE hRecipient,LPVOID NotificationFilter,DWORD Flags);
+WINUSERAPI WINBOOL WINAPI UnregisterDeviceNotification(HDEVNOTIFY Handle);
 
+WINBASEAPI DWORD WINAPI TlsAlloc (VOID);
+WINBASEAPI LPVOID WINAPI TlsGetValue (DWORD dwTlsIndex);
+WINBASEAPI WINBOOL WINAPI TlsSetValue (DWORD dwTlsIndex, LPVOID lpTlsValue);
+WINBASEAPI WINBOOL WINAPI TlsFree (DWORD dwTlsIndex);
+WINBASEAPI HLOCAL WINAPI LocalAlloc (UINT uFlags, SIZE_T uBytes);
+WINBASEAPI HLOCAL WINAPI LocalReAlloc (HLOCAL hMem, SIZE_T uBytes, UINT uFlags);
+WINBASEAPI LPVOID WINAPI LocalLock (HLOCAL hMem);
+WINBASEAPI HLOCAL WINAPI LocalHandle (LPCVOID pMem);
+WINBASEAPI WINBOOL WINAPI LocalUnlock (HLOCAL hMem);
+WINBASEAPI SIZE_T WINAPI LocalSize (HLOCAL hMem);
+WINBASEAPI UINT WINAPI LocalFlags (HLOCAL hMem);
+WINBASEAPI HLOCAL WINAPI LocalFree (HLOCAL hMem);
+WINBASEAPI SIZE_T WINAPI LocalShrink (HLOCAL hMem, UINT cbNewSize);
+WINBASEAPI SIZE_T WINAPI LocalCompact (UINT uMinFree);
+
+WINGDIAPI HBITMAP WINAPI CreateDIBSection(HDC hdc,CONST BITMAPINFO *lpbmi,UINT usage,VOID **ppvBits,HANDLE hSection,DWORD offset);
+
+WINUSERAPI HWND WINAPI WindowFromDC(HDC hDC);
+WINUSERAPI HDC WINAPI GetDC(HWND hWnd);
+WINUSERAPI HDC WINAPI GetDCEx(HWND hWnd,HRGN hrgnClip,DWORD flags);
+WINGDIAPI WINBOOL WINAPI DeleteDC(HDC hdc);
+WINGDIAPI WINBOOL WINAPI DeleteMetaFile(HMETAFILE hmf);
+WINGDIAPI WINBOOL WINAPI DeleteObject(HGDIOBJ ho);
+
+WINBASEAPI DWORD WINAPI FormatMessageA (DWORD dwFlags, LPCVOID lpSource, DWORD dwMessageId, DWORD dwLanguageId, LPSTR lpBuffer, DWORD nSize, va_list *Arguments);
+WINBASEAPI DWORD WINAPI FormatMessageW (DWORD dwFlags, LPCVOID lpSource, DWORD dwMessageId, DWORD dwLanguageId, LPWSTR lpBuffer, DWORD nSize, va_list *Arguments);
+#define FormatMessage __MINGW_NAME_AW(FormatMessage)
+#define FORMAT_MESSAGE_IGNORE_INSERTS 0x00000200
+#define FORMAT_MESSAGE_FROM_STRING 0x00000400
+#define FORMAT_MESSAGE_FROM_HMODULE 0x00000800
+#define FORMAT_MESSAGE_FROM_SYSTEM 0x00001000
+#define FORMAT_MESSAGE_ARGUMENT_ARRAY 0x00002000
+#define FORMAT_MESSAGE_MAX_WIDTH_MASK 0x000000ff
+#define FILE_ENCRYPTABLE 0
+#define FILE_IS_ENCRYPTED 1
+#define FILE_SYSTEM_ATTR 2
+#define FILE_ROOT_DIR 3
+#define FILE_SYSTEM_DIR 4
+#define FILE_UNKNOWN 5
+#define FILE_SYSTEM_NOT_SUPPORT 6
+#define FILE_USER_DISALLOWED 7
+#define FILE_READ_ONLY 8
+#define FILE_DIR_DISALLOWED 9
+#define FORMAT_MESSAGE_ALLOCATE_BUFFER 0x00000100
+#define EFS_USE_RECOVERY_KEYS (0x1)
+#define CREATE_FOR_IMPORT (1)
+#define CREATE_FOR_DIR (2)
+#define OVERWRITE_HIDDEN (4)
+#define EFSRPC_SECURE_ONLY (8)
+
+#define PROFILE_LINKED 'LINK'
+#define PROFILE_EMBEDDED 'MBED'
+#define BI_RGB __MSABI_LONG(0)
+#define BI_RLE8 __MSABI_LONG(1)
+#define BI_RLE4 __MSABI_LONG(2)
+#define BI_BITFIELDS __MSABI_LONG(3)
+#define BI_JPEG __MSABI_LONG(4)
+#define BI_PNG __MSABI_LONG(5)
+
+#define CreateWindowEx __MINGW_NAME_AW(CreateWindowEx)
+#define CreateWindow __MINGW_NAME_AW(CreateWindow)
+WINUSERAPI HWND WINAPI CreateWindowExA(DWORD dwExStyle,LPCSTR lpClassName,LPCSTR lpWindowName,DWORD dwStyle,int X,int Y,int nWidth,int nHeight,HWND hWndParent,HMENU hMenu,HINSTANCE hInstance,LPVOID lpParam);
+WINUSERAPI HWND WINAPI CreateWindowExW(DWORD dwExStyle,LPCWSTR lpClassName,LPCWSTR lpWindowName,DWORD dwStyle,int X,int Y,int nWidth,int nHeight,HWND hWndParent,HMENU hMenu,HINSTANCE hInstance,LPVOID lpParam);
+#define CreateWindowA(lpClassName,lpWindowName,dwStyle,x,y,nWidth,nHeight,hWndParent,hMenu,hInstance,lpParam) CreateWindowExA((DWORD)0,lpClassName,lpWindowName,dwStyle,x,y,nWidth,nHeight,hWndParent,hMenu,hInstance,lpParam)
+#define CreateWindowW(lpClassName,lpWindowName,dwStyle,x,y,nWidth,nHeight,hWndParent,hMenu,hInstance,lpParam) CreateWindowExW((DWORD)0,lpClassName,lpWindowName,dwStyle,x,y,nWidth,nHeight,hWndParent,hMenu,hInstance,lpParam)
+WINUSERAPI WINBOOL WINAPI IsWindow(HWND hWnd);
+WINUSERAPI WINBOOL WINAPI IsMenu(HMENU hMenu);
+WINUSERAPI WINBOOL WINAPI IsChild(HWND hWndParent,HWND hWnd);
+WINUSERAPI WINBOOL WINAPI DestroyWindow(HWND hWnd);
+WINUSERAPI WINBOOL WINAPI ShowWindow(HWND hWnd,int nCmdShow);
+WINUSERAPI WINBOOL WINAPI AnimateWindow(HWND hWnd,DWORD dwTime,DWORD dwFlags);
+WINUSERAPI WINBOOL WINAPI UpdateWindow(HWND hWnd);
+
+WINUSERAPI WINBOOL WINAPI PostMessageA (HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
+WINUSERAPI WINBOOL WINAPI PostMessageW (HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
+WINUSERAPI WINBOOL WINAPI PostThreadMessageA (DWORD idThread, UINT Msg, WPARAM wParam, LPARAM lParam);
+WINUSERAPI WINBOOL WINAPI PostThreadMessageW (DWORD idThread, UINT Msg, WPARAM wParam, LPARAM lParam);
+#define PostAppMessageA(idThread, wMsg, wParam, lParam) PostThreadMessageA ((DWORD)idThread, wMsg, wParam, lParam)
+#define PostAppMessageW(idThread, wMsg, wParam, lParam) PostThreadMessageW ((DWORD)idThread, wMsg, wParam, lParam)
+WINUSERAPI WINBOOL WINAPI AttachThreadInput (DWORD idAttach, DWORD idAttachTo, WINBOOL fAttach);
+WINUSERAPI WINBOOL WINAPI ReplyMessage (LRESULT lResult);
+WINUSERAPI WINBOOL WINAPI WaitMessage (VOID);
+WINUSERAPI DWORD WINAPI WaitForInputIdle (HANDLE hProcess, DWORD dwMilliseconds);
+WINUSERAPI LRESULT WINAPI DefWindowProcA (HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
+WINUSERAPI LRESULT WINAPI DefWindowProcW (HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
+WINUSERAPI VOID WINAPI PostQuitMessage (int nExitCode);
+WINUSERAPI WINBOOL WINAPI InSendMessage (VOID);
+WINUSERAPI DWORD WINAPI InSendMessageEx (LPVOID lpReserved);
+WINUSERAPI UINT WINAPI GetDoubleClickTime (VOID);
+WINUSERAPI WINBOOL WINAPI SetDoubleClickTime (UINT);
+WINUSERAPI ATOM WINAPI RegisterClassA (CONST WNDCLASSA *lpWndClass);
+WINUSERAPI ATOM WINAPI RegisterClassW (CONST WNDCLASSW *lpWndClass);
+WINUSERAPI WINBOOL WINAPI UnregisterClassA (LPCSTR lpClassName, HINSTANCE hInstance);
+WINUSERAPI WINBOOL WINAPI UnregisterClassW (LPCWSTR lpClassName, HINSTANCE hInstance);
+WINUSERAPI WINBOOL WINAPI GetClassInfoA (HINSTANCE hInstance, LPCSTR lpClassName, LPWNDCLASSA lpWndClass);
+WINUSERAPI WINBOOL WINAPI GetClassInfoW (HINSTANCE hInstance, LPCWSTR lpClassName, LPWNDCLASSW lpWndClass);
+WINUSERAPI ATOM WINAPI RegisterClassExA (CONST WNDCLASSEXA *);
+WINUSERAPI ATOM WINAPI RegisterClassExW (CONST WNDCLASSEXW *);
+WINUSERAPI WINBOOL WINAPI GetClassInfoExA (HINSTANCE hInstance, LPCSTR lpszClass, LPWNDCLASSEXA lpwcx);
+WINUSERAPI WINBOOL WINAPI GetClassInfoExW (HINSTANCE hInstance, LPCWSTR lpszClass, LPWNDCLASSEXW lpwcx);
+#ifdef STRICT
+WINUSERAPI LRESULT WINAPI CallWindowProcA (WNDPROC lpPrevWndFunc, HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
+WINUSERAPI LRESULT WINAPI CallWindowProcW (WNDPROC lpPrevWndFunc, HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
+#else
+WINUSERAPI LRESULT WINAPI CallWindowProcA (FARPROC lpPrevWndFunc, HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
+WINUSERAPI LRESULT WINAPI CallWindowProcW (FARPROC lpPrevWndFunc, HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
+#endif
+
+#ifndef NOSHOWWINDOW
+#define SW_HIDE 0
+#define SW_SHOWNORMAL 1
+#define SW_NORMAL 1
+#define SW_SHOWMINIMIZED 2
+#define SW_SHOWMAXIMIZED 3
+#define SW_MAXIMIZE 3
+#define SW_SHOWNOACTIVATE 4
+#define SW_SHOW 5
+#define SW_MINIMIZE 6
+#define SW_SHOWMINNOACTIVE 7
+#define SW_SHOWNA 8
+#define SW_RESTORE 9
+#define SW_SHOWDEFAULT 10
+#define SW_FORCEMINIMIZE 11
+#define SW_MAX 11
+#define HIDE_WINDOW 0
+#define SHOW_OPENWINDOW 1
+#define SHOW_ICONWINDOW 2
+#define SHOW_FULLSCREEN 3
+#define SHOW_OPENNOACTIVATE 4
+#define SW_PARENTCLOSING 1
+#define SW_OTHERZOOM 2
+#define SW_PARENTOPENING 3
+#define SW_OTHERUNZOOM 4
+#endif
+#define AW_HOR_POSITIVE 0x00000001
+#define AW_HOR_NEGATIVE 0x00000002
+#define AW_VER_POSITIVE 0x00000004
+#define AW_VER_NEGATIVE 0x00000008
+#define AW_CENTER 0x00000010
+#define AW_HIDE 0x00010000
+#define AW_ACTIVATE 0x00020000
+#define AW_SLIDE 0x00040000
+#define AW_BLEND 0x00080000
+#define KF_EXTENDED 0x0100
+#define KF_DLGMODE 0x0800
+#define KF_MENUMODE 0x1000
+#define KF_ALTDOWN 0x2000
+#define KF_REPEAT 0x4000
+#define KF_UP 0x8000
+#ifndef NOVIRTUALKEYCODES
+#define VK_LBUTTON 0x01
+#define VK_RBUTTON 0x02
+#define VK_CANCEL 0x03
+#define VK_MBUTTON 0x04
+#define VK_XBUTTON1 0x05
+#define VK_XBUTTON2 0x06
+#define VK_BACK 0x08
+#define VK_TAB 0x09
+#define VK_CLEAR 0x0C
+#define VK_RETURN 0x0D
+#define VK_SHIFT 0x10
+#define VK_CONTROL 0x11
+#define VK_MENU 0x12
+#define VK_PAUSE 0x13
+#define VK_CAPITAL 0x14
+#define VK_KANA 0x15
+#define VK_HANGEUL 0x15
+#define VK_HANGUL 0x15
+#define VK_JUNJA 0x17
+#define VK_FINAL 0x18
+#define VK_HANJA 0x19
+#define VK_KANJI 0x19
+#define VK_ESCAPE 0x1B
+#define VK_CONVERT 0x1C
+#define VK_NONCONVERT 0x1D
+#define VK_ACCEPT 0x1E
+#define VK_MODECHANGE 0x1F
+#define VK_SPACE 0x20
+#define VK_PRIOR 0x21
+#define VK_NEXT 0x22
+#define VK_END 0x23
+#define VK_HOME 0x24
+#define VK_LEFT 0x25
+#define VK_UP 0x26
+#define VK_RIGHT 0x27
+#define VK_DOWN 0x28
+#define VK_SELECT 0x29
+#define VK_PRINT 0x2A
+#define VK_EXECUTE 0x2B
+#define VK_SNAPSHOT 0x2C
+#define VK_INSERT 0x2D
+#define VK_DELETE 0x2E
+#define VK_HELP 0x2F
+#define VK_LWIN 0x5B
+#define VK_RWIN 0x5C
+#define VK_APPS 0x5D
+#define VK_SLEEP 0x5F
+#define VK_NUMPAD0 0x60
+#define VK_NUMPAD1 0x61
+#define VK_NUMPAD2 0x62
+#define VK_NUMPAD3 0x63
+#define VK_NUMPAD4 0x64
+#define VK_NUMPAD5 0x65
+#define VK_NUMPAD6 0x66
+#define VK_NUMPAD7 0x67
+#define VK_NUMPAD8 0x68
+#define VK_NUMPAD9 0x69
+#define VK_MULTIPLY 0x6A
+#define VK_ADD 0x6B
+#define VK_SEPARATOR 0x6C
+#define VK_SUBTRACT 0x6D
+#define VK_DECIMAL 0x6E
+#define VK_DIVIDE 0x6F
+#define VK_F1 0x70
+#define VK_F2 0x71
+#define VK_F3 0x72
+#define VK_F4 0x73
+#define VK_F5 0x74
+#define VK_F6 0x75
+#define VK_F7 0x76
+#define VK_F8 0x77
+#define VK_F9 0x78
+#define VK_F10 0x79
+#define VK_F11 0x7A
+#define VK_F12 0x7B
+#define VK_F13 0x7C
+#define VK_F14 0x7D
+#define VK_F15 0x7E
+#define VK_F16 0x7F
+#define VK_F17 0x80
+#define VK_F18 0x81
+#define VK_F19 0x82
+#define VK_F20 0x83
+#define VK_F21 0x84
+#define VK_F22 0x85
+#define VK_F23 0x86
+#define VK_F24 0x87
+#define VK_NUMLOCK 0x90
+#define VK_SCROLL 0x91
+#define VK_OEM_NEC_EQUAL 0x92
+#define VK_OEM_FJ_JISHO 0x92
+#define VK_OEM_FJ_MASSHOU 0x93
+#define VK_OEM_FJ_TOUROKU 0x94
+#define VK_OEM_FJ_LOYA 0x95
+#define VK_OEM_FJ_ROYA 0x96
+#define VK_LSHIFT 0xA0
+#define VK_RSHIFT 0xA1
+#define VK_LCONTROL 0xA2
+#define VK_RCONTROL 0xA3
+#define VK_LMENU 0xA4
+#define VK_RMENU 0xA5
+#define VK_BROWSER_BACK 0xA6
+#define VK_BROWSER_FORWARD 0xA7
+#define VK_BROWSER_REFRESH 0xA8
+#define VK_BROWSER_STOP 0xA9
+#define VK_BROWSER_SEARCH 0xAA
+#define VK_BROWSER_FAVORITES 0xAB
+#define VK_BROWSER_HOME 0xAC
+#define VK_VOLUME_MUTE 0xAD
+#define VK_VOLUME_DOWN 0xAE
+#define VK_VOLUME_UP 0xAF
+#define VK_MEDIA_NEXT_TRACK 0xB0
+#define VK_MEDIA_PREV_TRACK 0xB1
+#define VK_MEDIA_STOP 0xB2
+#define VK_MEDIA_PLAY_PAUSE 0xB3
+#define VK_LAUNCH_MAIL 0xB4
+#define VK_LAUNCH_MEDIA_SELECT 0xB5
+#define VK_LAUNCH_APP1 0xB6
+#define VK_LAUNCH_APP2 0xB7
+#define VK_OEM_1 0xBA
+#define VK_OEM_PLUS 0xBB
+#define VK_OEM_COMMA 0xBC
+#define VK_OEM_MINUS 0xBD
+#define VK_OEM_PERIOD 0xBE
+#define VK_OEM_2 0xBF
+#define VK_OEM_3 0xC0
+#define VK_OEM_4 0xDB
+#define VK_OEM_5 0xDC
+#define VK_OEM_6 0xDD
+#define VK_OEM_7 0xDE
+#define VK_OEM_8 0xDF
+#define VK_OEM_AX 0xE1
+#define VK_OEM_102 0xE2
+#define VK_ICO_HELP 0xE3
+#define VK_ICO_00 0xE4
+#define VK_PROCESSKEY 0xE5
+#define VK_ICO_CLEAR 0xE6
+#define VK_PACKET 0xE7
+#define VK_OEM_RESET 0xE9
+#define VK_OEM_JUMP 0xEA
+#define VK_OEM_PA1 0xEB
+#define VK_OEM_PA2 0xEC
+#define VK_OEM_PA3 0xED
+#define VK_OEM_WSCTRL 0xEE
+#define VK_OEM_CUSEL 0xEF
+#define VK_OEM_ATTN 0xF0
+#define VK_OEM_FINISH 0xF1
+#define VK_OEM_COPY 0xF2
+#define VK_OEM_AUTO 0xF3
+#define VK_OEM_ENLW 0xF4
+#define VK_OEM_BACKTAB 0xF5
+#define VK_ATTN 0xF6
+#define VK_CRSEL 0xF7
+#define VK_EXSEL 0xF8
+#define VK_EREOF 0xF9
+#define VK_PLAY 0xFA
+#define VK_ZOOM 0xFB
+#define VK_NONAME 0xFC
+#define VK_PA1 0xFD
+#define VK_OEM_CLEAR 0xFE
+#endif
+#define WH_MIN (-1)
+#define WH_MSGFILTER (-1)
+#define WH_JOURNALRECORD 0
+#define WH_JOURNALPLAYBACK 1
+#define WH_KEYBOARD 2
+#define WH_GETMESSAGE 3
+#define WH_CALLWNDPROC 4
+#define WH_CBT 5
+#define WH_SYSMSGFILTER 6
+#define WH_MOUSE 7
+#define WH_HARDWARE 8
+#define WH_DEBUG 9
+#define WH_SHELL 10
+#define WH_FOREGROUNDIDLE 11
+#define WH_CALLWNDPROCRET 12
+#define WH_KEYBOARD_LL 13
+#define WH_MOUSE_LL 14
+#define WH_MAX 14
+#define WH_MINHOOK WH_MIN
+#define WH_MAXHOOK WH_MAX
+#define HC_ACTION 0
+#define HC_GETNEXT 1
+#define HC_SKIP 2
+#define HC_NOREMOVE 3
+#define HC_NOREM HC_NOREMOVE
+#define HC_SYSMODALON 4
+#define HC_SYSMODALOFF 5
+#define HCBT_MOVESIZE 0
+#define HCBT_MINMAX 1
+#define HCBT_QS 2
+#define HCBT_CREATEWND 3
+#define HCBT_DESTROYWND 4
+#define HCBT_ACTIVATE 5
+#define HCBT_CLICKSKIPPED 6
+#define HCBT_KEYSKIPPED 7
+#define HCBT_SYSCOMMAND 8
+#define HCBT_SETFOCUS 9
+
+#define GetMessage __MINGW_NAME_AW(GetMessage)
+#define DispatchMessage __MINGW_NAME_AW(DispatchMessage)
+#define PeekMessage __MINGW_NAME_AW(PeekMessage)
+WINUSERAPI WINBOOL WINAPI GetMessageA(LPMSG lpMsg,HWND hWnd,UINT wMsgFilterMin,UINT wMsgFilterMax);
+WINUSERAPI WINBOOL WINAPI GetMessageW(LPMSG lpMsg,HWND hWnd,UINT wMsgFilterMin,UINT wMsgFilterMax);
+WINUSERAPI WINBOOL WINAPI TranslateMessage(CONST MSG *lpMsg);
+WINUSERAPI LRESULT WINAPI DispatchMessageA(CONST MSG *lpMsg);
+WINUSERAPI LRESULT WINAPI DispatchMessageW(CONST MSG *lpMsg);
+WINUSERAPI WINBOOL WINAPI SetMessageQueue(int cMessagesMax);
+WINUSERAPI WINBOOL WINAPI PeekMessageA(LPMSG lpMsg,HWND hWnd,UINT wMsgFilterMin,UINT wMsgFilterMax,UINT wRemoveMsg);
+WINUSERAPI WINBOOL WINAPI PeekMessageW(LPMSG lpMsg,HWND hWnd,UINT wMsgFilterMin,UINT wMsgFilterMax,UINT wRemoveMsg);
+#define PM_NOREMOVE 0x0000
+#define PM_REMOVE 0x0001
+#define PM_NOYIELD 0x0002
+#define PM_QS_INPUT (QS_INPUT << 16)
+#define PM_QS_POSTMESSAGE ((QS_POSTMESSAGE | QS_HOTKEY | QS_TIMER) << 16)
+#define PM_QS_PAINT (QS_PAINT << 16)
+#define PM_QS_SENDMESSAGE (QS_SENDMESSAGE << 16)
+
+WINGDIAPI HBITMAP WINAPI CreateCompatibleBitmap(HDC hdc,int cx,int cy);
+WINGDIAPI HBITMAP WINAPI CreateDiscardableBitmap(HDC hdc,int cx,int cy);
+WINGDIAPI HDC WINAPI CreateCompatibleDC(HDC hdc);
+WINGDIAPI HGDIOBJ WINAPI SelectObject(HDC hdc,HGDIOBJ h);
+
+typedef struct tagSIZE
+{
+LONG cx;
+LONG cy;
+}
+SIZE,*PSIZE,*LPSIZE;
+typedef SIZE SIZEL;
+typedef SIZE *PSIZEL,*LPSIZEL;
+typedef struct tagPOINTS
+{
+SHORT x;
+SHORT y;
+}
+POINTS,*PPOINTS,*LPPOINTS;
+
+typedef struct _BLENDFUNCTION
+{
+BYTE BlendOp;
+BYTE BlendFlags;
+BYTE SourceConstantAlpha;
+BYTE AlphaFormat;
+}
+BLENDFUNCTION,*PBLENDFUNCTION;
+
+typedef USHORT COLOR16;
+typedef struct _TRIVERTEX
+{
+LONG x;
+LONG y;
+COLOR16 Red;
+COLOR16 Green;
+COLOR16 Blue;
+COLOR16 Alpha;
+}
+TRIVERTEX,*PTRIVERTEX,*LPTRIVERTEX;
+
+#define AC_SRC_OVER 0x00
+#define AC_SRC_ALPHA 0x01
+WINGDIAPI WINBOOL WINAPI AlphaBlend(HDC hdcDest,int xoriginDest,int yoriginDest,int wDest,int hDest,HDC hdcSrc,int xoriginSrc,int yoriginSrc,int wSrc,int hSrc,BLENDFUNCTION ftn);
+WINGDIAPI WINBOOL WINAPI GdiAlphaBlend(HDC hdcDest,int xoriginDest,int yoriginDest,int wDest,int hDest,HDC hdcSrc,int xoriginSrc,int yoriginSrc,int wSrc,int hSrc,BLENDFUNCTION ftn);
+WINGDIAPI WINBOOL WINAPI TransparentBlt(HDC hdcDest,int xoriginDest,int yoriginDest,int wDest,int hDest,HDC hdcSrc,int xoriginSrc,int yoriginSrc,int wSrc,int hSrc,UINT crTransparent);
+WINGDIAPI WINBOOL WINAPI GdiTransparentBlt(HDC hdcDest,int xoriginDest,int yoriginDest,int wDest,int hDest,HDC hdcSrc,int xoriginSrc,int yoriginSrc,int wSrc,int hSrc,UINT crTransparent);
+#define GRADIENT_FILL_RECT_H 0x00000000
+#define GRADIENT_FILL_RECT_V 0x00000001
+#define GRADIENT_FILL_TRIANGLE 0x00000002
+#define GRADIENT_FILL_OP_FLAG 0x000000ff
+WINGDIAPI WINBOOL WINAPI GradientFill(HDC hdc,PTRIVERTEX pVertex,ULONG nVertex,PVOID pMesh,ULONG nMesh,ULONG ulMode);
+WINGDIAPI WINBOOL WINAPI GdiGradientFill(HDC hdc,PTRIVERTEX pVertex,ULONG nVertex,PVOID pMesh,ULONG nMesh,ULONG ulMode);
+
+WINUSERAPI WINBOOL WINAPI UpdateLayeredWindow (HWND hWnd, HDC hdcDst, POINT *pptDst, SIZE *psize, HDC hdcSrc, POINT *pptSrc, COLORREF crKey, BLENDFUNCTION *pblend, DWORD dwFlags);
+typedef struct tagUPDATELAYEREDWINDOWINFO
+{
+DWORD cbSize;
+HDC hdcDst;
+const POINT *pptDst;
+const SIZE *psize;
+HDC hdcSrc;
+const POINT *pptSrc;
+COLORREF crKey;
+const BLENDFUNCTION *pblend;
+DWORD dwFlags;
+const RECT *prcDirty;
+}
+UPDATELAYEREDWINDOWINFO,*PUPDATELAYEREDWINDOWINFO;
+
+#define LWA_COLORKEY 0x00000001
+#define LWA_ALPHA 0x00000002
+#define ULW_COLORKEY 0x00000001
+#define ULW_ALPHA 0x00000002
+#define ULW_OPAQUE 0x00000004
+#define ULW_EX_NORESIZE 0x00000008
+#define FLASHW_STOP 0
+#define FLASHW_CAPTION 0x00000001
+#define FLASHW_TRAY 0x00000002
+#define FLASHW_ALL (FLASHW_CAPTION | FLASHW_TRAY)
+#define FLASHW_TIMER 0x00000004
+#define FLASHW_TIMERNOFG 0x0000000c
+
+#define LoadString __MINGW_NAME_AW(LoadString)
+#define GetModuleFileName __MINGW_NAME_AW(GetModuleFileName)
+#define GetModuleHandle __MINGW_NAME_AW(GetModuleHandle)
+#define LoadLibraryEx __MINGW_NAME_AW(LoadLibraryEx)
+#define EnumResourceLanguages __MINGW_NAME_AW(EnumResourceLanguages)
+
+#define DECLSPEC_NORETURN
+typedef PVOID DLL_DIRECTORY_COOKIE, *PDLL_DIRECTORY_COOKIE;
+WINBASEAPI HRSRC WINAPI FindResourceExW (HMODULE hModule, LPCWSTR lpType, LPCWSTR lpName, WORD wLanguage);
+WINBASEAPI DECLSPEC_NORETURN VOID WINAPI FreeLibraryAndExitThread (HMODULE hLibModule, DWORD dwExitCode);
+WINBASEAPI WINBOOL WINAPI FreeResource (HGLOBAL hResData);
+WINBASEAPI DWORD WINAPI GetModuleFileNameA (HMODULE hModule, LPSTR lpFilename, DWORD nSize);
+WINBASEAPI DWORD WINAPI GetModuleFileNameW (HMODULE hModule, LPWSTR lpFilename, DWORD nSize);
+WINBASEAPI HMODULE WINAPI GetModuleHandleA (LPCSTR lpModuleName);
+WINBASEAPI HMODULE WINAPI GetModuleHandleW (LPCWSTR lpModuleName);
+WINBASEAPI HMODULE WINAPI LoadLibraryExA (LPCSTR lpLibFileName, HANDLE hFile, DWORD dwFlags);
+WINBASEAPI HMODULE WINAPI LoadLibraryExW (LPCWSTR lpLibFileName, HANDLE hFile, DWORD dwFlags);
+WINBASEAPI HGLOBAL WINAPI LoadResource (HMODULE hModule, HRSRC hResInfo);
+WINUSERAPI int WINAPI LoadStringA (HINSTANCE hInstance, UINT uID, LPSTR lpBuffer, int cchBufferMax);
+WINUSERAPI int WINAPI LoadStringW (HINSTANCE hInstance, UINT uID, LPWSTR lpBuffer, int cchBufferMax);
+WINBASEAPI LPVOID WINAPI LockResource (HGLOBAL hResData);
+WINBASEAPI DWORD WINAPI SizeofResource (HMODULE hModule, HRSRC hResInfo);
+WINBASEAPI DLL_DIRECTORY_COOKIE WINAPI AddDllDirectory (PCWSTR NewDirectory);
+WINBASEAPI WINBOOL WINAPI RemoveDllDirectory (DLL_DIRECTORY_COOKIE Cookie);
+WINBASEAPI WINBOOL WINAPI SetDefaultDllDirectories (DWORD DirectoryFlags);
+WINBASEAPI WINBOOL WINAPI GetModuleHandleExA (DWORD dwFlags, LPCSTR lpModuleName, HMODULE *phModule);
+WINBASEAPI WINBOOL WINAPI GetModuleHandleExW (DWORD dwFlags, LPCWSTR lpModuleName, HMODULE *phModule);
+#define PGET_MODULE_HANDLE_EX __MINGW_NAME_AW(PGET_MODULE_HANDLE_EX)
+#define GetModuleHandleEx __MINGW_NAME_AW(GetModuleHandleEx)
+WINGDIAPI HBRUSH WINAPI CreateSolidBrush(COLORREF color);
 
 
 

@@ -97,7 +97,7 @@ LRESULT CALLBACK WndProc( HWND hwnd,UINT msg,WPARAM wParam,LPARAM lParam){
       }
       break;
   }
-	return DefWindowProc( hwnd, msg, wParam, lParam );
+	return DefWindowProcA( hwnd, msg, wParam, lParam );
 }
 
 ContextInf* upd_pixview = 0;

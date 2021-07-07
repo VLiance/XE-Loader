@@ -1,7 +1,7 @@
 
-uint32_t Create_context(ContextInf _ctx){
+hdl_t Create_context(ContextInf _ctx){
 	aContext_count++; //Important: Skip the zero index (NULL)
-	int idx = aContext_count;
+	hdl_t idx = aContext_count;
 	
 	aContext[idx] = _ctx;
 	
@@ -24,7 +24,7 @@ uint32_t Create_context(ContextInf _ctx){
 	*/
 	showinf("PixView= idx: %d, height: %d, width: %d", idx,  aContext[idx].height,  aContext[idx].width);
 	showinf("create hwnd_View( hwnd_View: %d, idx: %d, height: %d, width: %d )", aContext[idx].hwnd_View,  idx,  aContext[idx].height,  aContext[idx].width );
-	return (uint32_t)idx;
+	return (hdl_t)idx;
 }
 
 ContextInf* Blit_context(uint32_t _idx, const void* _pixels, int _SrcWidth){ //TODO more flexible param

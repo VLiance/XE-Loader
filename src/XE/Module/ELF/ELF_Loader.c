@@ -138,7 +138,7 @@ ELF_File*
         /* perhaps check its location */
         if (_phdr->p_type == PT_LOAD) {
             /* adjust min/max */
-            if ((void *) _phdr->p_vaddr < f->min) {
+            if ((uintptr_t *) _phdr->p_vaddr < (uintptr_t *)f->min) {
                 f->min = (uintptr_t *) _phdr->p_vaddr;
             }
             if ((void *) _phdr->p_vaddr + _phdr->p_memsz > f->max) {

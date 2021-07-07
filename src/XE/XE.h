@@ -89,6 +89,7 @@ extern XE_aModule aModule;
 #endif
 
 #include "Module/PE/win.h"
+typedef  size_t hdl_t;
 
 #ifdef Show_AllFuncTable
 #define showfunc_opt showfunc

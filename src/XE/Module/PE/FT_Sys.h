@@ -139,7 +139,7 @@ HWND WINAPI sys_CreateWindowExA(DWORD dwExStyle,LPCSTR lpClassName,LPCSTR lpWind
 	#ifdef Func_Win
 		return CreateWindowExA( dwExStyle, lpClassName, lpWindowName, dwStyle, X, Y, nWidth, nHeight, hWndParent, hMenu, hInstance, lpParam );
 	#else
-		int idx = Create_context((ContextInf){.width=nWidth, .height=nHeight});
+		hdl_t idx = Create_context((ContextInf){.width=nWidth, .height=nHeight});
 		return (HWND)idx;
 	#endif
 }
@@ -151,7 +151,7 @@ HWND WINAPI sys_CreateWindowExW(DWORD dwExStyle,LPCWSTR lpClassName,LPCWSTR lpWi
 		return CreateWindowExW( dwExStyle, lpClassName, lpWindowName, dwStyle, X, Y, nWidth, nHeight, hWndParent, hMenu, hInstance, lpParam );
 	#else
 	
-		int idx = Create_context((ContextInf){.width=nWidth, .height=nHeight});
+		hdl_t idx = Create_context((ContextInf){.width=nWidth, .height=nHeight});
 		return (HWND)idx;
 	#endif
 }
@@ -940,7 +940,7 @@ DWORD WINAPI sys_GetFileSize (HANDLE hFile, LPDWORD lpFileSizeHigh){
 	#ifdef Func_Win
 		return GetFileSize( hFile, lpFileSizeHigh );
 	#else
-		return XeGI_GetFileSize((uint32_t)hFile);
+		return XeGI_GetFileSize((hdl_t)hFile);
 	#endif
 }
 
