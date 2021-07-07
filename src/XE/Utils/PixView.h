@@ -43,7 +43,7 @@ bool bLButtonDown  = false;  //FIXME: AtomicBool
 #endif 
 
 LRESULT CALLBACK WndProc( HWND hwnd,UINT msg,WPARAM wParam,LPARAM lParam){
-	uint32_t h = (uint32_t)hwnd;
+	hdl_t h = (size_t)hwnd;
 
   switch ( msg ) {
     case WM_CREATE:

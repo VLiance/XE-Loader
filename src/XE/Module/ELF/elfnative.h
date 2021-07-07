@@ -13,6 +13,8 @@
 #define ElfNative_Word Elf32_Word
 #define ElfNative_Rel Elf32_Rel
 #define ElfNative_Rela Elf32_Rela
+#define ElfNative_Shdr Elf32_Shdr
+#define ElfNative_Half Elf32_Half
 
 #define ELFNATIVE_ST_BIND ELF32_ST_BIND
 #define ELFNATIVE_R_SYM ELF32_R_SYM
@@ -27,6 +29,8 @@
 #define ElfNative_Word Elf64_Word
 #define ElfNative_Rel Elf64_Rel
 #define ElfNative_Rela Elf64_Rela
+#define ElfNative_Shdr Elf64_Shdr
+#define ElfNative_Half Elf64_Half
 
 #define ELFNATIVE_ST_BIND ELF32_ST_BIND
 #define ELFNATIVE_R_SYM ELF64_R_SYM

@@ -36,7 +36,7 @@ typedef struct ELF_File {
     ssize_t memsz;
 
     /* the minimum and maximum position of the loaded file, ideally */
-    void *min, *max;
+    void* min, *max;
 
     /* the actual location where this file was loaded */
     void *loc;

@@ -139,7 +139,9 @@ void
 	#endif
 }
 
-typedef  uint32_t hdl_t;
+//typedef  uint32_t hdl_t;
+typedef  size_t hdl_t;
+
 typedef struct {
 	hdl_t handle;
 	uint32_t  pos;

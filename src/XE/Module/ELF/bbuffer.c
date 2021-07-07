@@ -46,7 +46,9 @@ void *bbuffer(void *loc, size_t sz) {
 #ifndef WIN32_LEAN_AND_MEAN
 #define WIN32_LEAN_AND_MEAN
 #endif
-#include <windows.h>
+
+
+//#include <windows.h>
 
 void *bbuffer(void *loc, size_t sz)
 {

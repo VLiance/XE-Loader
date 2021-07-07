@@ -26,7 +26,7 @@
 #ifndef WIN32_LEAN_AND_MEAN
 #define WIN32_LEAN_AND_MEAN
 #endif
-#include <windows.h>
+//#include <windows.h>
 #endif
 
 #include "ELF_Loader.h"
@@ -126,23 +126,23 @@ ELF_File*
     f->max = 0;
 	
 	
-	Elf32_Shdr* shdr = (Elf32_Shdr*)(f->prog + f->ehdr->e_shoff);
-	Elf32_Phdr* phdr = (Elf32_Phdr*)(f->prog + f->ehdr->e_phoff);
+	ElfNative_Shdr* shdr = (ElfNative_Shdr*)(f->prog + f->ehdr->e_shoff);
+	ElfNative_Phdr* phdr = (ElfNative_Phdr*)(f->prog + f->ehdr->e_phoff);
 		
 	//char* phdrl = f->prog + f->ehdr->e_phoff;
 	//char* shdrl = f->prog + f->ehdr->e_shoff;
 
-    for (Elf32_Half i = 0; i < f->ehdr->e_phnum; i++) {
-		Elf32_Phdr* _phdr = (Elf32_Phdr*) &phdr[i];
+    for (ElfNative_Half i = 0; i < f->ehdr->e_phnum; i++) {
+		ElfNative_Phdr* _phdr = (ElfNative_Phdr*) &phdr[i];
 
         /* perhaps check its location */
         if (_phdr->p_type == PT_LOAD) {
             /* adjust min/max */
             if ((void *) _phdr->p_vaddr < f->min) {
-                f->min = (void *) _phdr->p_vaddr;
+                f->min = (uintptr_t *) _phdr->p_vaddr;
             }
             if ((void *) _phdr->p_vaddr + _phdr->p_memsz > f->max) {
-                f->max = (void *) _phdr->p_vaddr + _phdr->p_memsz;
+                f->max = (uintptr_t *) _phdr->p_vaddr + _phdr->p_memsz;
             }
 
         } else if (/*maybe &&*/ _phdr->p_type == PT_INTERP) {
@@ -172,7 +172,7 @@ ELF_File*
 
 /*
 	//print section
-	Elf32_Shdr *sh_strtab = &shdr[f->ehdr->e_shstrndx];
+	ElfNative_Shdr *sh_strtab = &shdr[f->ehdr->e_shstrndx];
 	const char* const sh_strtab_p = p + sh_strtab->sh_offset;
 
 	for (int i = 0; i < f->ehdr->e_shnum; ++i) {
@@ -182,10 +182,10 @@ ELF_File*
 	*/
 	/*
 	//e_shentsize
-  Elf32_Ehdr *ehdr = (Elf32_Ehdr*)f->prog ;
-  Elf32_Shdr *shdr = (Elf32_Shdr *)(f->prog  + ehdr->e_shoff);
+  ElfNative_Ehdr *ehdr = (ElfNative_Ehdr*)f->prog ;
+  ElfNative_Shdr *shdr = (ElfNative_Shdr *)(f->prog  + ehdr->e_shoff);
   
-  Elf32_Shdr *sh_strtab = &shdrl[ehdr->e_shstrndx];
+  ElfNative_Shdr *sh_strtab = &shdrl[ehdr->e_shstrndx];
   const char *const sh_strtab_p = f->prog + sh_strtab->sh_offset;
 
   for (int i = 0; i < ehdr->e_shnum; ++i) {
@@ -195,24 +195,24 @@ ELF_File*
 
 
 
-	Elf32_Shdr *sh_strtab = &shdr[f->ehdr->e_shstrndx];
+	ElfNative_Shdr *sh_strtab = &shdr[f->ehdr->e_shstrndx];
 	const char *const sh_strtab_p = f->prog + sh_strtab->sh_offset;
   
 	
 	
 	void* phdr_madr = 0;
     /* we have the space, so load it in */
-	for (Elf32_Half i = 0; i < f->ehdr->e_phnum; i++) {
-		Elf32_Phdr* _phdr = (Elf32_Phdr*) &phdr[i];
+	for (ElfNative_Half i = 0; i < f->ehdr->e_phnum; i++) {
+		ElfNative_Phdr* _phdr = (ElfNative_Phdr*) &phdr[i];
 		
-		//  Elf32_Word	p_type;			/* Segment type */
-		//  Elf32_Off		p_offset;		/* Segment file offset */
-		 // Elf32_Addr	p_vaddr;		/* Segment virtual address */
-		 // Elf32_Addr	p_paddr;		/* Segment physical address */
-		//  Elf32_Word	p_filesz;		/* Segment size in file */
-		//  Elf32_Word	p_memsz;		/* Segment size in memory */
-		 // Elf32_Word	p_flags;		/* Segment flags */
-		//  Elf32_Word	p_align;		/* Segment alignment */
+		//  ElfNative_Word	p_type;			/* Segment type */
+		//  ElfNative_Off		p_offset;		/* Segment file offset */
+		 // ElfNative_Addr	p_vaddr;		/* Segment virtual address */
+		 // ElfNative_Addr	p_paddr;		/* Segment physical address */
+		//  ElfNative_Word	p_filesz;		/* Segment size in file */
+		//  ElfNative_Word	p_memsz;		/* Segment size in memory */
+		 // ElfNative_Word	p_flags;		/* Segment flags */
+		//  ElfNative_Word	p_align;		/* Segment alignment */
 
         /* perhaps load it in */
         if (_phdr->p_type == PT_LOAD) {
@@ -240,19 +240,19 @@ ELF_File*
 	
 	//print section
 
-    for (Elf32_Half i = 0; i < f->ehdr->e_shnum ; i++) {
-		Elf32_Shdr* _shdr = (Elf32_Shdr*) &shdr[i];
+    for (ElfNative_Half i = 0; i < f->ehdr->e_shnum ; i++) {
+		ElfNative_Shdr* _shdr = (ElfNative_Shdr*) &shdr[i];
 
-		  //Elf32_Word	sh_name;		/* Section name (string tbl index) */
-		  //Elf32_Word	sh_type;		/* Section type */
-		  //Elf32_Word	sh_flags;		/* Section flags */
-		  //Elf32_Addr	sh_addr;		/* Section virtual addr at execution */
-		  //Elf32_Off		sh_offset;		/* Section file offset */
-		  //Elf32_Word	sh_size;		/* Section size in bytes */
-		  //Elf32_Word	sh_link;		/* Link to another section */
-		  //Elf32_Word	sh_info;		/* Additional section information */
-		  //Elf32_Word	sh_addralign;		/* Section alignment */
-		  //Elf32_Word	sh_entsize;		/* Entry size if section holds table */
+		  //ElfNative_Word	sh_name;		/* Section name (string tbl index) */
+		  //ElfNative_Word	sh_type;		/* Section type */
+		  //ElfNative_Word	sh_flags;		/* Section flags */
+		  //ElfNative_Addr	sh_addr;		/* Section virtual addr at execution */
+		  //ElfNative_Off		sh_offset;		/* Section file offset */
+		  //ElfNative_Word	sh_size;		/* Section size in bytes */
+		  //ElfNative_Word	sh_link;		/* Link to another section */
+		  //ElfNative_Word	sh_info;		/* Additional section information */
+		  //ElfNative_Word	sh_addralign;		/* Section alignment */
+		  //ElfNative_Word	sh_entsize;		/* Entry size if section holds table */
 			char* sec_name =  (char*)sh_strtab_p + _shdr->sh_name;
 			_printl("%2d: %4d '%s', [0x%p, 0x%p]", i, _shdr->sh_name,
             sec_name, _shdr->sh_offset, _shdr->sh_offset + _shdr->sh_size);

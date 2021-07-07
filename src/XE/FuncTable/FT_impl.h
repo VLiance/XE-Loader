@@ -484,7 +484,7 @@ inl int impl_fwprintf (FILE* stream, const wchar_t* format, ...){
 
 	#ifndef No_wprintf
 		//Convert to cstr?
-		wprintf(BUFFER);
+		wprintf(L"%s", BUFFER);
 	#else
 	
 		Vla_WstrC(_BUFFER, BUFFER);
