@@ -475,7 +475,7 @@ inl int  impl_snwprintf( wchar_t* s, size_t n, const wchar_t* format, ... ){
 inl int impl_fwprintf (FILE* stream, const wchar_t* format, ...){
 	
 	showfunc("fwprintf( stream: %p, format: %p, ... )", stream, format); 
-	char BUFFER[8192]; //TODO GLOBAL BUFF or malloc?
+	wchar_t BUFFER[8192]; //TODO GLOBAL BUFF or malloc?
 	
 	vswprintf_ARG(format, BUFFER, 8192, ret);
 	//Vla_WstrC(_format, format);

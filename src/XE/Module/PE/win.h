@@ -5854,11 +5854,6 @@ MDINEXTMENU,*PMDINEXTMENU,*LPMDINEXTMENU;
 #define WM_XBUTTONUP 0x020C
 #define WM_XBUTTONDBLCLK 0x020D
 #define WM_MOUSEHWHEEL 0x020e
-#if _WIN32_WINNT >= 0x0600
-#define WM_MOUSELAST 0x020e
-#else
-#define WM_MOUSELAST 0x020d
-#endif
 #define WHEEL_DELTA 120
 #define GET_WHEEL_DELTA_WPARAM(wParam) ((short)HIWORD(wParam))
 #define WHEEL_PAGESCROLL (UINT_MAX)
@@ -6204,6 +6199,7 @@ WINGDIAPI WINBOOL WINAPI DeleteDC(HDC hdc);
 WINGDIAPI WINBOOL WINAPI DeleteMetaFile(HMETAFILE hmf);
 WINGDIAPI WINBOOL WINAPI DeleteObject(HGDIOBJ ho);
 
+#include <stdarg.h> //va_list
 WINBASEAPI DWORD WINAPI FormatMessageA (DWORD dwFlags, LPCVOID lpSource, DWORD dwMessageId, DWORD dwLanguageId, LPSTR lpBuffer, DWORD nSize, va_list *Arguments);
 WINBASEAPI DWORD WINAPI FormatMessageW (DWORD dwFlags, LPCVOID lpSource, DWORD dwMessageId, DWORD dwLanguageId, LPWSTR lpBuffer, DWORD nSize, va_list *Arguments);
 #define FormatMessage __MINGW_NAME_AW(FormatMessage)

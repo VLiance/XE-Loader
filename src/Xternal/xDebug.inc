@@ -194,7 +194,7 @@ void GDB_BreakAssert(){
 			*/
 			
 			_adr += (meminf.RegionSize>>2);
-			if(_adr >= _end){
+			if((void*)_adr >= (void*)_end){
 				break;
 			}
 		}
