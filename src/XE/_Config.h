@@ -112,6 +112,13 @@
 	#undef USE_Platform_ThreadStorage
 #endif
 
+
+#if defined( _WIN64 )
+	#define No_FullWinHeader
+	#undef ImWin
+#endif
+
+
 #ifdef __DJGPP__
 	#undef ShowPixView
 	#undef ImWin

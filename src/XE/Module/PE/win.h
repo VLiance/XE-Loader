@@ -230,6 +230,19 @@ typedef __LONG32 LONG;
 	typedef DWORDLONG *PDWORDLONG;
 
 	
+	#ifndef DECLSPEC_ALIGN
+	#ifndef __WIDL__
+		#if defined(_MSC_VER) && (_MSC_VER >= 1300) && !defined(MIDL_PASS)
+		#define DECLSPEC_ALIGN(x) __declspec(align(x))
+		#elif defined(__GNUC__)
+		#define DECLSPEC_ALIGN(x) __attribute__ ((__aligned__ (x)))
+		#else
+		#define DECLSPEC_ALIGN(x)
+		#endif
+	#else
+	#define DECLSPEC_ALIGN(x)
+	#endif
+	#endif
 
 	typedef struct _RTL_SRWLOCK { PVOID Ptr; } RTL_SRWLOCK,*PRTL_SRWLOCK;
 	typedef struct _RTL_CONDITION_VARIABLE { PVOID Ptr; } RTL_CONDITION_VARIABLE,*PRTL_CONDITION_VARIABLE;
@@ -364,7 +377,7 @@ typedef __LONG32 LONG;
 	  LONG e_lfanew;
 	} IMAGE_DOS_HEADER,*PIMAGE_DOS_HEADER;
 
-	typedef unsigned long ULONG_PTR,*PULONG_PTR;
+	//typedef unsigned long ULONG_PTR,*PULONG_PTR;
 	#define FIELD_OFFSET(Type, Field) ((LONG) __builtin_offsetof(Type, Field))
 	#define IMAGE_FIRST_SECTION(ntheader) ((PIMAGE_SECTION_HEADER) ((ULONG_PTR)ntheader + FIELD_OFFSET(IMAGE_NT_HEADERS,OptionalHeader) + ((PIMAGE_NT_HEADERS)(ntheader))->FileHeader.SizeOfOptionalHeader))
 
@@ -419,7 +432,7 @@ typedef __LONG32 LONG;
 	#define SEC_WRITECOMBINE 0x40000000
 	#define SEC_LARGE_PAGES 0x80000000
 
-
+	
 
 	  typedef unsigned __LONG32 ULONG;
 	  typedef CHAR *PCHAR,*LPCH,*PCH;
@@ -533,6 +546,18 @@ typedef __LONG32 LONG;
 		} IMAGE_TLS_DIRECTORY32;
 		typedef IMAGE_TLS_DIRECTORY32 *PIMAGE_TLS_DIRECTORY32;
 
+		typedef struct _IMAGE_TLS_DIRECTORY64
+		{
+		ULONGLONG StartAddressOfRawData;
+		ULONGLONG EndAddressOfRawData;
+		ULONGLONG AddressOfIndex;
+		ULONGLONG AddressOfCallBacks;
+		DWORD SizeOfZeroFill;
+		DWORD Characteristics;
+		}
+		IMAGE_TLS_DIRECTORY64;
+		typedef IMAGE_TLS_DIRECTORY64 *PIMAGE_TLS_DIRECTORY64;
+
 		typedef struct _IMAGE_THUNK_DATA32 {
 		  union {
 		DWORD ForwarderString;
@@ -543,6 +568,21 @@ typedef __LONG32 LONG;
 		} IMAGE_THUNK_DATA32;
 		typedef IMAGE_THUNK_DATA32 *PIMAGE_THUNK_DATA32;
 
+
+	typedef struct _IMAGE_THUNK_DATA64
+	{
+	union
+	{
+	ULONGLONG ForwarderString;
+	ULONGLONG Function;
+	ULONGLONG Ordinal;
+	ULONGLONG AddressOfData;
+	}
+	u1;
+	}
+	IMAGE_THUNK_DATA64;
+	typedef IMAGE_THUNK_DATA64 *PIMAGE_THUNK_DATA64;
+	
 
 	#ifdef _WIN64
 	#define IMAGE_ORDINAL_FLAG IMAGE_ORDINAL_FLAG64
@@ -831,7 +871,7 @@ typedef __LONG32 LONG;
 	//#endif // CpcDos
 	*/
 
-
+  VOID WINAPI SetLastError (DWORD dwErrCode);
 
 	  typedef unsigned long long  ULONGLONG;
 
