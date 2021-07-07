@@ -473,17 +473,23 @@ inl int  impl_snwprintf( wchar_t* s, size_t n, const wchar_t* format, ... ){
 
 //!int fwprintf (FILE* stream, const wchar_t* format, ...)
 inl int impl_fwprintf (FILE* stream, const wchar_t* format, ...){
-	showfunc("fwprintf( stream: %p, format: %p, ... )", stream, format); 
 	
+	showfunc("fwprintf( stream: %p, format: %p, ... )", stream, format); 
+
 	wchar_t BUFFER[8192]; //TODO GLOBAL BUFF or malloc?
 	vswprintf_ARG(format, BUFFER, 8192, ret);
 	
+	Vla_WstrC(_BUFFER, BUFFER);
+	_printf("%s", _BUFFER);
+	
+	/*
 	#ifndef No_wprintf
 	//Convert to cstr?
 	wprintf(BUFFER);
 	#else
-	showinf("[No wprintf]", "");
+	//showinf("[No wprintf]", "");
 	#endif
+	*/
 	return ret;
 }
 
