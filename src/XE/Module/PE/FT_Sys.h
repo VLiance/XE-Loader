@@ -504,6 +504,7 @@ DWORD WINAPI sys_GetModuleFileNameA (HMODULE hModule, LPSTR lpFilename, DWORD nS
 	#ifdef Func_Win
 		return GetModuleFileNameA(hModule, lpFilename, nSize);
 	#else
+		lpFilename[0] = 0;
 		return 0;
 	#endif
 }
@@ -513,6 +514,7 @@ DWORD WINAPI sys_GetModuleFileNameW (HMODULE hModule, LPWSTR lpFilename, DWORD n
 	#ifdef Func_Win
 		return GetModuleFileNameW(hModule, lpFilename, nSize);
 	#else
+		lpFilename[0] = 0;
 		return 0;
 	#endif
 }

@@ -110,6 +110,7 @@ uintptr_t
 	
 		XEGI_Thread* th = aThread(add,(XEGI_Thread){.id=aThread.size, .mainfunc=threadMain, .param=threadParam }); //TODO deep copy param?
 		XeGI_ExecuteThread(th);
+		return aThread.size; //TODO return handle
 		
 	#else
 		#if defined(Func_Win) || defined(USE_WinThread)
