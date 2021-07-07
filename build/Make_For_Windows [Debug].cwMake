@@ -2,5 +2,8 @@
 >
 -{_sOpt}="Debug"
 >
+;Enable large dll/so loading (> 650 mb)
+{vExtraFlag}=-Wl,--large-address-aware
+>
 -#Run Build.cwc -{_wToolchain}= VLianceTool/LibRT
 >
