@@ -48,7 +48,7 @@
 //#define Show_AllFuncTable
 
 //Use the standard Widows VirtualAlloc allocation or the more portable ExeLoader version
-//#define USE_Windows_VirtualAlloc
+#define USE_Windows_VirtualAlloc
 
 //Use standard TlsAlloc instead of the Exeloader one
 #define USE_Platform_ThreadStorage
@@ -67,7 +67,7 @@
 
 //#define USE_Platform_RegisterFrame
 
-#define USE_Window_LastError
+//#define USE_Window_LastError
 
 #define NO_Windows_Sleep
 
@@ -77,7 +77,7 @@
 
 //#define USE_PRINTF
 
-#define SIMULATE_MULTI_THREAD_TO_SINGLE_WORKER_TERMINATE_ON_SLEEP
+//#define SIMULATE_MULTI_THREAD_TO_SINGLE_WORKER_TERMINATE_ON_SLEEP
 
 #define ShowPixView 
 #define USE_Transparent_PixView 

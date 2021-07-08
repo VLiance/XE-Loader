@@ -43,20 +43,18 @@ DWORD WINAPI sys_GetLastError(VOID){
 	#if defined(Func_Win) || defined(USE_Window_LastError) 
 	DWORD error = GetLastError();
 	if (error){
-		LPVOID lpMsgBuf;
+		LPSTR lpMsgBuf;
 		DWORD bufLen = FormatMessage(	FORMAT_MESSAGE_ALLOCATE_BUFFER |
 										FORMAT_MESSAGE_FROM_SYSTEM |
 										FORMAT_MESSAGE_IGNORE_INSERTS,
 										NULL,error,MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),(LPSTR) &lpMsgBuf,0, NULL );
 		if (bufLen){
-		  LPCSTR lpMsgStr = (LPCSTR)lpMsgBuf;
-		//  std::string result(lpMsgStr, lpMsgStr+bufLen); //TODO
+		  (LPCSTR)lpMsgBuf;
+		  showinf("GetLastError: %s",lpMsgBuf);
 		  LocalFree(lpMsgBuf);
-		//  showinf("GetLastError:%s", result.c_str());
-		  showinf("TODO GetLastError:","");
 		}
-
 	}
+	//SetLastError(0);
 	return error;
 	#else
 	 return last_error;
@@ -1920,6 +1918,20 @@ WINBOOL WINAPI sys_GetConsoleScreenBufferInfo(HANDLE hConsoleOutput,PCONSOLE_SCR
 	#ifdef Func_Win 
 	return GetConsoleScreenBufferInfo(hConsoleOutput, lpConsoleScreenBufferInfo);
 	#else
+	
+	//typedef struct _CONSOLE_SCREEN_BUFFER_INFO {
+	//COORD dwSize;
+	//COORD dwCursorPosition;
+	//WORD wAttributes;
+	//SMALL_RECT srWindow;
+	//COORD dwMaximumWindowSize;
+
+	lpConsoleScreenBufferInfo->dwSize = (COORD){};
+	lpConsoleScreenBufferInfo->dwCursorPosition = (COORD){};
+	lpConsoleScreenBufferInfo->wAttributes =0;
+	lpConsoleScreenBufferInfo->srWindow  = (SMALL_RECT){};
+	lpConsoleScreenBufferInfo->dwMaximumWindowSize  = (COORD){};
+	
 	return 0;
 	#endif	
 } 

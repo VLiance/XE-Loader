@@ -118,7 +118,12 @@ uintptr_t
 		if ( (thdl = (uintptr_t)CreateThread(0,stackSize,(LPTHREAD_START_ROUTINE)threadMain,(LPVOID)threadParam,0,0))){
 			err = GetLastError();
 		}
+		#else
+			//No thread
+			_printl("Warning, no thread created");
+			return 1;
 		#endif
+		
 	#endif
 	return thdl;
 }
