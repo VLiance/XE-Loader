@@ -86,7 +86,16 @@ static BOOL
 	module->section_text = 0;
 	PIMAGE_SECTION_HEADER section = IMAGE_FIRST_SECTION(module->headers);
 	for (i=0; i < module->headers->FileHeader.NumberOfSections; i++, section++) {
+	
+		_printl("----------- SECTION [%s][%p]: ", section->Name , section->Misc.VirtualSize);
+	
+	
+		DWORD real_size = section->SizeOfRawData ;
+		//DWORD real_size = section->Misc.VirtualSize ; //test only
+		
 		if (section->SizeOfRawData == 0) {
+		//if (section->SizeOfRawData == 0 && i != 0) { //test only
+		
 			// section doesn't contain data in the dll itself, but may define
 			// uninitialized data
 			section_size = old_headers->OptionalHeader.SectionAlignment;
@@ -97,6 +106,7 @@ static BOOL
 					MEM_COMMIT,
 					PAGE_READWRITE);
 				if (dest == NULL) {
+					warn_print("(Alloc fail)");
 					return false;
 				}
 
@@ -107,11 +117,12 @@ static BOOL
 				memset(dest, 0, section_size);
 			}
 
+			warn_print("(Section is empty)");
 			// section is empty
 			continue;
 		}
 
-		if (!CheckSize(size, section->PointerToRawData + section->SizeOfRawData)) {
+		if (!CheckSize(size, section->PointerToRawData + real_size)) {
 			return false;
 		}
 
@@ -121,23 +132,24 @@ static BOOL
 		
 		unsigned char *test = 0;
 		dest = (unsigned char *)MyMemoryDefaultAlloc(codeBase + section->VirtualAddress,
-							section->SizeOfRawData,
+							real_size,
 							MEM_COMMIT,
 							PAGE_READWRITE);
 		if (dest == NULL) {
+			//warn_print("(Alloc fail)");
 			return false;
 		}
 
 		// Always use position from file to support alignments smaller
 		// than page size.
 		dest = codeBase + section->VirtualAddress;
-		memcpy(dest, data + section->PointerToRawData, section->SizeOfRawData);
+		memcpy(dest, data + section->PointerToRawData, real_size);
 		section->Misc.PhysicalAddress = (DWORD) (uintptr_t) dest;
 		
 		if( strcmp( (char*)section->Name, ".text") == 0){
 			module->section_text = dest;
 		}
-		_printl("-----COPY section [%s]: dest[0x%p], src[0x%p], size[%d]", section->Name , dest,  data + section->PointerToRawData, section->SizeOfRawData );
+		_printl("-----COPY section [%s]: dest[0x%p], src[0x%p], size[%d]", section->Name , dest,  data + section->PointerToRawData, real_size);
 	}
 	return true;
 }
@@ -268,6 +280,18 @@ static BOOL
 static BOOL 
 	ExecuteTLS(MEMORYMODULE* module) 
 {
+
+
+///////////////////
+#ifdef _WIN64
+ //TODO  TODO
+ warn_print("Warning, ExecuteTLS is disabled in x64");
+///disable -> crash on x64
+return true;
+#endif
+///////////////////
+
+
 	unsigned char *codeBase = module->codeBase;
 	PIMAGE_TLS_DIRECTORY tls;
 	PIMAGE_TLS_CALLBACK* callback;
@@ -455,6 +479,7 @@ LPVOID
 			#ifdef DEBUG_OUTPUT
 			OutputLastError("Virtual Allocation ERROR");
 			#endif
+			warn_print("Virtual Allocation ERROR");
 		}
 		return _ret;
 	#else
