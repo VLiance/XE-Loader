@@ -51,10 +51,12 @@
 {"",			"__p__environ"  	,(FUNC_) impl_p__environ },
 
 
+//not in x64?
 #ifdef HAVE_OPERATOR_NEW_INT
 {"",			"_Znwj"  	,(FUNC_) _Znwj },//new
 {"",			"_Znaj"  	,(FUNC_) _Znaj },//new
 #endif
+
 #ifdef HAVE_OPERATOR_NEW_LONG
 {"",			"_Znwj"  	,(FUNC_) _Znwm },//TODO can we map int to long param?
 {"",			"_Znaj"  	,(FUNC_) _Znam },//TODO can we map int to long param?

@@ -304,7 +304,7 @@ static BOOL
 	
 	for (; relocation->VirtualAddress > 0; ) {
 		DWORD i;
-		unsigned char *dest = codeBase + relocation->VirtualAddress;
+		unsigned char* dest = codeBase + relocation->VirtualAddress;
 		unsigned short *relInfo = (unsigned short *)((unsigned char *)relocation + IMAGE_SIZEOF_BASE_RELOCATION);
 		for (i=0; i < ((relocation->SizeOfBlock - IMAGE_SIZEOF_BASE_RELOCATION) / 2); i++, relInfo++) {
 			DWORD *patchAddrHL;

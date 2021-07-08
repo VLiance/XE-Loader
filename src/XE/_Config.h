@@ -114,6 +114,7 @@
 
 
 #if defined( _WIN64 )
+	#undef HAVE_OPERATOR_NEW_INT  //Temp?
 	#define No_FullWinHeader
 	#undef ImWin
 #endif

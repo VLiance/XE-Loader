@@ -168,7 +168,7 @@ typedef struct _RTL_CRITICAL_SECTION {
 */
 //RTL_CRITICAL_SECTION CriticalSection = {(PRTL_CRITICAL_SECTION_DEBUG)1,1,1,(HANDLE)1,(HANDLE)1,(ULONG_PTR)1};
 //!VOID WINAPI InitializeCriticalSection (LPCRITICAL_SECTION lpCriticalSection)
-int criticalSection_thread_ = 1;
+size_t criticalSection_thread_ = 1;
 VOID WINAPI th_InitializeCriticalSection(LPCRITICAL_SECTION lpCriticalSection){
  	showfunc_opt("InitializeCriticalSection( lpCriticalSection: %p )", lpCriticalSection);
 	#if defined(Func_Win) || defined(USE_WinThread)

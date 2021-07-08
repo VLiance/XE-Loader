@@ -27,6 +27,6 @@
 	
 	-{vExtraFlag}
 >
--#Run _out/{_sOpt}/XE-Loader.exe  depth-less.exe
-;-#Run _out/{_sOpt}/XE-Loader.exe  t-rex.exe
+;-#Run _out/{_sOpt}/XE-Loader.exe  depth-less.exe
+-#Run _out/{_sOpt}/XE-Loader.exe  t-rex.exe
 >
