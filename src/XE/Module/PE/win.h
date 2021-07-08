@@ -7039,8 +7039,6 @@ WINBASEAPI LONG WINAPI InterlockedExchange (LONG volatile *Target, LONG Value);
 WINBASEAPI LONG WINAPI InterlockedExchangeAdd (LONG volatile *Addend, LONG Value);
 WINBASEAPI LONG WINAPI InterlockedCompareExchange (LONG volatile *Destination, LONG Exchange, LONG Comperand);
 WINBASEAPI LONGLONG WINAPI InterlockedCompareExchange64 (LONGLONG volatile *Destination, LONGLONG Exchange, LONGLONG Comperand);
-#define InterlockedExchangePointer(Target, Value) (PVOID)InterlockedExchange ((PLONG) (Target),((LONG) (LONG_PTR) (Value)))
-#define InterlockedExchangePointerNoFence InterlockedExchangePointer
 
 WINBASEAPI HANDLE WINAPI OpenMutexA (DWORD dwDesiredAccess, WINBOOL bInheritHandle, LPCSTR lpName);
 WINBASEAPI HANDLE WINAPI CreateSemaphoreA (LPSECURITY_ATTRIBUTES lpSemaphoreAttributes, LONG lInitialCount, LONG lMaximumCount, LPCSTR lpName);

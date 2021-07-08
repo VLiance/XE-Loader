@@ -252,8 +252,8 @@ UINT WINAPI sys_SetErrorMode(UINT uMode){
 	#endif
 }
 
-//!DWORD GetFileType(HANDLE hFile)
-DWORD sys_GetFileType(HANDLE hFile){
+//!WINBASEAPI DWORD WINAPI GetFileType (HANDLE hFile)
+DWORD WINAPI sys_GetFileType(HANDLE hFile){
 	showfunc("GetFileType( hFile: %p )", hFile);
 	#ifdef Func_Win
 		return GetFileType(hFile);
@@ -500,7 +500,7 @@ LPWCH WINAPI sys_GetEnvironmentStringsW (VOID){
 //!DWORD WINAPI GetModuleFileNameA (HMODULE hModule, LPSTR lpFilename, DWORD nSize)
 //!DWORD WINAPI GetModuleFileNameW (HMODULE hModule, LPWSTR lpFilename, DWORD nSize)
 DWORD WINAPI sys_GetModuleFileNameA (HMODULE hModule, LPSTR lpFilename, DWORD nSize){
-	showfunc("GetModuleFileNameA( hModule: %p, lpFilename: %s, nSize: %d )", hModule, lpFilename, nSize);
+	showfunc("GetModuleFileNameA( hModule: %p, lpFilename: %p, nSize: %d )", hModule, lpFilename, nSize);
 	#ifdef Func_Win
 		return GetModuleFileNameA(hModule, lpFilename, nSize);
 	#else
@@ -510,7 +510,7 @@ DWORD WINAPI sys_GetModuleFileNameA (HMODULE hModule, LPSTR lpFilename, DWORD nS
 }
 DWORD WINAPI sys_GetModuleFileNameW (HMODULE hModule, LPWSTR lpFilename, DWORD nSize){
 	Vla_WstrC(_lpFilename, lpFilename);
-	showfunc("GetModuleFileNameW( hModule: %p, _lpFilename: %s, nSize: %d )", hModule, _lpFilename, nSize);
+	showfunc("GetModuleFileNameW( hModule: %p, _lpFilename: %p, nSize: %d )", hModule, _lpFilename, nSize);
 	#ifdef Func_Win
 		return GetModuleFileNameW(hModule, lpFilename, nSize);
 	#else
@@ -1206,6 +1206,7 @@ LRESULT WINAPI sys_DefWindowProcW (HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lP
 	#else
 		return 0;
 	#endif
+	
 }
 
 
