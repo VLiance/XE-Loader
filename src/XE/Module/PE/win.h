@@ -397,11 +397,7 @@ WORD e32_devid;
 WORD e32_ddkver;
 }
 IMAGE_VXD_HEADER,*PIMAGE_VXD_HEADER;
-#if 0
-#endif
-#if !(defined(lint) || defined(RC_INVOKED))
-#pragma pack(pop)
-#endif
+
 typedef struct _IMAGE_FILE_HEADER
 {
 WORD Machine;
