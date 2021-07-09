@@ -136,7 +136,7 @@ static BOOL
 							MEM_COMMIT,
 							PAGE_READWRITE);
 		if (dest == NULL) {
-			//warn_print("(Alloc fail)");
+			warn_print("(Alloc fail)");
 			return false;
 		}
 
@@ -205,6 +205,9 @@ static BOOL
 	bool executable = (sectionData->characteristics & IMAGE_SCN_MEM_EXECUTE) != 0;
 	bool readable =   (sectionData->characteristics & IMAGE_SCN_MEM_READ) != 0;
 	bool writeable =  (sectionData->characteristics & IMAGE_SCN_MEM_WRITE) != 0;
+	
+	_printl("name[%s], executable[%d], readable[%d], writeable[%d]",sectionData->name, executable,readable,writeable);
+	
 	DWORD protect = ProtectionFlags[executable][readable][writeable];
 	if (sectionData->characteristics & IMAGE_SCN_MEM_NOT_CACHED) {
 		protect |= PAGE_NOCACHE;
@@ -240,6 +243,7 @@ static BOOL
 	sectionData.size = GetRealSectionSize(module, section);
 	sectionData.characteristics = section->Characteristics;
 	sectionData.last = false;
+	sectionData.name = section->Name;
 	section++;
 
 	// Change section access flags
@@ -305,6 +309,8 @@ return true;
 	callback = (PIMAGE_TLS_CALLBACK *) tls->AddressOfCallBacks;
 	if (callback) {
 		while (*callback) {
+		//http://lallouslab.net/2017/05/30/using-cc-tls-callbacks-in-visual-studio-with-your-32-or-64bits-programs/
+		//typedef VOID (NTAPI *PIMAGE_TLS_CALLBACK) (PVOID DllHandle, DWORD Reason, PVOID Reserved);
 			(*callback)((LPVOID) codeBase, DLL_PROCESS_ATTACH, NULL);
 			callback++;
 		}
@@ -797,6 +803,9 @@ MEMORYMODULE*
 			result->initialized = true;
 		} else {
 			_printl( "File format : Windows execuable");
+			_printl( "exeEntry[code] %p", code);
+			_printl( "exeEntry[AddressOfEntryPoint] %p", result->headers->OptionalHeader.AddressOfEntryPoint);
+			_printl( "exeEntry[result] %p", code + result->headers->OptionalHeader.AddressOfEntryPoint);
 			result->exeEntry = (ExeEntryProc)(LPVOID)(code + result->headers->OptionalHeader.AddressOfEntryPoint);
 		}
 	} else {

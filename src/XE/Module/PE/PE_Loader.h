@@ -59,6 +59,7 @@ typedef struct {
 	DWORD size;
 	DWORD characteristics;
 	BOOL last;
+	char* name;
 } SECTIONFINALIZEDATA, *PSECTIONFINALIZEDATA;
 
 typedef struct MEMORYMODULE {
