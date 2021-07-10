@@ -23,19 +23,9 @@
 	#define _WIN32_WINNT 0x0600
 
 	#include <windows.h>
-	#warning okay
-	
-	//#include "full_windows.h"
+	#warning "Using Windows function (XE Loader will run only on Windows)"
 	
 #else // RealWin
-
-	#ifdef Func_Win
-	
-		#error dsddFunc_Win
-	#else
-		#error dsdd nope
-	#endif
-
 
 	#ifdef Func_Win
 	#define STDCALL __stdcall
