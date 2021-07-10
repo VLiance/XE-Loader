@@ -113,7 +113,8 @@ export XE_Module*
 	
 	stdout_ = (FILE*)stdout;
 	stderr_ = (FILE*)stderr;
-
+	dbg_printl(" -stdout_ [%p]", stdout_);
+	dbg_printl(" -stderr_ [%p]", stderr_);
 
 	dbg_printl(" -- Xe_Load -- [%s]", _sPath);
 	if(strlen(_sPath) <= 0){

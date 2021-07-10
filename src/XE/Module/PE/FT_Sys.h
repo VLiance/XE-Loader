@@ -53,8 +53,8 @@ DWORD WINAPI sys_GetLastError(VOID){
 		  showinf("GetLastError: %s",lpMsgBuf);
 		  LocalFree(lpMsgBuf);
 		}
+		sys_SetLastError(0);
 	}
-	//SetLastError(0);
 	return error;
 	#else
 	 return last_error;

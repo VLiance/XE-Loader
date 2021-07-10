@@ -39,7 +39,7 @@
 char aOrdinalFunc[MAX_ORDINAL_FUNC][4] = {0}; //SpecialCharOrdinal"%" Ordinal"FFFF" "" := char
 int	 aOrdinalFunc_size = 0;
 
-#if ImWin
+#ifdef ImWin
 #define SetLastError_ SetLastError
 #else
 #define SetLastError_(exp)

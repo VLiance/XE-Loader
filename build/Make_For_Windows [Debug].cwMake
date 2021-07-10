@@ -7,5 +7,5 @@
 >
 -#Run Build.cwc -{_wToolchain}= VLianceTool/LibRT
 >
--#Run _out/{_sOpt}/XE-Loader.exe  depth-less.exe
+-#Run _out/{_sOpt}/XE-Loader.exe  imgui-sapp.exe
 >

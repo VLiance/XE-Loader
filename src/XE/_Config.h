@@ -21,12 +21,15 @@
 #ifndef EXELOADER_Config_H
 #define EXELOADER_Config_H
 
-#if ImWin
+
+
+#ifdef D_Platform_Windows
 #define Func_Win
 #endif
 
-#define Func_Win //Temp
-#undef Func_Win //Temp
+//Remove all relative Windows function and dependency, like in a whole new system
+//#define BE_ON_CUSTOM_OS
+
 
 ////////////////////////////////////////////////////
 /////////////  CUSTOM SETTINGS  ////////////////////
@@ -98,10 +101,6 @@
 ////////////////////////////////////////////////////
 ////////////////////////////////////////////////////
 
-#ifndef Func_Win
-#undef USE_Windows_LoadLibrary
-#undef USE_Windows_VirtualAlloc
-#endif
 
 #ifdef Show_AllFuncTable
 	#undef Show_FuncTable
@@ -140,6 +139,18 @@
 	#define HAVE_OPERATOR_NEW_LONG
 	#define SIMULATE_MULTI_THREAD_TO_SINGLE_WORKER_TERMINATE_ON_SLEEP
 	//#define No_Main
+	#define BE_ON_CUSTOM_OS
+#endif
+
+
+#ifdef BE_ON_CUSTOM_OS
+#undef Func_Win 
+#endif
+
+
+#ifndef Func_Win
+#undef USE_Windows_LoadLibrary
+#undef USE_Windows_VirtualAlloc
 #endif
 
 //TEST for dosbox -- Temp
