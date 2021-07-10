@@ -34,7 +34,7 @@ static int
 
 
 #ifndef No_Main
-#ifdef ImWin
+#ifdef Func_Win
 #include "XE/Module/PE/win.h"
 HINSTANCE xe_hInstance = 0;
 int WINAPI 
@@ -59,7 +59,7 @@ int WINAPI
 	
 	return End(m);
 }
-#else //!ImWin
+#else //!Func_Win
 int 
 	main(int argc, char* argv[]) 
 {

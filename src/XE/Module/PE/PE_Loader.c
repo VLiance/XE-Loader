@@ -39,7 +39,7 @@
 char aOrdinalFunc[MAX_ORDINAL_FUNC][4] = {0}; //SpecialCharOrdinal"%" Ordinal"FFFF" "" := char
 int	 aOrdinalFunc_size = 0;
 
-#ifdef ImWin
+#ifdef Func_Win
 #define SetLastError_ SetLastError
 #else
 #define SetLastError_(exp)
@@ -391,7 +391,7 @@ static BOOL
 
 	importDesc = (PIMAGE_IMPORT_DESCRIPTOR) (codeBase + directory->VirtualAddress);
 
-#ifdef ImWin
+#ifdef Func_Win
 	for (; !IsBadReadPtr(importDesc, sizeof(IMAGE_IMPORT_DESCRIPTOR)) && importDesc->Name; importDesc++) {
 #else
 	for (; importDesc->Name; importDesc++) {
@@ -403,7 +403,7 @@ static BOOL
 
 		HCUSTOMMODULE handle = MyMemoryDefaultLoadLibrary((LPCSTR) (codeBase + importDesc->Name));
 		if (handle == NULL) {
-			#ifdef ImWin
+			#ifdef Func_Win
 			SetLastError_(ERROR_MOD_NOT_FOUND);
 			#endif
 			result = false;
@@ -416,7 +416,7 @@ static BOOL
 
 		if (tmp == 0) {
 			MyMemoryDefaultFreeLibrary(handle);
-			#ifdef ImWin
+			#ifdef Func_Win
 			SetLastError_(ERROR_OUTOFMEMORY);
 			#endif
 			result = false;
@@ -458,7 +458,7 @@ static BOOL
 		
 		if (!result) {
 			MyMemoryDefaultFreeLibrary(handle);
-			#ifdef ImWin
+			#ifdef Func_Win
 			SetLastError_(ERROR_PROC_NOT_FOUND);
 			#endif
 			break;
@@ -604,7 +604,7 @@ MEMORYMODULE*
 	
 	dos_header = (PIMAGE_DOS_HEADER)data;
 	if (dos_header->e_magic != IMAGE_DOS_SIGNATURE) {
-		#ifdef ImWin
+		#ifdef Func_Win
 		SetLastError_(ERROR_BAD_EXE_FORMAT);
 		#endif
 		warn_print("Warning, no IMAGE_DOS_SIGNATURE");
@@ -665,7 +665,7 @@ MEMORYMODULE*
 
 	int dwPageSize;
 
-#ifdef ImWin
+#ifdef Func_Win
 	GetNativeSystemInfo(&sysInfo);
 	dwPageSize = sysInfo.dwPageSize;
 #else

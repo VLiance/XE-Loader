@@ -22,7 +22,6 @@
 #define EXELOADER_Config_H
 
 
-
 #ifdef D_Platform_Windows
 #define Func_Win
 #endif
@@ -114,14 +113,12 @@
 
 #if defined( _WIN64 )
 	#undef HAVE_OPERATOR_NEW_INT  //Temp?
-	#define No_FullWinHeader
-	#undef ImWin
+	//#define No_FullWinHeader
 #endif
 
 
 #ifdef __DJGPP__
 	#undef ShowPixView
-	#undef ImWin
 	#define No_vswprintf
 	#define No_wprintf
 	#define NoSetLastError

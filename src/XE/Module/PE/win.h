@@ -17,17 +17,27 @@
 #ifndef HDEF_WIN
 #define HDEF_WIN
 
-#if defined( ImWin) && !defined(No_FullWinHeader)
+#if defined( Func_Win) && !defined(No_FullWinHeader)
 
 	#undef _WIN32_WINNT
 	#define _WIN32_WINNT 0x0600
 
 	#include <windows.h>
+	#warning okay
+	
 	//#include "full_windows.h"
 	
 #else // RealWin
 
-	#ifdef ImWin
+	#ifdef Func_Win
+	
+		#error dsddFunc_Win
+	#else
+		#error dsdd nope
+	#endif
+
+
+	#ifdef Func_Win
 	#define STDCALL __stdcall
 	#else // CpcDos
 	#define STDCALL __attribute__((stdcall))
@@ -35,7 +45,7 @@
 	#define NTAPI STDCALL
 	#define CALLBACK STDCALL
 
-	#ifdef ImWin
+	#ifdef Func_Win
 	#undef CDECL
 	#define CDECL  __cdecl
 	#else // CpcDos
@@ -7404,7 +7414,7 @@ WINBASEAPI HANDLE WINAPI GetCurrentThread (VOID);
 WINBASEAPI DWORD WINAPI GetCurrentThreadId (VOID);
 WINBOOL WINAPI IsProcessorFeaturePresent (DWORD ProcessorFeature);
 
-#endif /*Not ImWin*/
+#endif /*Not Func_Win*/
 /* -extra- */
 #ifndef HIWORD
 #define HIWORD(l)           ((WORD)((((DWORD_PTR)(l)) >> 16) & 0xffff))

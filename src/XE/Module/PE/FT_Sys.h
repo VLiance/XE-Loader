@@ -1351,9 +1351,6 @@ inl HMODULE  WINAPI sys_GetModuleHandleW(LPCWSTR lpModuleName){
 	#endif
 }
 
-///////////////// HERE OK ////////////
-//#undef Func_Win
-////////////////////////////////
 
 //!HCURSOR LoadCursorA(HINSTANCE hInstance,LPCSTR lpCursorName)
 //!HCURSOR LoadCursorW(HINSTANCE hInstance,LPCWSTR lpCursorName)

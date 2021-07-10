@@ -102,7 +102,7 @@ void GDB_BreakAssert(){
 	}
 }
 
-#ifdef ImWin
+#ifdef Func_Win
 	#include "XE/Module/PE/win.h"
 	void MemVirtualQueryInfo(void* _adr, int _size){
 
