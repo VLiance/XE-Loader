@@ -27,7 +27,7 @@
 #endif
 
 //Remove all relative Windows function and dependency, like in a whole new system
-#define BE_ON_CUSTOM_OS
+//#define BE_ON_CUSTOM_OS
 
 //Use the standard Widows VirtualAlloc allocation or the more portable ExeLoader version
 #define USE_Windows_VirtualAlloc

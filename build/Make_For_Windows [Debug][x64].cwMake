@@ -4,6 +4,5 @@
 >
 -#Run Build.cwc -{_wToolchain}= VLianceTool/LibRT[x64]
 >
--#Run _out/{_sOpt}/XE-Loader.exe  t-rex.exe
-;-#Run _out/{_sOpt}/XE-Loader.exe  "D:/_Project/Sokol/_cwc/sapp/_out/cube-sapp/Windows_Debug_x64/cube-sapp.exe"
+-#Run _out/{_sOpt}/XE-Loader.exe  YourApp.exe
 >
