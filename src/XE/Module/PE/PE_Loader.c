@@ -32,14 +32,14 @@
   * for the specific language governing rights and limitations under the
   * License.
 */
- 
+
 #include "PE_Loader.h"
 #include "XE/FuncTable/FuncTable.h"
 
 char aOrdinalFunc[MAX_ORDINAL_FUNC][4] = {0}; //SpecialCharOrdinal"%" Ordinal"FFFF" "" := char
 int	 aOrdinalFunc_size = 0;
 
-#if ImWin
+#ifdef Func_Win
 #define SetLastError_ SetLastError
 #else
 #define SetLastError_(exp)
@@ -86,7 +86,16 @@ static BOOL
 	module->section_text = 0;
 	PIMAGE_SECTION_HEADER section = IMAGE_FIRST_SECTION(module->headers);
 	for (i=0; i < module->headers->FileHeader.NumberOfSections; i++, section++) {
+	
+		_printl("----------- SECTION [%s][%p]: ", section->Name , section->Misc.VirtualSize);
+	
+	
+		DWORD real_size = section->SizeOfRawData ;
+		//DWORD real_size = section->Misc.VirtualSize ; //test only
+		
 		if (section->SizeOfRawData == 0) {
+		//if (section->SizeOfRawData == 0 && i != 0) { //test only
+		
 			// section doesn't contain data in the dll itself, but may define
 			// uninitialized data
 			section_size = old_headers->OptionalHeader.SectionAlignment;
@@ -97,6 +106,7 @@ static BOOL
 					MEM_COMMIT,
 					PAGE_READWRITE);
 				if (dest == NULL) {
+					warn_print("(Alloc fail)");
 					return false;
 				}
 
@@ -107,11 +117,12 @@ static BOOL
 				memset(dest, 0, section_size);
 			}
 
+			warn_print("(Section is empty)");
 			// section is empty
 			continue;
 		}
 
-		if (!CheckSize(size, section->PointerToRawData + section->SizeOfRawData)) {
+		if (!CheckSize(size, section->PointerToRawData + real_size)) {
 			return false;
 		}
 
@@ -121,23 +132,24 @@ static BOOL
 		
 		unsigned char *test = 0;
 		dest = (unsigned char *)MyMemoryDefaultAlloc(codeBase + section->VirtualAddress,
-							section->SizeOfRawData,
+							real_size,
 							MEM_COMMIT,
 							PAGE_READWRITE);
 		if (dest == NULL) {
+			warn_print("(Alloc fail)");
 			return false;
 		}
 
 		// Always use position from file to support alignments smaller
 		// than page size.
 		dest = codeBase + section->VirtualAddress;
-		memcpy(dest, data + section->PointerToRawData, section->SizeOfRawData);
+		memcpy(dest, data + section->PointerToRawData, real_size);
 		section->Misc.PhysicalAddress = (DWORD) (uintptr_t) dest;
 		
 		if( strcmp( (char*)section->Name, ".text") == 0){
 			module->section_text = dest;
 		}
-		_printl("-----COPY section [%s]: dest[0x%p], src[0x%p], size[%d]", section->Name , dest,  data + section->PointerToRawData, section->SizeOfRawData );
+		_printl("-----COPY section [%s]: dest[0x%p], src[0x%p], size[%d]", section->Name , dest,  data + section->PointerToRawData, real_size);
 	}
 	return true;
 }
@@ -193,21 +205,30 @@ static BOOL
 	bool executable = (sectionData->characteristics & IMAGE_SCN_MEM_EXECUTE) != 0;
 	bool readable =   (sectionData->characteristics & IMAGE_SCN_MEM_READ) != 0;
 	bool writeable =  (sectionData->characteristics & IMAGE_SCN_MEM_WRITE) != 0;
+	
+	_printl("name[%s], executable[%d], readable[%d], writeable[%d]",sectionData->name, executable,readable,writeable);
+	
 	DWORD protect = ProtectionFlags[executable][readable][writeable];
 	if (sectionData->characteristics & IMAGE_SCN_MEM_NOT_CACHED) {
 		protect |= PAGE_NOCACHE;
 	}
+		
+	//Change memory access flags
+	#if defined(USE_Windows_VirtualAlloc) || (defined(_WIN64) ) 
+		//On Windows x64 Unprotect memory page is required for execution
 
-#ifdef USE_Windows_VirtualAlloc
-	// change memory access flags
-	DWORD oldProtect;
-	if (VirtualProtect(sectionData->address, sectionData->size, protect, &oldProtect) == 0) {
-		#ifdef DEBUG_OUTPUT
-		OutputLastError("Error protecting memory page");
+		DWORD oldProtect;
+		if (VirtualProtect(sectionData->address, sectionData->size, protect, &oldProtect) == 0) {
+			#ifdef DEBUG_OUTPUT
+			OutputLastError("Error protecting memory page");
+			#endif
+			return false;
+		}
+	#else
+		#ifdef _WIN64
+		err_print("Cannot unprotect memory page, please define: USE_Windows_VirtualAlloc ");
 		#endif
-		return false;
-	}
-#endif
+	#endif
 
 	return true;
 }
@@ -228,6 +249,7 @@ static BOOL
 	sectionData.size = GetRealSectionSize(module, section);
 	sectionData.characteristics = section->Characteristics;
 	sectionData.last = false;
+	sectionData.name = section->Name;
 	section++;
 
 	// Change section access flags
@@ -268,6 +290,18 @@ static BOOL
 static BOOL 
 	ExecuteTLS(MEMORYMODULE* module) 
 {
+
+
+///////////////////
+#ifdef _WIN64
+ //TODO  TODO
+ warn_print("Warning, ExecuteTLS is disabled in x64");
+///disable -> crash on x64
+return true;
+#endif
+///////////////////
+
+
 	unsigned char *codeBase = module->codeBase;
 	PIMAGE_TLS_DIRECTORY tls;
 	PIMAGE_TLS_CALLBACK* callback;
@@ -281,6 +315,8 @@ static BOOL
 	callback = (PIMAGE_TLS_CALLBACK *) tls->AddressOfCallBacks;
 	if (callback) {
 		while (*callback) {
+		//http://lallouslab.net/2017/05/30/using-cc-tls-callbacks-in-visual-studio-with-your-32-or-64bits-programs/
+		//typedef VOID (NTAPI *PIMAGE_TLS_CALLBACK) (PVOID DllHandle, DWORD Reason, PVOID Reserved);
 			(*callback)((LPVOID) codeBase, DLL_PROCESS_ATTACH, NULL);
 			callback++;
 		}
@@ -304,7 +340,7 @@ static BOOL
 	
 	for (; relocation->VirtualAddress > 0; ) {
 		DWORD i;
-		unsigned char *dest = codeBase + relocation->VirtualAddress;
+		unsigned char* dest = codeBase + relocation->VirtualAddress;
 		unsigned short *relInfo = (unsigned short *)((unsigned char *)relocation + IMAGE_SIZEOF_BASE_RELOCATION);
 		for (i=0; i < ((relocation->SizeOfBlock - IMAGE_SIZEOF_BASE_RELOCATION) / 2); i++, relInfo++) {
 			DWORD *patchAddrHL;
@@ -361,7 +397,7 @@ static BOOL
 
 	importDesc = (PIMAGE_IMPORT_DESCRIPTOR) (codeBase + directory->VirtualAddress);
 
-#ifdef ImWin
+#ifdef Func_Win
 	for (; !IsBadReadPtr(importDesc, sizeof(IMAGE_IMPORT_DESCRIPTOR)) && importDesc->Name; importDesc++) {
 #else
 	for (; importDesc->Name; importDesc++) {
@@ -373,7 +409,7 @@ static BOOL
 
 		HCUSTOMMODULE handle = MyMemoryDefaultLoadLibrary((LPCSTR) (codeBase + importDesc->Name));
 		if (handle == NULL) {
-			#ifdef ImWin
+			#ifdef Func_Win
 			SetLastError_(ERROR_MOD_NOT_FOUND);
 			#endif
 			result = false;
@@ -386,7 +422,7 @@ static BOOL
 
 		if (tmp == 0) {
 			MyMemoryDefaultFreeLibrary(handle);
-			#ifdef ImWin
+			#ifdef Func_Win
 			SetLastError_(ERROR_OUTOFMEMORY);
 			#endif
 			result = false;
@@ -428,7 +464,7 @@ static BOOL
 		
 		if (!result) {
 			MyMemoryDefaultFreeLibrary(handle);
-			#ifdef ImWin
+			#ifdef Func_Win
 			SetLastError_(ERROR_PROC_NOT_FOUND);
 			#endif
 			break;
@@ -455,6 +491,7 @@ LPVOID
 			#ifdef DEBUG_OUTPUT
 			OutputLastError("Virtual Allocation ERROR");
 			#endif
+			warn_print("Virtual Allocation ERROR");
 		}
 		return _ret;
 	#else
@@ -573,7 +610,7 @@ MEMORYMODULE*
 	
 	dos_header = (PIMAGE_DOS_HEADER)data;
 	if (dos_header->e_magic != IMAGE_DOS_SIGNATURE) {
-		#ifdef ImWin
+		#ifdef Func_Win
 		SetLastError_(ERROR_BAD_EXE_FORMAT);
 		#endif
 		warn_print("Warning, no IMAGE_DOS_SIGNATURE");
@@ -634,7 +671,7 @@ MEMORYMODULE*
 
 	int dwPageSize;
 
-#ifdef ImWin
+#ifdef Func_Win
 	GetNativeSystemInfo(&sysInfo);
 	dwPageSize = sysInfo.dwPageSize;
 #else
@@ -772,6 +809,9 @@ MEMORYMODULE*
 			result->initialized = true;
 		} else {
 			_printl( "File format : Windows execuable");
+			_printl( "exeEntry[code] %p", code);
+			_printl( "exeEntry[AddressOfEntryPoint] %p", result->headers->OptionalHeader.AddressOfEntryPoint);
+			_printl( "exeEntry[result] %p", code + result->headers->OptionalHeader.AddressOfEntryPoint);
 			result->exeEntry = (ExeEntryProc)(LPVOID)(code + result->headers->OptionalHeader.AddressOfEntryPoint);
 		}
 	} else {

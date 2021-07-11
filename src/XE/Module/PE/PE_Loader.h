@@ -32,6 +32,7 @@
   * for the specific language governing rights and limitations under the
   * License.
 */
+
 #ifndef HDEF_PE_Loader
 #define HDEF_PE_Loader
  
@@ -59,6 +60,7 @@ typedef struct {
 	DWORD size;
 	DWORD characteristics;
 	BOOL last;
+	char* name;
 } SECTIONFINALIZEDATA, *PSECTIONFINALIZEDATA;
 
 typedef struct MEMORYMODULE {

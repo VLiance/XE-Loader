@@ -34,7 +34,7 @@ static int
 
 
 #ifndef No_Main
-#ifdef ImWin
+#ifdef Func_Win
 #include "XE/Module/PE/win.h"
 HINSTANCE xe_hInstance = 0;
 int WINAPI 
@@ -52,14 +52,14 @@ int WINAPI
 	
 	xe_hInstance = _hInstance;
 	registerSignal();
-		 
+		
 	XE_Module* m = 
 	Xe_Load(_lpCmdLine);  // argv[0] is path
 	Xe_ExecuteMain(m);
 	
 	return End(m);
 }
-#else //!ImWin
+#else //!Func_Win
 int 
 	main(int argc, char* argv[]) 
 {

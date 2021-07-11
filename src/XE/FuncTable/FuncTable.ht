@@ -51,18 +51,29 @@
 {"",			"__p__environ"  	,(FUNC_) impl_p__environ },
 
 
+//not in x64?
 #ifdef HAVE_OPERATOR_NEW_INT
 {"",			"_Znwj"  	,(FUNC_) _Znwj },//new
 {"",			"_Znaj"  	,(FUNC_) _Znaj },//new
 #endif
+
 #ifdef HAVE_OPERATOR_NEW_LONG
 {"",			"_Znwj"  	,(FUNC_) _Znwm },//TODO can we map int to long param?
 {"",			"_Znaj"  	,(FUNC_) _Znam },//TODO can we map int to long param?
 #endif
-{"",			"_ZdlPv"  	,(FUNC_) _ZdlPv },//delete
 
-{"",			"__cxa_finalize" ,(FUNC_)  impl_cxa_finalize }, //global destructor
+//#ifdef HAVE_OPERATOR_DIVDI3
+//Some versions of 32-bit GCC may emit calls to external helper functions to
+//perform certain 32- and 64-bit operations. Normally these functions are
+//resolved by libgcc.a which is statically linked to the program. 
+//But libgcc may not be usable in some applications, e.g. embedded systems and linux kernel drivers. In those cases you'll get an linker error such as:
+//undefined reference to `__divdi3'
+//https://github.com/glitchub/arith64
 {"",			"__divdi3"  		,(FUNC_) __divdi3 },
+//#endif
+
+{"",			"_ZdlPv"  	,(FUNC_) _ZdlPv },//delete
+{"",			"__cxa_finalize" ,(FUNC_)  impl_cxa_finalize }, //global destructor
 
 
 //{"",			"_Unwind_Resume"  	,(FUNC_) __unwind_resume  },
@@ -124,7 +135,9 @@
 
 /////////////////////////////
 
-//{"wcscpy"  				,(FUNC_) wcscpy },
+{"",			"wcscpy"  				,(FUNC_) imp_wcscpy },
+
+
 //{"GetModuleFileNameW"  	,(FUNC_) GetModuleFileNameW },
 //{"_open"  				,(FUNC_) impl_open },
 
@@ -266,6 +279,8 @@
 {"",			"CreateWindowExA"  				,(FUNC_) sys_CreateWindowExA },
 {"",			"CreateWindowExW"  				,(FUNC_) sys_CreateWindowExW },
 
+
+{"",			"CreateThread"  				,(FUNC_) th_CreateThread },
 {"",			"GetCurrentThread"  			,(FUNC_) th_GetCurrentThread },
 {"",			"GetCurrentThreadId"  			,(FUNC_) sys_GetCurrentThreadId },
 {"",			"GetThreadPriority"  			,(FUNC_) th_GetThreadPriority },

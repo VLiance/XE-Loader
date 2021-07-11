@@ -145,6 +145,17 @@ uintptr_t th_beginthreadex( void *security, unsigned stack_size, unsigned ( WINA
 	return XeGI_CreateThread((XEGI_THREAD_START_ROUTINE)start_address,stack_size,(LPVOID)arglist);
 }
 
+//!WINBASEAPI HANDLE WINAPI CreateThread (LPSECURITY_ATTRIBUTES lpThreadAttributes, SIZE_T dwStackSize, LPTHREAD_START_ROUTINE lpStartAddress, LPVOID lpParameter, DWORD dwCreationFlags, LPDWORD lpThreadId)
+HANDLE WINAPI th_CreateThread(LPSECURITY_ATTRIBUTES lpThreadAttributes, SIZE_T dwStackSize, LPTHREAD_START_ROUTINE lpStartAddress, LPVOID lpParameter, DWORD dwCreationFlags, LPDWORD lpThreadId){
+	showfunc("CreateThread( lpThreadAttributes: %p, dwStackSize: %p, lpStartAddress: %p, lpParameter: %p, dwCreationFlags: %d, lpThreadId: %d )", lpThreadAttributes,dwStackSize,lpStartAddress,lpParameter, dwCreationFlags, lpThreadId); 
+	#if defined(Func_Win) || defined(USE_WinThread)
+		CreateThread(lpThreadAttributes,dwStackSize,lpStartAddress,lpParameter, dwCreationFlags, lpThreadId);
+	#else
+		return (HANDLE)XeGI_CreateThread((XEGI_THREAD_START_ROUTINE)lpStartAddress,dwStackSize,(LPVOID)lpParameter);
+	#endif
+	
+}
+
 /*
 typedef struct _RTL_CRITICAL_SECTION {
   PRTL_CRITICAL_SECTION_DEBUG DebugInfo;
@@ -157,7 +168,7 @@ typedef struct _RTL_CRITICAL_SECTION {
 */
 //RTL_CRITICAL_SECTION CriticalSection = {(PRTL_CRITICAL_SECTION_DEBUG)1,1,1,(HANDLE)1,(HANDLE)1,(ULONG_PTR)1};
 //!VOID WINAPI InitializeCriticalSection (LPCRITICAL_SECTION lpCriticalSection)
-int criticalSection_thread_ = 1;
+size_t criticalSection_thread_ = 1;
 VOID WINAPI th_InitializeCriticalSection(LPCRITICAL_SECTION lpCriticalSection){
  	showfunc_opt("InitializeCriticalSection( lpCriticalSection: %p )", lpCriticalSection);
 	#if defined(Func_Win) || defined(USE_WinThread)

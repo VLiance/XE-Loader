@@ -1,0 +1,8 @@
+;Register Cwc before using a .cwmake
+>
+-{_sOpt}="Debug"
+>
+-#Run Build.cwc -{_wToolchain}= VLianceTool/LibRT[x64]
+>
+-#Run _out/{sFolder}/XE-Loader.exe  YourApp.exe
+>

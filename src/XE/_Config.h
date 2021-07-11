@@ -21,12 +21,20 @@
 #ifndef EXELOADER_Config_H
 #define EXELOADER_Config_H
 
-#if ImWin
+
+#ifdef D_Platform_Windows
 #define Func_Win
 #endif
 
-#define Func_Win //Temp
-#undef Func_Win //Temp
+//Remove all relative Windows function and dependency, like in a whole new system
+//#define BE_ON_CUSTOM_OS
+
+//Use the standard Widows VirtualAlloc allocation or the more portable ExeLoader version
+#define USE_Windows_VirtualAlloc
+
+//Use the Windows Standard LoadLibraryA or undef to use the ExeLaoder AddLibrary similar to loading .exe from memory
+//#define USE_Windows_LoadLibrary
+//#define USE_Windows_GetProcAddress
 
 ////////////////////////////////////////////////////
 /////////////  CUSTOM SETTINGS  ////////////////////
@@ -37,9 +45,7 @@
 
 #define USE_Direct_Mapping
 
-//Use the Windows Standard LoadLibraryA or undef to use the ExeLaoder AddLibrary similar to loading .exe from memory
-//#define USE_Windows_LoadLibrary
-//#define USE_Windows_GetProcAddress
+
 
 //Show when function are called from the fonction table, with is parameters
 #define Show_FuncTable
@@ -47,8 +53,7 @@
 //Some function are irrelevant and may be annoying, but sometime we need it for debugging purpose
 //#define Show_AllFuncTable
 
-//Use the standard Widows VirtualAlloc allocation or the more portable ExeLoader version
-//#define USE_Windows_VirtualAlloc
+
 
 //Use standard TlsAlloc instead of the Exeloader one
 #define USE_Platform_ThreadStorage
@@ -57,7 +62,7 @@
 
 #define USE_Platform_Atomic
 
-#define USE_WinThread
+//#define USE_WinThread
 
 //Use standard Windows LocalAlloc
 //#define USE_Platform_LocalAlloc
@@ -67,7 +72,7 @@
 
 //#define USE_Platform_RegisterFrame
 
-#define USE_Window_LastError
+//#define USE_Window_LastError
 
 #define NO_Windows_Sleep
 
@@ -77,7 +82,7 @@
 
 //#define USE_PRINTF
 
-#define SIMULATE_MULTI_THREAD_TO_SINGLE_WORKER_TERMINATE_ON_SLEEP
+//#define SIMULATE_MULTI_THREAD_TO_SINGLE_WORKER_TERMINATE_ON_SLEEP
 
 #define ShowPixView 
 #define USE_Transparent_PixView 
@@ -98,10 +103,6 @@
 ////////////////////////////////////////////////////
 ////////////////////////////////////////////////////
 
-#ifndef Func_Win
-#undef USE_Windows_LoadLibrary
-#undef USE_Windows_VirtualAlloc
-#endif
 
 #ifdef Show_AllFuncTable
 	#undef Show_FuncTable
@@ -112,9 +113,15 @@
 	#undef USE_Platform_ThreadStorage
 #endif
 
+
+#if defined( _WIN64 )
+	#undef HAVE_OPERATOR_NEW_INT  //Temp?
+	//#define No_FullWinHeader
+#endif
+
+
 #ifdef __DJGPP__
 	#undef ShowPixView
-	#undef ImWin
 	#define No_vswprintf
 	#define No_wprintf
 	#define NoSetLastError
@@ -132,7 +139,17 @@
 	#define HAVE_OPERATOR_NEW_LONG
 	#define SIMULATE_MULTI_THREAD_TO_SINGLE_WORKER_TERMINATE_ON_SLEEP
 	//#define No_Main
+	#define BE_ON_CUSTOM_OS
+	#undef USE_Windows_VirtualAlloc
 #endif
+
+
+#ifdef BE_ON_CUSTOM_OS
+#undef Func_Win 
+#endif
+
+
+
 
 //TEST for dosbox -- Temp
 // #ifdef __DJGPP__

@@ -43,19 +43,17 @@ DWORD WINAPI sys_GetLastError(VOID){
 	#if defined(Func_Win) || defined(USE_Window_LastError) 
 	DWORD error = GetLastError();
 	if (error){
-		LPVOID lpMsgBuf;
+		LPSTR lpMsgBuf;
 		DWORD bufLen = FormatMessage(	FORMAT_MESSAGE_ALLOCATE_BUFFER |
 										FORMAT_MESSAGE_FROM_SYSTEM |
 										FORMAT_MESSAGE_IGNORE_INSERTS,
-										NULL,error,MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),(LPTSTR) &lpMsgBuf,0, NULL );
+										NULL,error,MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),(LPSTR) &lpMsgBuf,0, NULL );
 		if (bufLen){
-		  LPCSTR lpMsgStr = (LPCSTR)lpMsgBuf;
-		//  std::string result(lpMsgStr, lpMsgStr+bufLen); //TODO
+		  (LPCSTR)lpMsgBuf;
+		  showinf("GetLastError: %s",lpMsgBuf);
 		  LocalFree(lpMsgBuf);
-		//  showinf("GetLastError:%s", result.c_str());
-		  showinf("TODO GetLastError:","");
 		}
-
+		sys_SetLastError(0);
 	}
 	return error;
 	#else
@@ -139,7 +137,7 @@ HWND WINAPI sys_CreateWindowExA(DWORD dwExStyle,LPCSTR lpClassName,LPCSTR lpWind
 	#ifdef Func_Win
 		return CreateWindowExA( dwExStyle, lpClassName, lpWindowName, dwStyle, X, Y, nWidth, nHeight, hWndParent, hMenu, hInstance, lpParam );
 	#else
-		int idx = Create_context((ContextInf){.width=nWidth, .height=nHeight});
+		hdl_t idx = Create_context((ContextInf){.width=nWidth, .height=nHeight});
 		return (HWND)idx;
 	#endif
 }
@@ -151,7 +149,7 @@ HWND WINAPI sys_CreateWindowExW(DWORD dwExStyle,LPCWSTR lpClassName,LPCWSTR lpWi
 		return CreateWindowExW( dwExStyle, lpClassName, lpWindowName, dwStyle, X, Y, nWidth, nHeight, hWndParent, hMenu, hInstance, lpParam );
 	#else
 	
-		int idx = Create_context((ContextInf){.width=nWidth, .height=nHeight});
+		hdl_t idx = Create_context((ContextInf){.width=nWidth, .height=nHeight});
 		return (HWND)idx;
 	#endif
 }
@@ -252,8 +250,8 @@ UINT WINAPI sys_SetErrorMode(UINT uMode){
 	#endif
 }
 
-//!DWORD GetFileType(HANDLE hFile)
-DWORD sys_GetFileType(HANDLE hFile){
+//!WINBASEAPI DWORD WINAPI GetFileType (HANDLE hFile)
+DWORD WINAPI sys_GetFileType(HANDLE hFile){
 	showfunc("GetFileType( hFile: %p )", hFile);
 	#ifdef Func_Win
 		return GetFileType(hFile);
@@ -425,7 +423,7 @@ HANDLE WINAPI sys_CreateEventA(LPSECURITY_ATTRIBUTES lpEventAttributes, WINBOOL 
 	#ifdef Func_Win
 		return CreateEventA(lpEventAttributes, bManualReset, bInitialState, lpName);
 	#else
-		return 0;
+		return malloc(sizeof(HANDLE)); //new handle // TODO delete
 	#endif
 }
 HANDLE WINAPI sys_CreateEventW(LPSECURITY_ATTRIBUTES lpEventAttributes, WINBOOL bManualReset, WINBOOL bInitialState, LPCWSTR lpName){
@@ -433,7 +431,7 @@ HANDLE WINAPI sys_CreateEventW(LPSECURITY_ATTRIBUTES lpEventAttributes, WINBOOL 
 	#ifdef Func_Win
 		return CreateEventW(lpEventAttributes, bManualReset, bInitialState, lpName);
 	#else
-		return 0;
+		return malloc(sizeof(HANDLE)); //new handle // TODO delete
 	#endif
 }
 
@@ -500,18 +498,21 @@ LPWCH WINAPI sys_GetEnvironmentStringsW (VOID){
 //!DWORD WINAPI GetModuleFileNameA (HMODULE hModule, LPSTR lpFilename, DWORD nSize)
 //!DWORD WINAPI GetModuleFileNameW (HMODULE hModule, LPWSTR lpFilename, DWORD nSize)
 DWORD WINAPI sys_GetModuleFileNameA (HMODULE hModule, LPSTR lpFilename, DWORD nSize){
-	showfunc("GetModuleFileNameA( hModule: %p, lpFilename: %s, nSize: %d )", hModule, lpFilename, nSize);
+	showfunc("GetModuleFileNameA( hModule: %p, lpFilename: %p, nSize: %d )", hModule, lpFilename, nSize);
 	#ifdef Func_Win
 		return GetModuleFileNameA(hModule, lpFilename, nSize);
 	#else
+		lpFilename[0] = 0;
 		return 0;
 	#endif
 }
 DWORD WINAPI sys_GetModuleFileNameW (HMODULE hModule, LPWSTR lpFilename, DWORD nSize){
-	showfunc("GetModuleFileNameW( hModule: %p, lpFilename: %p, nSize: %d )", hModule, lpFilename, nSize);
+	Vla_WstrC(_lpFilename, lpFilename);
+	showfunc("GetModuleFileNameW( hModule: %p, _lpFilename: %p, nSize: %d )", hModule, _lpFilename, nSize);
 	#ifdef Func_Win
 		return GetModuleFileNameW(hModule, lpFilename, nSize);
 	#else
+		lpFilename[0] = 0;
 		return 0;
 	#endif
 }
@@ -669,7 +670,7 @@ WINBOOL WINAPI sys_SetEvent (HANDLE hEvent){
 	#ifdef Func_Win
 		return SetEvent(hEvent);
 	#else
-		return false;
+		return true;//Todo
 	#endif
 }
 
@@ -905,6 +906,61 @@ HANDLE WINAPI sys_CreateFileA (LPCSTR lpFileName, DWORD dwDesiredAccess, DWORD d
 		return 0;
 	#endif
  }
+HANDLE WINAPI sys_CreateFileW (LPCWSTR lpFileName, DWORD dwDesiredAccess, DWORD dwShareMode, LPSECURITY_ATTRIBUTES lpSecurityAttributes, DWORD dwCreationDisposition, DWORD dwFlagsAndAttributes, HANDLE hTemplateFile){
+ 	Vla_WstrC(_lpFileName, lpFileName);
+	showfunc("CreateFileW( lpFileName: %s, dwDesiredAccess: %d, dwShareMode: %d, lpSecurityAttributes: %p, dwCreationDisposition: %d, dwFlagsAndAttributes: %d, hTemplateFile: %p )", _lpFileName, dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwCreationDisposition, dwFlagsAndAttributes, hTemplateFile );
+	#ifdef Func_Win
+		return CreateFileW( lpFileName, dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwCreationDisposition, dwFlagsAndAttributes, hTemplateFile );
+	#else
+	/*
+	    _sfetch_file_handle_t h = CreateFileW(
+			w_path,                // lpFileName 
+			GENERIC_READ,           // dwDesiredAccess 
+			FILE_SHARE_READ,       // dwShareMode 
+			NULL,                   // lpSecurityAttributes 
+			OPEN_EXISTING,          // dwCreationDisposition 
+			FILE_ATTRIBUTE_NORMAL|FILE_FLAG_SEQUENTIAL_SCAN,   // dwFlagsAndAttributes 
+			NULL);                  // hTemplateFile 
+		return h;
+	*/
+		if(dwCreationDisposition == OPEN_EXISTING){
+			printf("\n OPEN_EXISTING %s: ", _lpFileName);
+			
+		}
+		
+		return 0;
+	#endif
+ } 
+
+//!WINBASEAPI DWORD WINAPI GetFileSize (HANDLE hFile, LPDWORD lpFileSizeHigh)
+DWORD WINAPI sys_GetFileSize (HANDLE hFile, LPDWORD lpFileSizeHigh){
+	showfunc("GetFileSize( hFile: %p, lpFileSizeHigh: %d )", hFile, lpFileSizeHigh );
+	#ifdef Func_Win
+		return GetFileSize( hFile, lpFileSizeHigh );
+	#else
+		return XeGI_GetFileSize((hdl_t)hFile);
+	#endif
+}
+
+//!WINBASEAPI WINBOOL WINAPI SetFilePointerEx (HANDLE hFile, LARGE_INTEGER liDistanceToMove, PLARGE_INTEGER lpNewFilePointer, DWORD dwMoveMethod)
+WINBOOL WINAPI sys_SetFilePointerEx(HANDLE hFile, LARGE_INTEGER liDistanceToMove, PLARGE_INTEGER lpNewFilePointer, DWORD dwMoveMethod){
+	showfunc("SetFilePointerEx( hFile: %p, liDistanceToMove: %d, lpNewFilePointer %p, dwMoveMethod: %d )", hFile, liDistanceToMove, lpNewFilePointer, dwMoveMethod);
+	#ifdef Func_Win
+		return SetFilePointerEx( hFile, liDistanceToMove, lpNewFilePointer, dwMoveMethod );
+	#else
+		return true; //TODO file seek
+	#endif
+}
+
+//!WINBASEAPI WINBOOL WINAPI ReadFile (HANDLE hFile, LPVOID lpBuffer, DWORD nNumberOfBytesToRead, LPDWORD lpNumberOfBytesRead, LPOVERLAPPED lpOverlapped);
+WINBOOL WINAPI sys_ReadFile (HANDLE hFile, LPVOID lpBuffer, DWORD nNumberOfBytesToRead, LPDWORD lpNumberOfBytesRead, LPOVERLAPPED lpOverlapped){
+	showfunc("ReadFile( hFile: %p, lpBuffer: %d, nNumberOfBytesToRead %d, lpNumberOfBytesRead: %p, lpOverlapped: %p )", hFile, lpBuffer, nNumberOfBytesToRead, lpNumberOfBytesRead, lpOverlapped);
+	#ifdef Func_Win
+		return ReadFile( hFile, lpBuffer, nNumberOfBytesToRead, lpNumberOfBytesRead, lpOverlapped );
+	#else
+		return XeGI_ReadFile((hdl_t)hFile, lpBuffer, nNumberOfBytesToRead); //TODO file seek
+	#endif
+}
 
 //!WINBASEAPI WINBOOL WINAPI CreateProcessA (LPCSTR lpApplicationName, LPSTR lpCommandLine, LPSECURITY_ATTRIBUTES lpProcessAttributes, LPSECURITY_ATTRIBUTES lpThreadAttributes, WINBOOL bInheritHandles, DWORD dwCreationFlags, LPVOID lpEnvironment, LPCSTR lpCurrentDirectory, LPSTARTUPINFOA lpStartupInfo, LPPROCESS_INFORMATION lpProcessInformation)
 //!WINBASEAPI WINBOOL WINAPI CreateProcessW (LPCWSTR lpApplicationName, LPWSTR lpCommandLine, LPSECURITY_ATTRIBUTES lpProcessAttributes, LPSECURITY_ATTRIBUTES lpThreadAttributes, WINBOOL bInheritHandles, DWORD dwCreationFlags, LPVOID lpEnvironment, LPCWSTR lpCurrentDirectory, LPSTARTUPINFOW lpStartupInfo, LPPROCESS_INFORMATION lpProcessInformation)
@@ -1148,6 +1204,7 @@ LRESULT WINAPI sys_DefWindowProcW (HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lP
 	#else
 		return 0;
 	#endif
+	
 }
 
 
@@ -1294,9 +1351,6 @@ inl HMODULE  WINAPI sys_GetModuleHandleW(LPCWSTR lpModuleName){
 	#endif
 }
 
-///////////////// HERE OK ////////////
-//#undef Func_Win
-////////////////////////////////
 
 //!HCURSOR LoadCursorA(HINSTANCE hInstance,LPCSTR lpCursorName)
 //!HCURSOR LoadCursorW(HINSTANCE hInstance,LPCWSTR lpCursorName)
@@ -1761,7 +1815,7 @@ const char* sys_getenv(const char* name){
 
 //!int WINAPI WideCharToMultiByte (UINT CodePage, DWORD dwFlags, LPCWCH lpWideCharStr, int cchWideChar, LPSTR lpMultiByteStr, int cbMultiByte, LPCCH lpDefaultChar, LPBOOL lpUsedDefaultChar)
 int WINAPI sys_WideCharToMultiByte(UINT CodePage, DWORD dwFlags, LPCWCH lpWideCharStr, int cchWideChar, LPSTR lpMultiByteStr, int cbMultiByte, LPCCH lpDefaultChar, LPBOOL lpUsedDefaultChar){
-	showfunc_opt("WideCharToMultiByte( ... )", "");
+	showfunc("WideCharToMultiByte( ... )", "");
 	#ifdef Func_Win 
 	return WideCharToMultiByte(CodePage, dwFlags, lpWideCharStr, cchWideChar, lpMultiByteStr, cbMultiByte, lpDefaultChar, lpUsedDefaultChar);
 	#else
@@ -1770,14 +1824,34 @@ int WINAPI sys_WideCharToMultiByte(UINT CodePage, DWORD dwFlags, LPCWCH lpWideCh
 	#endif	
 }
 
+#define CP_UTF8 65001
 //!int WINAPI MultiByteToWideChar (UINT CodePage, DWORD dwFlags, LPCCH lpMultiByteStr, int cbMultiByte, LPWSTR lpWideCharStr, int cchWideChar)
 int WINAPI sys_MultiByteToWideChar (UINT CodePage, DWORD dwFlags, LPCCH lpMultiByteStr, int cbMultiByte, LPWSTR lpWideCharStr, int cchWideChar){
 	showfunc_opt("MultiByteToWideChar( ... )", "");
 	#ifdef Func_Win 
 	return MultiByteToWideChar(CodePage, dwFlags, lpMultiByteStr, cbMultiByte, lpWideCharStr, cchWideChar);
 	#else
+	// MultiByteToWideChar(CP_UTF8, 0, src, -1, dst, dst_chars);
+	//printf("\nlpMultiByteStr: %s\n", lpMultiByteStr);
+	
+	//Minimal implementation  src
+	//if(lpMultiByteStr[0] != 0){
+	if(CodePage == CP_UTF8 && dwFlags == 0){//For UTF-8, dwFlags must be set to either 0
+		//cbMultiByte -> Size, in bytes, of the string indicated by the lpMultiByteStr parameter. Alternatively, this parameter can be set to -1 if the string is null-terminated.
+		//cchWideChar -> Size, in characters, of the buffer indicated by lpWideCharStr. If this value is 0, the function returns the required buffer size, in characters, including any terminating null character, and makes no use of the lpWideCharStr buffer.
+		if(cchWideChar == 0){
+			//return required size
+			//Use x4 size to be sure we can fit all char in UTF8 (length UTF16 x 4), 
+			return strlen(lpMultiByteStr) * 4;
+		}else{
+			//Fill dest buffer
+			CStrW2_(lpWideCharStr, lpMultiByteStr, strlen(lpMultiByteStr),cchWideChar);
+			//wprintf(L"\nRESULT! %s", lpWideCharStr);
+			return cchWideChar;
+		}
+	}
 	//return MultiByteToWideChar(CodePage, dwFlags, lpMultiByteStr, cbMultiByte, lpWideCharStr, cchWideChar);
-	return 0;//TODO
+	return 0;//TODO better implementetaion?
 	#endif	
 }
 
@@ -1841,6 +1915,20 @@ WINBOOL WINAPI sys_GetConsoleScreenBufferInfo(HANDLE hConsoleOutput,PCONSOLE_SCR
 	#ifdef Func_Win 
 	return GetConsoleScreenBufferInfo(hConsoleOutput, lpConsoleScreenBufferInfo);
 	#else
+	
+	//typedef struct _CONSOLE_SCREEN_BUFFER_INFO {
+	//COORD dwSize;
+	//COORD dwCursorPosition;
+	//WORD wAttributes;
+	//SMALL_RECT srWindow;
+	//COORD dwMaximumWindowSize;
+
+	lpConsoleScreenBufferInfo->dwSize = (COORD){};
+	lpConsoleScreenBufferInfo->dwCursorPosition = (COORD){};
+	lpConsoleScreenBufferInfo->wAttributes =0;
+	lpConsoleScreenBufferInfo->srWindow  = (SMALL_RECT){};
+	lpConsoleScreenBufferInfo->dwMaximumWindowSize  = (COORD){};
+	
 	return 0;
 	#endif	
 } 

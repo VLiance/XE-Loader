@@ -110,6 +110,7 @@ uintptr_t
 	
 		XEGI_Thread* th = aThread(add,(XEGI_Thread){.id=aThread.size, .mainfunc=threadMain, .param=threadParam }); //TODO deep copy param?
 		XeGI_ExecuteThread(th);
+		return aThread.size; //TODO return handle
 		
 	#else
 		#if defined(Func_Win) || defined(USE_WinThread)
@@ -117,7 +118,12 @@ uintptr_t
 		if ( (thdl = (uintptr_t)CreateThread(0,stackSize,(LPTHREAD_START_ROUTINE)threadMain,(LPVOID)threadParam,0,0))){
 			err = GetLastError();
 		}
+		#else
+			//No thread
+			_printl("Warning, no thread created");
+			return 1;
 		#endif
+		
 	#endif
 	return thdl;
 }
@@ -137,6 +143,45 @@ void
 		_Sleep(_ms);
 	#endif
 }
+
+
+
+typedef struct {
+	hdl_t handle;
+	uint32_t  pos;
+
+} XEGI_FileOp;
+
+ARRAY(XEGI_aFileHandle, XEGI_FileOp, 512);
+// -- Instance -- //
+XEGI_aFileHandle aFileHandle;
+#define aFileHandle(fn, ...) XEGI_aFileHandle_##fn(&aFileHandle, ##__VA_ARGS__)
+//!-----------!//
+
+
+//// FILE ////
+hdl_t 
+	XeGI_OpenFile(char* _lpFileName) //or path?
+{
+	XEGI_FileOp* file = aFileHandle(add, (XEGI_FileOp){.handle=aFileHandle.size});
+	return file->handle;
+}
+
+size_t 
+	XeGI_GetFileSize(hdl_t handle) //or path?
+{
+	return 0;
+}
+
+hdl_t 
+	XeGI_ReadFile(hdl_t handle, void* dest, size_t nNumberOfBytesToRead) //or path?
+{
+	//hdl_t* handle = aFileHandle(add, aFileHandle.size);
+	//return *handle;
+	return true;
+}
+
+//////////////
 
 #ifdef ShowPixView
 #include "XE/Utils/PixView.h"
