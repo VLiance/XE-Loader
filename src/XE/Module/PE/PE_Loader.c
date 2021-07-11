@@ -32,7 +32,7 @@
   * for the specific language governing rights and limitations under the
   * License.
 */
- 
+
 #include "PE_Loader.h"
 #include "XE/FuncTable/FuncTable.h"
 
@@ -212,17 +212,23 @@ static BOOL
 	if (sectionData->characteristics & IMAGE_SCN_MEM_NOT_CACHED) {
 		protect |= PAGE_NOCACHE;
 	}
+		
+	//Change memory access flags
+	#if defined(USE_Windows_VirtualAlloc) || (defined(_WIN64) ) 
+		//On Windows x64 Unprotect memory page is required for execution
 
-#ifdef USE_Windows_VirtualAlloc
-	// change memory access flags
-	DWORD oldProtect;
-	if (VirtualProtect(sectionData->address, sectionData->size, protect, &oldProtect) == 0) {
-		#ifdef DEBUG_OUTPUT
-		OutputLastError("Error protecting memory page");
+		DWORD oldProtect;
+		if (VirtualProtect(sectionData->address, sectionData->size, protect, &oldProtect) == 0) {
+			#ifdef DEBUG_OUTPUT
+			OutputLastError("Error protecting memory page");
+			#endif
+			return false;
+		}
+	#else
+		#ifdef _WIN64
+		err_print("Cannot unprotect memory page, please define: USE_Windows_VirtualAlloc ");
 		#endif
-		return false;
-	}
-#endif
+	#endif
 
 	return true;
 }

@@ -32,6 +32,16 @@
 	#else // CpcDos
 	#define STDCALL __attribute__((stdcall))
 	#endif
+	
+	#ifdef _WIN64
+	#ifdef __stdcall
+	#undef __stdcall
+	#undef STDCALL
+	#define STDCALL
+	#endif
+	#define __stdcall
+	#endif
+
 	#define NTAPI STDCALL
 	#define CALLBACK STDCALL
 
