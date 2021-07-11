@@ -4,5 +4,5 @@
 >
 -#Run Build.cwc -{_wToolchain}= VLianceTool/LibRT
 >
--#Run _out/{_sOpt}/XE-Loader.exe  YourApp.exe
+-#Run _out/{sFolder}/XE-Loader.exe  YourApp.exe
 >

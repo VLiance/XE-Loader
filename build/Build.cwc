@@ -1,8 +1,9 @@
 >
 -{pXE}=../
+-{sFolder}=Win_{_sOpt}_{_sConfig_Type}
 >
 ;Build cpp
--c {pXE}/src/ -o obj/Win_{_sOpt}/  -DImWin -DUseWinFunc -DWinLastError 
+-c {pXE}/src/ -o obj/{sFolder}/  -DImWin -DUseWinFunc -DWinLastError 
 
 	-I _XE_override/
 	-I {pXE}/include/
@@ -12,7 +13,7 @@
 	-DD_REDIRECT_STDERR
 >
 ;Generate executable
--o obj/Win_{_sOpt}/ -#To _out/{_sOpt}/XE-Loader.* -lgdi32 
+-o obj/{sFolder}/ -#To _out/{sFolder}/XE-Loader.* -lgdi32 
 	
 	
 	
