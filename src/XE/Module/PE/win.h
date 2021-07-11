@@ -7414,7 +7414,86 @@ WINBASEAPI HANDLE WINAPI GetCurrentThread (VOID);
 WINBASEAPI DWORD WINAPI GetCurrentThreadId (VOID);
 WINBOOL WINAPI IsProcessorFeaturePresent (DWORD ProcessorFeature);
 
+typedef enum _HEAP_INFORMATION_CLASS
+{
+HeapCompatibilityInformation, HeapEnableTerminationOnCorruption
+}
+HEAP_INFORMATION_CLASS;
+
+typedef struct _HEAP_SUMMARY
+{
+DWORD cb;
+SIZE_T cbAllocated;
+SIZE_T cbCommitted;
+SIZE_T cbReserved;
+SIZE_T cbMaxReserve;
+}
+HEAP_SUMMARY,*PHEAP_SUMMARY;
+typedef PHEAP_SUMMARY LPHEAP_SUMMARY;
+
+typedef HANDLE *PHANDLE;
+
+typedef RTL_CRITICAL_SECTION CRITICAL_SECTION;
+typedef PRTL_CRITICAL_SECTION PCRITICAL_SECTION;
+typedef PRTL_CRITICAL_SECTION LPCRITICAL_SECTION;
+typedef RTL_CRITICAL_SECTION_DEBUG CRITICAL_SECTION_DEBUG;
+typedef PRTL_CRITICAL_SECTION_DEBUG PCRITICAL_SECTION_DEBUG;
+typedef PRTL_CRITICAL_SECTION_DEBUG LPCRITICAL_SECTION_DEBUG;
+typedef VOID (WINAPI *LPOVERLAPPED_COMPLETION_ROUTINE) (DWORD dwErrorCode, DWORD dwNumberOfBytesTransfered, LPOVERLAPPED lpOverlapped);
+#define LOCKFILE_FAIL_IMMEDIATELY 0x1
+#define LOCKFILE_EXCLUSIVE_LOCK 0x2
+typedef struct _PROCESS_HEAP_ENTRY
+{
+PVOID lpData;
+DWORD cbData;
+BYTE cbOverhead;
+BYTE iRegionIndex;
+WORD wFlags;
+__C89_NAMELESS union
+{
+struct
+{
+HANDLE hMem;
+DWORD dwReserved[3];
+}
+Block;
+struct
+{
+DWORD dwCommittedSize;
+DWORD dwUnCommittedSize;
+LPVOID lpFirstBlock;
+LPVOID lpLastBlock;
+}
+Region;
+}
+DUMMYUNIONNAME;
+}
+PROCESS_HEAP_ENTRY,*LPPROCESS_HEAP_ENTRY,*PPROCESS_HEAP_ENTRY;
+
+WINBASEAPI HANDLE WINAPI HeapCreate (DWORD flOptions, SIZE_T dwInitialSize, SIZE_T dwMaximumSize);
+WINBASEAPI WINBOOL WINAPI HeapDestroy (HANDLE hHeap);
+WINBASEAPI WINBOOL WINAPI HeapValidate (HANDLE hHeap, DWORD dwFlags, LPCVOID lpMem);
+WINBASEAPI SIZE_T WINAPI HeapCompact (HANDLE hHeap, DWORD dwFlags);
+WINBOOL WINAPI HeapSummary (HANDLE hHeap, DWORD dwFlags, LPHEAP_SUMMARY lpSummary);
+WINBASEAPI DWORD WINAPI GetProcessHeaps (DWORD NumberOfHeaps, PHANDLE ProcessHeaps);
+WINBASEAPI WINBOOL WINAPI HeapLock (HANDLE hHeap);
+WINBASEAPI WINBOOL WINAPI HeapUnlock (HANDLE hHeap);
+WINBASEAPI WINBOOL WINAPI HeapWalk (HANDLE hHeap, LPPROCESS_HEAP_ENTRY lpEntry);
+WINBASEAPI WINBOOL WINAPI HeapSetInformation (HANDLE HeapHandle, HEAP_INFORMATION_CLASS HeapInformationClass, PVOID HeapInformation, SIZE_T HeapInformationLength);
+WINBASEAPI WINBOOL WINAPI HeapQueryInformation (HANDLE HeapHandle, HEAP_INFORMATION_CLASS HeapInformationClass, PVOID HeapInformation, SIZE_T HeapInformationLength, PSIZE_T ReturnLength);
+WINBASEAPI LPVOID WINAPI HeapAlloc (HANDLE hHeap, DWORD dwFlags, SIZE_T dwBytes);
+WINBASEAPI LPVOID WINAPI HeapReAlloc (HANDLE hHeap, DWORD dwFlags, LPVOID lpMem, SIZE_T dwBytes);
+WINBASEAPI WINBOOL WINAPI HeapFree (HANDLE hHeap, DWORD dwFlags, LPVOID lpMem);
+WINBASEAPI SIZE_T WINAPI HeapSize (HANDLE hHeap, DWORD dwFlags, LPCVOID lpMem);
+WINBASEAPI HANDLE WINAPI GetProcessHeap (VOID);
+
+
+
 #endif /*Not Func_Win*/
+
+
+
+
 /* -extra- */
 #ifndef HIWORD
 #define HIWORD(l)           ((WORD)((((DWORD_PTR)(l)) >> 16) & 0xffff))
