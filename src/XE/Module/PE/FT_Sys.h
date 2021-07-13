@@ -1063,7 +1063,7 @@ inl ATOM WINAPI sys_RegisterClassA(const WNDCLASSA *lpWndClass){
 		    aWndProc[aWndProc_idx] = (func_WndProc)lpWndClass->lpfnWndProc;//WNDPROC
 			aWndProc_idx++;
 		}
-		return 0;
+		return aWndProc_idx;
 	#endif
 }
 inl ATOM WINAPI sys_RegisterClassW(const WNDCLASSW *lpWndClass){
@@ -1075,7 +1075,7 @@ inl ATOM WINAPI sys_RegisterClassW(const WNDCLASSW *lpWndClass){
 		    aWndProc[aWndProc_idx] = (func_WndProc)lpWndClass->lpfnWndProc;//WNDPROC
 			aWndProc_idx++;
 		}
-		return 0;
+		return aWndProc_idx;
 	#endif
 }
 inl ATOM WINAPI sys_RegisterClassExA (CONST WNDCLASSEXA* lpWndClass){
@@ -1087,7 +1087,7 @@ inl ATOM WINAPI sys_RegisterClassExA (CONST WNDCLASSEXA* lpWndClass){
 		    aWndProc[aWndProc_idx] = (func_WndProc)lpWndClass->lpfnWndProc;//WNDPROC
 			aWndProc_idx++;
 		}
-		return 0;
+		return aWndProc_idx;
 	#endif
 }
 inl ATOM WINAPI sys_RegisterClassExW(const WNDCLASSEXW *lpWndClass){
@@ -1099,7 +1099,7 @@ inl ATOM WINAPI sys_RegisterClassExW(const WNDCLASSEXW *lpWndClass){
 		    aWndProc[aWndProc_idx] = (func_WndProc)lpWndClass->lpfnWndProc;//WNDPROC
 			aWndProc_idx++;
 		}
-		return 0;
+		return aWndProc_idx;
 	#endif
 }
 
