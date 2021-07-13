@@ -2028,7 +2028,7 @@ WINGDIAPI HDC WINAPI sys_CreateCompatibleDC(HDC hdc){
 	#ifdef Func_Win 
 	return CreateCompatibleDC(hdc);
 	#else
-	return true;
+	return 0;
 	#endif	
 }
 

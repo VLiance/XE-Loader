@@ -345,14 +345,16 @@ int impl_getmainargs(int* _Argc, char*** _Argv, char*** _Env, int _DoWildCard, v
 //!  int __cdecl __attribute__ ((__nothrow__,__returns_twice__)) _setjmp(jmp_buf _Buf, void *_Ctx);
 int impl_setjmp(jmp_buf _Buf, void *_Ctx){
 	showfunc("_setjmp3 env: %p, count: %d )", _Buf, _Ctx);
-	_setjmp(_Buf, _Ctx);
+	//_setjmp(_Buf, _Ctx);
+	setjmp(_Buf); //TODO
 }
 
 //! int __cdecl __attribute__ ((__nothrow__,__returns_twice__)) _setjmp3(jmp_buf _Buf, void *_Ctx);
 int impl_setjmp3(jmp_buf _Buf, void *_Ctx){
 	showfunc("_setjmp3( env: %p, count: %d )", _Buf, _Ctx);
 	//_setjmp3(_Buf, _Ctx);
-	_setjmp(_Buf, _Ctx);
+	//_setjmp(_Buf, _Ctx);
+	setjmp(_Buf); //TODO
 }
 
 //!int _vscprintf(const char *format,va_list argptr)
