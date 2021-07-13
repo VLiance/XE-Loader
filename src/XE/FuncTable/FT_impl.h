@@ -342,6 +342,19 @@ int impl_getmainargs(int* _Argc, char*** _Argv, char*** _Env, int _DoWildCard, v
 	return 0;//successful
 }
 
+//!  int __cdecl __attribute__ ((__nothrow__,__returns_twice__)) _setjmp(jmp_buf _Buf, void *_Ctx);
+int impl_setjmp(jmp_buf _Buf, void *_Ctx){
+	showfunc("_setjmp3 env: %p, count: %d )", _Buf, _Ctx);
+	_setjmp(_Buf, _Ctx);
+}
+
+//! int __cdecl __attribute__ ((__nothrow__,__returns_twice__)) _setjmp3(jmp_buf _Buf, void *_Ctx);
+int impl_setjmp3(jmp_buf _Buf, void *_Ctx){
+	showfunc("_setjmp3( env: %p, count: %d )", _Buf, _Ctx);
+	//_setjmp3(_Buf, _Ctx);
+	_setjmp(_Buf, _Ctx);
+}
+
 //!int _vscprintf(const char *format,va_list argptr)
 inl int impl_vscprintf(const char *format,va_list argptr){
 	showfunc_opt("_vscprintf( )", "");
@@ -580,6 +593,11 @@ int impl_printf( const char* format, ...){
 	#endif
 	va_end (_arg_);
 	return ret;
+}
+
+//!void setbuf ( FILE * stream, char * buffer )
+void impl_setbuf( FILE* stream, char* buffer ){
+	showfunc("setbuf( stream: %p, buffer: %p )", stream, buffer); 
 }
 
 //!size_t fwrite ( const void * ptr, size_t size, size_t count, FILE * stream )

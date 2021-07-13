@@ -119,3 +119,11 @@
 {"",			"GlobalMemoryStatusEx"  	,(FUNC_) sys_GlobalMemoryStatusEx},
 
 {"",			"DragAcceptFiles"  			,(FUNC_) sys_DragAcceptFiles},
+
+{"",			"CreateSolidBrush"  		,(FUNC_) sys_CreateSolidBrush},
+{"",			"MoveWindow"  				,(FUNC_) sys_MoveWindow},
+{"",			"CreateDIBSection"  		,(FUNC_) sys_CreateDIBSection},
+{"",			"UpdateWindow"  			,(FUNC_) sys_UpdateWindow},
+{"",			"CreateCompatibleDC"  		,(FUNC_) sys_CreateCompatibleDC},
+{"",			"SelectObject"  			,(FUNC_) sys_SelectObject},
+{"",			"BitBlt"  					,(FUNC_) sys_BitBlt},

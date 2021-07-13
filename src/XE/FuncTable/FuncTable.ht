@@ -77,6 +77,8 @@
 
 
 //{"",			"_Unwind_Resume"  	,(FUNC_) __unwind_resume  },
+{"",			"_setjmp"  		,(FUNC_) impl_setjmp  },
+{"",			"_setjmp3"  	,(FUNC_) impl_setjmp3  },
 
 {"",			"GetProcAddress" 			,(FUNC_) impl_GetProcAddress }, 	//Special
 {"",			"LoadLibraryA"    			,(FUNC_) impl_LoadLibraryA },  	//Special
@@ -197,6 +199,8 @@
 
 {"",			"RegisterClassA"  			,(FUNC_) sys_RegisterClassA }, 
 {"",			"RegisterClassW"  			,(FUNC_) sys_RegisterClassW }, 
+{"",			"RegisterClassExA"  		,(FUNC_) sys_RegisterClassExA }, 
+{"",			"RegisterClassExW"  		,(FUNC_) sys_RegisterClassExW }, 
 {"",			"UnregisterClassA"  		,(FUNC_) sys_UnregisterClassA }, 
 {"",			"UnregisterClassW"  		,(FUNC_) sys_UnregisterClassW }, 
 {"",			"UnregisterClassW"  		,(FUNC_) sys_UnregisterClassW }, 
@@ -369,6 +373,7 @@
 {"",			"fwrite"  	,(FUNC_) impl_fwrite },
 
 {"",			"printf"  			,(FUNC_) impl_printf },
+{"",			"setbuf"  			,(FUNC_) impl_setbuf },
 {"",			"fprintf"  			,(FUNC_) impl_fprintf },
 {"",			"sprintf"  			,(FUNC_) impl_sprintf },
 {"",			"vsprintf"  		,(FUNC_) impl_vsprintf },
@@ -389,6 +394,7 @@
 
 {"",			"_snprintf"  		,(FUNC_) snprintf },
 {"",			"vfprintf"  		,(FUNC_) vfprintf },
+{"",			"vprintf"  			,(FUNC_) vprintf },
 {"",			"scanf"  			,(FUNC_) scanf },
 
 

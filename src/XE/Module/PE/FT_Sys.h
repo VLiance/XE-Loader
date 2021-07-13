@@ -181,6 +181,17 @@ int WINAPI sys_StretchDIBits(HDC hdc,int xDest,int yDest,int DestWidth,int DestH
 	#endif
 }
 
+//!WINGDIAPI WINBOOL WINAPI BitBlt(HDC hdc,int x,int y,int cx,int cy,HDC hdcSrc,int x1,int y1,DWORD rop)
+WINGDIAPI WINBOOL WINAPI sys_BitBlt(HDC hdc,int x,int y,int cx,int cy,HDC hdcSrc,int x1,int y1,DWORD rop){
+		showfunc("BitBlt( hdc: %p, x: %d, y: %d, cx: %d, cy: %d, hdcSrc: %p, xl: %d, yl: %d, rop: %d )", hdc,x,y,cx,cy,hdcSrc,x1,y1,rop);
+	#ifdef Func_Win
+		return BitBlt(hdc,x,y,cx,cy,hdcSrc,x1,y1,rop);
+	#else
+	///	return Blit_context((size_t)hdc, lpBits, SrcWidth)->height; 
+		//TODO
+		return false;
+	#endif
+}
 
 //!WINBOOL WINAPI GetClientRect(HWND hWnd,LPRECT lpRect)
 //struct RECT {LONG left; LONG top;LONG right;LONG bottom;}
@@ -1040,7 +1051,9 @@ func_WndProc aWndProc[MAX_WND_CLASS] = {};
 short aWndProc_idx = 0;
 
 //!ATOM WINAPI RegisterClassA (CONST WNDCLASSA *lpWndClass)
-//!ATOM RegisterClassW(const WNDCLASSW *lpWndClass)
+//!ATOM WINAPI RegisterClassW(const WNDCLASSW *lpWndClass)
+//!WINUSERAPI ATOM WINAPI RegisterClassExA (CONST WNDCLASSEXA *)
+//!WINUSERAPI ATOM WINAPI RegisterClassExW (CONST WNDCLASSEXW *)
 inl ATOM WINAPI sys_RegisterClassA(const WNDCLASSA *lpWndClass){
 	showfunc("RegisterClassA( value: %p )", lpWndClass);
 	#ifdef Func_Win
@@ -1065,6 +1078,32 @@ inl ATOM WINAPI sys_RegisterClassW(const WNDCLASSW *lpWndClass){
 		return 0;
 	#endif
 }
+inl ATOM WINAPI sys_RegisterClassExA (CONST WNDCLASSEXA* lpWndClass){
+	showfunc("RegisterClassExA( value: %p )", lpWndClass);
+	#ifdef Func_Win
+		return RegisterClassExA((WNDCLASSEXA*)lpWndClass);
+	#else
+		if(aWndProc_idx < MAX_WND_CLASS){
+		    aWndProc[aWndProc_idx] = (func_WndProc)lpWndClass->lpfnWndProc;//WNDPROC
+			aWndProc_idx++;
+		}
+		return 0;
+	#endif
+}
+inl ATOM WINAPI sys_RegisterClassExW(const WNDCLASSEXW *lpWndClass){
+	showfunc("RegisterClassExW( value: %p )", lpWndClass);
+	#ifdef Func_Win
+		return RegisterClassExW((WNDCLASSEXW*)lpWndClass);
+	#else
+		if(aWndProc_idx < MAX_WND_CLASS){
+		    aWndProc[aWndProc_idx] = (func_WndProc)lpWndClass->lpfnWndProc;//WNDPROC
+			aWndProc_idx++;
+		}
+		return 0;
+	#endif
+}
+
+
 
 //!WINBOOL WINAPI UnregisterClassA (LPCSTR lpClassName, HINSTANCE hInstance)
 //!WINBOOL WINAPI UnregisterClassW (LPCWSTR lpClassName, HINSTANCE hInstance)
@@ -1943,5 +1982,62 @@ WINBOOL WINAPI sys_DuplicateHandle(HANDLE hSourceProcessHandle, HANDLE hSourceHa
 	#endif	
 }
 
+//!WINGDIAPI HBRUSH WINAPI CreateSolidBrush(COLORREF color);
+HBRUSH WINAPI sys_CreateSolidBrush(COLORREF color){
+	showfunc("CreateSolidBrush( color: %p)", color);
+	#ifdef Func_Win 
+	return CreateSolidBrush(color);
+	#else
+	return 0;
+	#endif	
+}
 
+//!WINUSERAPI WINBOOL WINAPI MoveWindow (HWND hWnd, int X, int Y, int nWidth, int nHeight, WINBOOL bRepaint);
+WINBOOL WINAPI sys_MoveWindow (HWND hWnd, int X, int Y, int nWidth, int nHeight, WINBOOL bRepaint){
+	showfunc("MoveWindow( hWnd: %p, X: %d, Y: %d, nWidth: %d, nHeight: %d, bRepaint: %d)", hWnd, X, Y, nWidth, nHeight, bRepaint);
+	#ifdef Func_Win 
+	return MoveWindow(hWnd, X, Y, nWidth, nHeight, bRepaint);
+	#else
+	return true;
+	#endif	
+}
 
+//!WINGDIAPI HBITMAP WINAPI CreateDIBSection(HDC hdc,CONST BITMAPINFO *lpbmi,UINT usage,VOID **ppvBits,HANDLE hSection,DWORD offset);
+HBITMAP WINAPI sys_CreateDIBSection(HDC hdc,CONST BITMAPINFO *lpbmi,UINT usage,VOID **ppvBits,HANDLE hSection,DWORD offset){
+	showfunc("MoveWindow( hdc: %p, lpbmi: %p, usage: %p, ppvBits: %p, hSection: %p, offset: %d)", hdc,lpbmi,usage,ppvBits,hSection,offset);
+	#ifdef Func_Win 
+	return CreateDIBSection(hdc,lpbmi,usage,ppvBits,hSection,offset);
+	#else
+	return 0;
+	#endif	
+}
+
+//!WINUSERAPI WINBOOL WINAPI UpdateWindow(HWND hWnd)
+WINBOOL WINAPI sys_UpdateWindow(HWND hWnd){
+	showfunc("UpdateWindow( hWnd: %p)", hWnd);
+	#ifdef Func_Win 
+	return UpdateWindow(hWnd);
+	#else
+	return true;
+	#endif	
+}
+
+//!WINGDIAPI HDC WINAPI CreateCompatibleDC(HDC hdc)
+WINGDIAPI HDC WINAPI sys_CreateCompatibleDC(HDC hdc){
+	showfunc("CreateCompatibleDC( hdc: %p)", hdc);
+	#ifdef Func_Win 
+	return CreateCompatibleDC(hdc);
+	#else
+	return true;
+	#endif	
+}
+
+//!WINGDIAPI HGDIOBJ WINAPI SelectObject(HDC hdc,HGDIOBJ h)
+HGDIOBJ WINAPI sys_SelectObject(HDC hdc,HGDIOBJ h){
+	showfunc("SelectObject( hdc: %p, h: %p)", hdc, h);
+	#ifdef Func_Win 
+	return SelectObject(hdc, h);
+	#else
+	return 0;
+	#endif	
+}
