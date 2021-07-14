@@ -62,7 +62,7 @@
 
 #define USE_Platform_Atomic
 
-//#define USE_WinThread
+
 
 //Use standard Windows LocalAlloc
 //#define USE_Platform_LocalAlloc
@@ -82,7 +82,8 @@
 
 //#define USE_PRINTF
 
-#define SIMULATE_MULTI_THREAD_TO_SINGLE_WORKER_TERMINATE_ON_SLEEP
+#define USE_WinThread
+//#define SIMULATE_MULTI_THREAD_TO_SINGLE_WORKER_TERMINATE_ON_SLEEP
 
 #define ShowPixView 
 #define USE_Transparent_PixView 

@@ -130,6 +130,16 @@ inl WINAPI HWND sys_WindowFromDC(HDC hDC){
 	#endif
 }
 
+//!WINGDIAPI HDC WINAPI CreateCompatibleDC(HDC hdc)
+WINGDIAPI HDC WINAPI sys_CreateCompatibleDC(HDC hdc){
+	showfunc("CreateCompatibleDC( hdc: %p)", hdc);
+	#ifdef Func_Win 
+	return CreateCompatibleDC(hdc);
+	#else
+	return hdc; //Memory device context will be same as the context (not necessary to dissociate them)
+	#endif	
+}
+
 //!HWND WINAPI CreateWindowExA(DWORD dwExStyle,LPCSTR lpClassName,LPCSTR lpWindowName,DWORD dwStyle,int X,int Y,int nWidth,int nHeight,HWND hWndParent,HMENU hMenu,HINSTANCE hInstance,LPVOID lpParam)
 HWND WINAPI sys_CreateWindowExA(DWORD dwExStyle,LPCSTR lpClassName,LPCSTR lpWindowName,DWORD dwStyle,int X,int Y,int nWidth,int nHeight,HWND hWndParent,HMENU hMenu,HINSTANCE hInstance,LPVOID lpParam){
 	showfunc("CreateWindowExA( dwExStyle: %d, lpClassName: %s, lpWindowName :%p, dwStyle: %d, X: %d, Y: %d, nWidth: %d, nHeight: %d, hWndParent: %p, hMenu: %p, hInstance: %d, lpParam: %d )",
@@ -154,6 +164,19 @@ HWND WINAPI sys_CreateWindowExW(DWORD dwExStyle,LPCWSTR lpClassName,LPCWSTR lpWi
 	#endif
 }
 
+
+//!WINGDIAPI HBITMAP WINAPI CreateDIBSection(HDC hdc,CONST BITMAPINFO *lpbmi,UINT usage,VOID **ppvBits,HANDLE hSection,DWORD offset);
+HBITMAP WINAPI sys_CreateDIBSection(HDC hdc,CONST BITMAPINFO *lpbmi,UINT usage,VOID **ppvBits,HANDLE hSection,DWORD offset){
+	showfunc("MoveWindow( hdc: %p, lpbmi: %p, usage: %p, ppvBits: %p, hSection: %p, offset: %d)", hdc,lpbmi,usage,ppvBits,hSection,offset);
+	#ifdef Func_Win 
+	return CreateDIBSection(hdc,lpbmi,usage,ppvBits,hSection,offset);
+	#else
+	//Allocate memory
+	//TODO free
+	*ppvBits = malloc( abs(lpbmi->bmiHeader.biWidth) * abs(lpbmi->bmiHeader.biHeight) * (lpbmi->bmiHeader.biBitCount/4) ); 
+	return 0; //_context->hbmp = CreateDIBSection ...  not used? 
+	#endif	
+}
 
 //!int StretchDIBits(HDC hdc,int xDest,int yDest,int DestWidth,int DestHeight,int xSrc,int ySrc, int SrcWidth, int SrcHeight, const VOID *lpBits, const BITMAPINFO *lpbmi, UINT iUsage, DWORD rop)
 int WINAPI sys_StretchDIBits(HDC hdc,int xDest,int yDest,int DestWidth,int DestHeight,int xSrc,int ySrc, int SrcWidth, int SrcHeight, const VOID *lpBits, const BITMAPINFO *lpbmi, UINT iUsage, DWORD rop){
@@ -187,9 +210,9 @@ WINGDIAPI WINBOOL WINAPI sys_BitBlt(HDC hdc,int x,int y,int cx,int cy,HDC hdcSrc
 	#ifdef Func_Win
 		return BitBlt(hdc,x,y,cx,cy,hdcSrc,x1,y1,rop);
 	#else
-	///	return Blit_context((size_t)hdc, lpBits, SrcWidth)->height; 
-		//TODO
-		return false;
+		//hdcSrc is the context (same has hdc)
+		Blit_context((size_t)hdc, aContext[(size_t)hdc].pixels, cx); 
+		return true;
 	#endif
 }
 
@@ -2002,16 +2025,6 @@ WINBOOL WINAPI sys_MoveWindow (HWND hWnd, int X, int Y, int nWidth, int nHeight,
 	#endif	
 }
 
-//!WINGDIAPI HBITMAP WINAPI CreateDIBSection(HDC hdc,CONST BITMAPINFO *lpbmi,UINT usage,VOID **ppvBits,HANDLE hSection,DWORD offset);
-HBITMAP WINAPI sys_CreateDIBSection(HDC hdc,CONST BITMAPINFO *lpbmi,UINT usage,VOID **ppvBits,HANDLE hSection,DWORD offset){
-	showfunc("MoveWindow( hdc: %p, lpbmi: %p, usage: %p, ppvBits: %p, hSection: %p, offset: %d)", hdc,lpbmi,usage,ppvBits,hSection,offset);
-	#ifdef Func_Win 
-	return CreateDIBSection(hdc,lpbmi,usage,ppvBits,hSection,offset);
-	#else
-	return 0;
-	#endif	
-}
-
 //!WINUSERAPI WINBOOL WINAPI UpdateWindow(HWND hWnd)
 WINBOOL WINAPI sys_UpdateWindow(HWND hWnd){
 	showfunc("UpdateWindow( hWnd: %p)", hWnd);
@@ -2019,16 +2032,6 @@ WINBOOL WINAPI sys_UpdateWindow(HWND hWnd){
 	return UpdateWindow(hWnd);
 	#else
 	return true;
-	#endif	
-}
-
-//!WINGDIAPI HDC WINAPI CreateCompatibleDC(HDC hdc)
-WINGDIAPI HDC WINAPI sys_CreateCompatibleDC(HDC hdc){
-	showfunc("CreateCompatibleDC( hdc: %p)", hdc);
-	#ifdef Func_Win 
-	return CreateCompatibleDC(hdc);
-	#else
-	return 0;
 	#endif	
 }
 
