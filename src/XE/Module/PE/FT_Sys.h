@@ -217,6 +217,9 @@ WINGDIAPI WINBOOL WINAPI sys_BitBlt(HDC hdc,int x,int y,int cx,int cy,HDC hdcSrc
 	#ifdef Func_Win
 		return BitBlt(hdc,x,y,cx,cy,hdcSrc,x1,y1,rop);
 	#else
+	
+		//aContext[(size_t)hdc].off_x=0;
+		//aContext[(size_t)hdc].off_y=0;
 		//hdcSrc is the context (same has hdc)
 		Blit_context((size_t)hdc, aContext[(size_t)hdc].pixels, aContext[(size_t)hdc].mem_width ); 
 		return true;
