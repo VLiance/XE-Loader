@@ -175,8 +175,8 @@ HBITMAP WINAPI sys_CreateDIBSection(HDC hdc,CONST BITMAPINFO *lpbmi,UINT usage,V
 	//TODO free
 	
 	//TODO!
-	//aContext[(size_t)hdc].mem_width   = lpbmi->bmiHeader.biWidth;   //TODO check if not overrited
-	//aContext[(size_t)hdc].mem_height = lpbmi->bmiHeader.biHeight; //TODO check if not overrited
+	//aContext[(size_t)hdc].mem_width   = abs(lpbmi->bmiHeader.biWidth);   //TODO check if not overrited
+	//aContext[(size_t)hdc].mem_height  = abs(lpbmi->bmiHeader.biHeight); //TODO check if not overrited
 		
 	size_t _size =  abs(lpbmi->bmiHeader.biWidth) * abs(lpbmi->bmiHeader.biHeight) * (lpbmi->bmiHeader.biBitCount/8);
 	showinf("NewDIBSection sizeof: %d", _size);
@@ -218,7 +218,7 @@ WINGDIAPI WINBOOL WINAPI sys_BitBlt(HDC hdc,int x,int y,int cx,int cy,HDC hdcSrc
 		return BitBlt(hdc,x,y,cx,cy,hdcSrc,x1,y1,rop);
 	#else
 		//hdcSrc is the context (same has hdc)
-		Blit_context((size_t)hdc, aContext[(size_t)hdc].pixels, cx ); 
+		Blit_context((size_t)hdc, aContext[(size_t)hdc].pixels, aContext[(size_t)hdc].mem_width ); 
 		return true;
 	#endif
 }
