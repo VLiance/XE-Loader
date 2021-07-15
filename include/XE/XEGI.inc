@@ -1,5 +1,6 @@
 
 hdl_t Create_context(ContextInf _ctx){
+	//aContext_count++; //Important: Skip the zero index (NULL)
 	aContext_count++; //Important: Skip the zero index (NULL)
 	hdl_t idx = aContext_count;
 	

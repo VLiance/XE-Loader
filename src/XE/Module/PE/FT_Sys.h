@@ -158,7 +158,6 @@ HWND WINAPI sys_CreateWindowExW(DWORD dwExStyle,LPCWSTR lpClassName,LPCWSTR lpWi
 	#ifdef Func_Win
 		return CreateWindowExW( dwExStyle, lpClassName, lpWindowName, dwStyle, X, Y, nWidth, nHeight, hWndParent, hMenu, hInstance, lpParam );
 	#else
-	
 		hdl_t idx = Create_context((ContextInf){.width=nWidth, .height=nHeight});
 		return (HWND)idx;
 	#endif
@@ -181,6 +180,9 @@ HBITMAP WINAPI sys_CreateDIBSection(HDC hdc,CONST BITMAPINFO *lpbmi,UINT usage,V
 	size_t _size =  abs(lpbmi->bmiHeader.biWidth) * abs(lpbmi->bmiHeader.biHeight) * (lpbmi->bmiHeader.biBitCount/8);
 	showinf("NewDIBSection sizeof: %d", _size);
 	*ppvBits = malloc( _size ); 
+	aContext[(size_t)hdc].pixels = ppvBits;
+	
+	
 	return 0; //_context->hbmp = CreateDIBSection ...  not used? 
 	#endif	
 }
@@ -221,7 +223,8 @@ WINGDIAPI WINBOOL WINAPI sys_BitBlt(HDC hdc,int x,int y,int cx,int cy,HDC hdcSrc
 		//aContext[(size_t)hdc].off_x=0;
 		//aContext[(size_t)hdc].off_y=0;
 		//hdcSrc is the context (same has hdc)
-		Blit_context((size_t)hdc, aContext[(size_t)hdc].pixels, aContext[(size_t)hdc].mem_width ); 
+		//Blit_context((size_t)hdc, aContext[(size_t)hdc].pixels, aContext[(size_t)hdc].mem_width ); 
+		Blit_context((size_t)hdc, aContext[(size_t)hdc].pixels, cx ); 
 		return true;
 	#endif
 }
