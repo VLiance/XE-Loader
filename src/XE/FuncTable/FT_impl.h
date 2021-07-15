@@ -357,6 +357,12 @@ int impl_setjmp3(jmp_buf _Buf, void *_Ctx){
 	setjmp(_Buf); //TODO
 }
 
+//! int __cdecl __attribute__ ((__nothrow__,__returns_twice__)) _setjmp3(jmp_buf _Buf, void *_Ctx);
+void impl_longjmp(jmp_buf env, int val){
+	showfunc("longjmp( env: %p, val: %d )", env, val);
+	longjmp(env, val);
+}
+
 //!int _vscprintf(const char *format,va_list argptr)
 inl int impl_vscprintf(const char *format,va_list argptr){
 	showfunc_opt("_vscprintf( )", "");

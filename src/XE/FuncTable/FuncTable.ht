@@ -79,6 +79,7 @@
 //{"",			"_Unwind_Resume"  	,(FUNC_) __unwind_resume  },
 {"",			"_setjmp"  		,(FUNC_) impl_setjmp  },
 {"",			"_setjmp3"  	,(FUNC_) impl_setjmp3  },
+{"",			"longjmp"  		,(FUNC_) impl_longjmp  },
 
 {"",			"GetProcAddress" 			,(FUNC_) impl_GetProcAddress }, 	//Special
 {"",			"LoadLibraryA"    			,(FUNC_) impl_LoadLibraryA },  	//Special

@@ -7,5 +7,5 @@
 >
 -#Run Build.cwc -{_wToolchain}= VLianceTool/LibRT
 >
--#Run _out/{sFolder}/XE-Loader.exe  "E:/Data/setting/FreeType/_out/Windows_Debug/FreeType.exe"
+-#Run _out/{sFolder}/XE-Loader.exe  "D:/_Project/FreeType/_out/Windows_Debug/FreeType.exe"
 >
