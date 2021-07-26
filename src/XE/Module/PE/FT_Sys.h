@@ -180,7 +180,7 @@ HBITMAP WINAPI sys_CreateDIBSection(HDC hdc,CONST BITMAPINFO *lpbmi,UINT usage,V
 	size_t _size =  abs(lpbmi->bmiHeader.biWidth) * abs(lpbmi->bmiHeader.biHeight) * (lpbmi->bmiHeader.biBitCount/8);
 	showinf("NewDIBSection sizeof: %d", _size);
 	*ppvBits = malloc( _size ); 
-	aContext[(size_t)hdc].pixels = ppvBits;
+	aContext[(size_t)hdc].pixels = *ppvBits;
 	
 	
 	return 0; //_context->hbmp = CreateDIBSection ...  not used? 

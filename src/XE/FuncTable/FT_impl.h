@@ -611,7 +611,8 @@ void impl_setbuf( FILE* stream, char* buffer ){
 //!size_t fwrite ( const void * ptr, size_t size, size_t count, FILE * stream )
 size_t impl_fwrite( const void * ptr, size_t size, size_t count, FILE * stream ){
 	showfunc_opt("fwrite( ptr: %p, size: %d, count: %d, stream: %p )", ptr,size, count, stream); 
-	return fwrite(ptr,size, count, stdout);
+	//return fwrite(ptr,size, count, stdout);
+	return fwrite(ptr,size, count, stream);
 	//printf("%s", _char);
 }
 

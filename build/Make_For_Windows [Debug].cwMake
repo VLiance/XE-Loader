@@ -7,5 +7,5 @@
 >
 -#Run Build.cwc -{_wToolchain}= VLianceTool/LibRT
 >
--#Run _out/{sFolder}/XE-Loader.exe  "YourApp.exe"
+-#Run _out/{sFolder}/XE-Loader.exe  "D:/_Project/CoinImgGenerator/_out/Windows_Debug/CoinImgGen.exe"
 >
