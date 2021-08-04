@@ -86,3 +86,46 @@ uint32_t Sys_ProcessMsg(XEGI_SysMsg _msg){
 	return 0;
 }
 
+
+//// FILE ////
+bool 
+	XeGI_OpenFile(XEGI_FileOp* _file) //or path?
+{
+	return true;
+}
+
+
+size_t 
+	XeGI_GetFileSize(hdl_t _handle) //or path?
+{
+	return 0;
+}
+
+/*
+size_t 
+	XeGI_GetFileSize(XEGI_FileOp* _file) //or path?
+{
+	return 0;
+}
+*/
+bool 
+	XeGI_ReadFull(XEGI_FileOp* _file) //or path?
+{
+	//hdl_t* handle = aFileHandle(add, aFileHandle.size);
+	//return *handle;
+	return true;
+}
+/*
+bool 
+	XeGI_ReadPart(XEGI_FileOp* _file, void* dest, size_t nNumberOfBytesToRead) //or path?
+{
+	//hdl_t* handle = aFileHandle(add, aFileHandle.size);
+	//return *handle;
+	return true;
+}
+*/
+bool 
+	XeGI_CloseFile(XEGI_FileOp* _file) //or path?
+{
+	return true;
+}

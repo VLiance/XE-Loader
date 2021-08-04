@@ -1005,7 +1005,7 @@ WINBOOL WINAPI sys_ReadFile (HANDLE hFile, LPVOID lpBuffer, DWORD nNumberOfBytes
 	#ifdef Func_Win
 		return ReadFile( hFile, lpBuffer, nNumberOfBytesToRead, lpNumberOfBytesRead, lpOverlapped );
 	#else
-		return XeGI_ReadFile((hdl_t)hFile, lpBuffer, nNumberOfBytesToRead); //TODO file seek
+		return pv_XeGI_ReadPart((hdl_t)hFile, lpBuffer, nNumberOfBytesToRead); //TODO file seek
 	#endif
 }
 

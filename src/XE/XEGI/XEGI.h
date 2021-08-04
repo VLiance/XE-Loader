@@ -42,6 +42,16 @@ XEGI_aSysMsg aSysMsg;
 #define aSysMsg(fn, ...) XEGI_aSysMsg_##fn(&aSysMsg, ##__VA_ARGS__)
 //!-----------!//
 
+
+
+typedef struct {
+	hdl_t handle;
+	uint32_t  pos;
+	char*  path;
+
+} XEGI_FileOp;
+
+
 #include "XE/XEGI.inc"
 
 //USED?
@@ -146,12 +156,6 @@ void
 
 
 
-typedef struct {
-	hdl_t handle;
-	uint32_t  pos;
-
-} XEGI_FileOp;
-
 ARRAY(XEGI_aFileHandle, XEGI_FileOp, 512);
 // -- Instance -- //
 XEGI_aFileHandle aFileHandle;
@@ -160,24 +164,46 @@ XEGI_aFileHandle aFileHandle;
 
 
 //// FILE ////
-hdl_t 
-	XeGI_OpenFile(char* _lpFileName) //or path?
+XEGI_FileOp* 
+	pv_XeGI_OpenFile(char* _lpFilePath) //or path?
 {
 	XEGI_FileOp* file = aFileHandle(add, (XEGI_FileOp){.handle=aFileHandle.size});
-	return file->handle;
+	//file.path = malloc()
+	XeGI_OpenFile(file);
+	return file;
 }
 
 size_t 
-	XeGI_GetFileSize(hdl_t handle) //or path?
+	pv_XeGI_GetFileSize(XEGI_FileOp*  _file) //or path?
 {
 	return 0;
 }
 
-hdl_t 
-	XeGI_ReadFile(hdl_t handle, void* dest, size_t nNumberOfBytesToRead) //or path?
+bool 
+	pv_XeGI_ReadFull(XEGI_FileOp*  _file) //or path?
 {
+	XeGI_ReadFull(_file);
 	//hdl_t* handle = aFileHandle(add, aFileHandle.size);
 	//return *handle;
+	return true;
+}
+
+
+bool 
+	pv_XeGI_ReadPart(hdl_t handle, void* dest, size_t nNumberOfBytesToRead) //or path?
+{
+	//XeGI_ReadFile(handle, dest, nNumberOfBytesToRead);
+	//hdl_t* handle = aFileHandle(add, aFileHandle.size);
+	//return *handle;
+	return true;
+}
+
+bool 
+	pv_XeGIp_CloseFile(XEGI_FileOp*  _file) //or path?
+{
+	XeGI_CloseFile(_file);
+	//free path
+	//free bytes
 	return true;
 }
 
