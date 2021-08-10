@@ -141,10 +141,10 @@ bool
 {
 	// _file->size = XeGI_GetFileSize(_file->path)
 	// _file->data = malloc _file->size
-	return true;
+	return false;
 }
 bool 
 	XeGI_WriteFile(XEGI_FileOp* _file)
 {
-	return true;
+	return false;
 }
