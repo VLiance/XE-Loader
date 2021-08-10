@@ -96,7 +96,7 @@ bool
 
 
 size_t 
-	XeGI_GetFileSize(hdl_t _handle) //or path?
+	XeGI_GetFileSize(XEGI_FileOp* _file) //or path?
 {
 	return 0;
 }

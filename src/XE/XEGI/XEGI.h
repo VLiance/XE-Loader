@@ -164,25 +164,26 @@ XEGI_aFileHandle aFileHandle;
 
 
 //// FILE ////
-XEGI_FileOp* 
+hdl_t 
 	pv_XeGI_OpenFile(char* _lpFilePath) //or path?
 {
 	XEGI_FileOp* file = aFileHandle(add, (XEGI_FileOp){.handle=aFileHandle.size});
 	//file.path = malloc()
 	XeGI_OpenFile(file);
-	return file;
+	return aFileHandle(handle, file);
 }
 
 size_t 
-	pv_XeGI_GetFileSize(XEGI_FileOp*  _file) //or path?
+	//pv_XeGI_GetFileSize(XEGI_FileOp*  _file) //or path?
+	pv_XeGI_GetFileSize(hdl_t  _file) //or path?
 {
 	return 0;
 }
 
 bool 
-	pv_XeGI_ReadFull(XEGI_FileOp*  _file) //or path?
+	pv_XeGI_ReadFull(hdl_t  _file) //or path?
 {
-	XeGI_ReadFull(_file);
+	//XeGI_ReadFull(_file);
 	//hdl_t* handle = aFileHandle(add, aFileHandle.size);
 	//return *handle;
 	return true;
@@ -199,9 +200,9 @@ bool
 }
 
 bool 
-	pv_XeGIp_CloseFile(XEGI_FileOp*  _file) //or path?
+	pv_XeGIp_CloseFile(hdl_t  _file) //or path?
 {
-	XeGI_CloseFile(_file);
+	//XeGI_CloseFile(_file);
 	//free path
 	//free bytes
 	return true;
