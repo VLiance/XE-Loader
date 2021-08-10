@@ -88,7 +88,7 @@ XEGI_aThread aThread={};
 uint32_t Sys_ProcessMsg_ALL(){
 
 	for(int i = 0; i < aSysMsg.size; i++){
-		Sys_ProcessMsg(aSysMsg.data[i]);
+		//Sys_ProcessMsg(aSysMsg.data[i]);
 	}
 	aSysMsg(reset);
 	return 0;

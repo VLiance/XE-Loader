@@ -71,16 +71,7 @@ ContextInf* Blit_context(uint32_t _idx, const void* _pixels, int _SrcWidth){ //T
 	
 }
 
-//////////////// MESSAGES /////////////////////
-
-uint32_t XeGI_Get_ContextMsg(hdl_t _context){
-
-	//aSysMsg(add,(XEGI_SysMsg){.handle=_context, .type=XEGI_Msg_(LBUTTONDOWN)});
-	//aSysMsg(add,(XEGI_SysMsg){.handle=_context, .type=XEGI_Msg_(LBUTTONUP)});
-	//aSysMsg(add,(XEGI_SysMsg){.handle=_context, .type=XEGI_Msg_(MOUSEMOVE), .x=MouseX, .y=MouseY });
-	return 1;
-}
-
+/*
 uint32_t Sys_ProcessMsg(XEGI_SysMsg _msg){
 	switch (_msg.type.val)
 	{
@@ -94,6 +85,17 @@ uint32_t Sys_ProcessMsg(XEGI_SysMsg _msg){
 	}
 	}
 	return 0;
+}
+*/
+
+//////////////// MESSAGES /////////////////////
+
+uint32_t XeGI_Get_ContextMsg(hdl_t _context){
+
+	//aSysMsg(add,(XEGI_SysMsg){.handle=_context, .type=XEGI_Msg_(LBUTTONDOWN)});
+	//aSysMsg(add,(XEGI_SysMsg){.handle=_context, .type=XEGI_Msg_(LBUTTONUP)});
+	//aSysMsg(add,(XEGI_SysMsg){.handle=_context, .type=XEGI_Msg_(MOUSEMOVE), .x=MouseX, .y=MouseY });
+	return 1;
 }
 
 //////////////////// THREAD //////////////
