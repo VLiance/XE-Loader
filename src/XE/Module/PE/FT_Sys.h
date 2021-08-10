@@ -985,7 +985,7 @@ DWORD WINAPI sys_GetFileSize (HANDLE hFile, LPDWORD lpFileSizeHigh){
 	#ifdef Func_Win
 		return GetFileSize( hFile, lpFileSizeHigh );
 	#else
-		return XeGI_GetFileSize((hdl_t)hFile);
+		return pv_XeGI_GetFileSize((hdl_t)hFile);
 	#endif
 }
 
@@ -1005,7 +1005,10 @@ WINBOOL WINAPI sys_ReadFile (HANDLE hFile, LPVOID lpBuffer, DWORD nNumberOfBytes
 	#ifdef Func_Win
 		return ReadFile( hFile, lpBuffer, nNumberOfBytesToRead, lpNumberOfBytesRead, lpOverlapped );
 	#else
-		return pv_XeGI_ReadPart((hdl_t)hFile, lpBuffer, nNumberOfBytesToRead); //TODO file seek
+		size_t bytesRead;
+		bool res = pv_XeGI_ReadPart((hdl_t)hFile, lpBuffer, nNumberOfBytesToRead, &bytesRead); //TODO file seek
+		*lpNumberOfBytesRead = bytesRead;
+		return res;
 	#endif
 }
 

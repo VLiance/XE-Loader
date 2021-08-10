@@ -43,8 +43,12 @@ inl bool name_##_contain(name_* _this, type_* _match){                  \
 	return false;                                                       \
 }                                                                       \
 																		\
-inl uint32_t name_##_handle(name_* _this, type_* _element){                					\
-	return (uint32_t)(_element - _this->data);                                            \
+inl hdl_t name_##_handle(name_* _this, type_* _element){                \
+	return (hdl_t)(_element - _this->data);                             \
+}      																	\
+																		\
+inl type_* name_##_ptr(name_* _this,  hdl_t _handle){                 \
+	return (type_*)&(_this[_handle]);                           			\
 }      																	\
 																		\
 inl bool name_##_reset(name_* _this){                					\

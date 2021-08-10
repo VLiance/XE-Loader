@@ -47,6 +47,7 @@ XEGI_aSysMsg aSysMsg;
 typedef struct {
 	hdl_t handle;
 	uint32_t  pos;
+	uint32_t  size;
 	char*  path;
 
 } XEGI_FileOp;
@@ -191,11 +192,12 @@ bool
 
 
 bool 
-	pv_XeGI_ReadPart(hdl_t handle, void* dest, size_t nNumberOfBytesToRead) //or path?
+	pv_XeGI_ReadPart(hdl_t handle, void* dest, size_t nNumberOfBytesToRead, size_t* pNumberOfBytesRead) //or path?
 {
-	//XeGI_ReadFile(handle, dest, nNumberOfBytesToRead);
-	//hdl_t* handle = aFileHandle(add, aFileHandle.size);
-	//return *handle;
+	//always resd full file
+	XEGI_FileOp* _file = aFileHandle(ptr,handle);
+	XeGI_ReadFile(_file);
+	*pNumberOfBytesRead =   _file->size;
 	return true;
 }
 
@@ -207,7 +209,6 @@ bool
 	//free bytes
 	return true;
 }
-
 //////////////
 
 #ifdef ShowPixView

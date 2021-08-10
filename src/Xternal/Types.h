@@ -106,6 +106,8 @@ typedef uint16_t s16_t;
 typedef uint32_t s32_t;
 #endif
 
+typedef  size_t hdl_t;
+
 typedef uint8_t* text_t;
 
 typedef uint8_t  UTF8_t;
