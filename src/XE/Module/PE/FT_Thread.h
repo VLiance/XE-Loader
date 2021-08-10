@@ -142,7 +142,7 @@ uintptr_t th_beginthreadex( void *security, unsigned stack_size, unsigned ( WINA
 	#endif
 	return thdl;
 	*/
-	return XeGI_CreateThread((XEGI_THREAD_START_ROUTINE)start_address,stack_size,(LPVOID)arglist);
+	return pv_XeGI_CreateThread((XEGI_THREAD_START_ROUTINE)start_address,stack_size,(LPVOID)arglist);
 }
 
 //!WINBASEAPI HANDLE WINAPI CreateThread (LPSECURITY_ATTRIBUTES lpThreadAttributes, SIZE_T dwStackSize, LPTHREAD_START_ROUTINE lpStartAddress, LPVOID lpParameter, DWORD dwCreationFlags, LPDWORD lpThreadId)
@@ -151,7 +151,7 @@ HANDLE WINAPI th_CreateThread(LPSECURITY_ATTRIBUTES lpThreadAttributes, SIZE_T d
 	#if defined(Func_Win) || defined(USE_WinThread)
 		CreateThread(lpThreadAttributes,dwStackSize,lpStartAddress,lpParameter, dwCreationFlags, lpThreadId);
 	#else
-		return (HANDLE)XeGI_CreateThread((XEGI_THREAD_START_ROUTINE)lpStartAddress,dwStackSize,(LPVOID)lpParameter);
+		return (HANDLE)pv_XeGI_CreateThread((XEGI_THREAD_START_ROUTINE)lpStartAddress,dwStackSize,(LPVOID)lpParameter);
 	#endif
 	
 }
@@ -192,6 +192,7 @@ VOID WINAPI th_EnterCriticalSection(LPCRITICAL_SECTION lpCriticalSection){
 		EnterCriticalSection(lpCriticalSection);
 	#else
 		lpCriticalSection->OwningThread = (HANDLE)criticalSection_thread_;
+		XeGI_EnterCriticalSection(lpCriticalSection->OwningThread );
 	//		criticalSection_thread_ ++; //fake to bypass mesa assert
 		//*lpCriticalSection = CriticalSection;
 	#endif
@@ -203,6 +204,8 @@ VOID WINAPI th_TryEnterCriticalSection(LPCRITICAL_SECTION lpCriticalSection){
 	#if defined(Func_Win) || defined(USE_WinThread)
 		TryEnterCriticalSection(lpCriticalSection);
 	#else
+		lpCriticalSection->OwningThread = (HANDLE)criticalSection_thread_;
+		XeGI_EnterCriticalSection(lpCriticalSection->OwningThread );
 		//*lpCriticalSection = CriticalSection;
 	#endif
 }
@@ -213,6 +216,7 @@ VOID WINAPI th_TryEnterCriticalSection(LPCRITICAL_SECTION lpCriticalSection){
 	#if defined(Func_Win) || defined(USE_WinThread)
 		LeaveCriticalSection(lpCriticalSection);
 	#else
+		XeGI_LeaveCriticalSection(lpCriticalSection->OwningThread );
 		lpCriticalSection->OwningThread = (HANDLE)0;
 	#endif
 }
@@ -288,6 +292,6 @@ HANDLE WINAPI th_GetCurrentThread(VOID){
 	#if defined(Func_Win) || defined(USE_WinThread)
 	return GetCurrentThread();
 	#else
-	return 0;
+	return XeGI_GetCurrentThread();
 	#endif
 }

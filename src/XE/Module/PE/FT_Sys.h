@@ -1175,6 +1175,8 @@ bool bLButtonDown_last  = false;
 inl void impl_GetMessages(HWND hWnd_Filter){ //if hWnd_Filter=0 -> all
 	for(int i = 0; i < aWndProc_idx; i++){
 		//Call all WndProc messages
+		XeGI_Get_ContextMsg(i);
+		
 		
 		HWND _hWnd = (HWND)1;
 		UINT uMsg = 1;

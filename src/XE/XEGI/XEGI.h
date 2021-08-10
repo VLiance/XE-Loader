@@ -49,21 +49,12 @@ typedef struct {
 	uint32_t  pos;
 	uint32_t  size;
 	char*  path;
+	char*  data;
 
 } XEGI_FileOp;
 
 
-#include "XE/XEGI.inc"
 
-//USED?
-uint32_t Sys_ProcessMsg_ALL(){
-
-	for(int i = 0; i < aSysMsg.size; i++){
-		Sys_ProcessMsg(aSysMsg.data[i]);
-	}
-	aSysMsg(reset);
-	return 0;
-}
 
 //IF have longjump
 #include <setjmp.h> 
@@ -90,6 +81,19 @@ XEGI_aThread aThread={};
 #define aThread(fn, ...) XEGI_aThread_##fn(&aThread, ##__VA_ARGS__)
 //!-----------!//
 
+
+#include "XE/XEGI.inc"
+
+//USED?
+uint32_t Sys_ProcessMsg_ALL(){
+
+	for(int i = 0; i < aSysMsg.size; i++){
+		Sys_ProcessMsg(aSysMsg.data[i]);
+	}
+	aSysMsg(reset);
+	return 0;
+}
+
 void 
 	XeGI_ExecuteThread(XEGI_Thread* th)
 {
@@ -112,7 +116,7 @@ void
 	}
 }
 uintptr_t 
-	XeGI_CreateThread(XEGI_THREAD_START_ROUTINE threadMain, uint32_t stackSize, void* threadParam)
+	pv_XeGI_CreateThread(XEGI_THREAD_START_ROUTINE threadMain, uint32_t stackSize, void* threadParam)
 {
 	uintptr_t thdl =0;
 	int err =0;
@@ -130,9 +134,7 @@ uintptr_t
 			err = GetLastError();
 		}
 		#else
-			//No thread
-			_printl("Warning, no thread created");
-			return 1;
+			return XeGI_CreateThread(XEGI_THREAD_START_ROUTINE threadMain, uint32_t stackSize, void* threadParam);
 		#endif
 		
 	#endif
@@ -170,7 +172,7 @@ hdl_t
 {
 	XEGI_FileOp* file = aFileHandle(add, (XEGI_FileOp){.handle=aFileHandle.size});
 	//file.path = malloc()
-	XeGI_OpenFile(file);
+	//XeGI_OpenFile(file);
 	return aFileHandle(handle, file);
 }
 
