@@ -313,6 +313,8 @@
 {"",			"_vsnprintf"  	,(FUNC_) impl_vsnprintf },
 {"",			"_snwprintf"  	,(FUNC_) impl_snwprintf },
 {"",			"fwprintf"  	,(FUNC_) impl_fwprintf },
+{"",			"wprintf"  	    ,(FUNC_) impl_wprintf },
+
 
 {"",			"abort"  		,(FUNC_) impl_abort }, 
 
@@ -412,12 +414,21 @@
 {"",			"wcstombs"  ,(FUNC_) impl_wcstombs },
 
 
+{"",			"AddAtomA"  ,(FUNC_) impl_AddAtomA},
+{"",			"GetAtomNameA"  ,(FUNC_) impl_GetAtomNameA},
+{"",			"FindAtomA"  ,(FUNC_) impl_FindAtomA},
+
+
+
 {"",			"isalnum"  ,(FUNC_) isalnum},
 {"",			"isdigit"  ,(FUNC_) isdigit },
 {"",			"tolower"  ,(FUNC_) tolower },
+{"",			"toupper"  	,(FUNC_) toupper },
 
-
+{"",			"_strnicmp"  ,(FUNC_) impl_strnicmp },
+{"",			"strnicmp"  ,(FUNC_) impl_strnicmp },
 {"",			"strcmp"  	,(FUNC_) strcmp },
+{"",			"_strcmp"  	,(FUNC_) strcmp },
 {"",			"stricmp"	,(FUNC_) stricmp },
 
 {"",			"strcat"  	,(FUNC_) strcat },
@@ -456,6 +467,11 @@
 {"",			"abs"  		,(FUNC_) impl_abs }, 
 /////////////////////////////////
 
+
+/////////// DIR ////////////////
+{"",			"_mkdir"  	,(FUNC_) impl_mkdir },
+
+
 /////////// FILE ////////////////
 {"",			"fopen"  	,(FUNC_) impl_fopen },
 {"",			"fread"  	,(FUNC_) fread },
@@ -463,6 +479,8 @@
 {"",			"fseek"  	,(FUNC_) fseek },
 {"",			"ftell"  	,(FUNC_) ftell },
 {"",			"rewind"  	,(FUNC_) rewind },
+
+
 #endif
 
 {"",			"_fileno"  					,(FUNC_) impl_fileno},

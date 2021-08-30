@@ -410,13 +410,54 @@ WINBOOL WINAPI sys_QueryPerformanceFrequency(LARGE_INTEGER* lpFrequency){
 	#endif
 }
 
+#include <time.h> 
+static uint tickcount_tmp = 1;
+static uint clockcount_tmp = 1;
+static uint compteur = 1;
+static uint adding_time = 2;
 //!DWORD WINAPI GetTickCount (VOID)
-DWORD WINAPI sys_GetTickCount(VOID){
- 	showfunc("GetTickCount( )", "");
+DWORD WINAPI sys_GetTickCount(VOID)
+{
+ 	// showfunc("GetTickCount( )", "");
 	#ifdef Func_Win
 		return GetTickCount();
 	#else
-		return 1;//Fake
+		if(tickcount_tmp > 4294967000)
+				tickcount_tmp = 0;
+
+		if(compteur > 4294967000)
+			compteur = 1;
+
+		#if defined(ImWin)
+
+			return (clock() + tickcount_tmp++);
+		
+		#else
+			
+			showfunc("clock() : %d", clock());
+
+			// Si precedent clock() est different celui du precedent
+			if(clockcount_tmp != clock())
+			{
+				clockcount_tmp = clock();
+				
+
+				if(tickcount_tmp <= 3)
+					adding_time = 2;
+				else
+					adding_time = 1;
+				
+				tickcount_tmp = 0;
+			}
+
+			tickcount_tmp = tickcount_tmp + 1;
+
+			
+
+			compteur = compteur + adding_time;
+
+			return (clock() + compteur);
+		#endif
 	#endif
 }
 
@@ -1181,7 +1222,7 @@ inl void impl_GetMessages(HWND hWnd_Filter){ //if hWnd_Filter=0 -> all
 		HWND _hWnd = (HWND)1;
 		UINT uMsg = 1;
 		LPARAM lparam = 0;
-		WPARAM wParam = 0;
+		WPARAM wparam = 0;
 
 /*
 	    uMsg = WM_MOUSEMOVE;
@@ -1221,17 +1262,27 @@ inl void impl_GetMessages(HWND hWnd_Filter){ //if hWnd_Filter=0 -> all
 			
 			switch (msg.type.val)
 			{
-			_case XEGI_Msg_LBUTTONDOWN:{	uMsg = WM_LBUTTONDOWN;
+				_case XEGI_Msg_LBUTTONDOWN:{	uMsg = WM_LBUTTONDOWN;
+				}
+				_case XEGI_Msg_LBUTTONUP:{		uMsg = WM_LBUTTONUP;
+				}
+				_case XEGI_Msg_MOUSEMOVE:
+				{		
+					uMsg = WM_MOUSEMOVE;
+					lparam = SETLPARAM(msg.x,msg.y);
+				}
+
+				_case XEGI_Msg_KEYDOWN:{ 
+					uMsg = WM_KEYDOWN;
+					wparam = msg.key;
+				}
+
+				_case XEGI_Msg_KEYUP:{ 
+					uMsg = WM_KEYUP;
+					wparam = msg.key;
+				}
 			}
-			_case XEGI_Msg_LBUTTONUP:{		uMsg = WM_LBUTTONUP;
-			}
-			_case XEGI_Msg_MOUSEMOVE:
-			{		
-				uMsg = WM_MOUSEMOVE;
-				lparam = SETLPARAM(msg.x,msg.y);
-			}
-			}
-			aWndProc[i](_hWnd,uMsg,wParam,lparam); //Call DefWindowProc (When return)
+			aWndProc[i](_hWnd,uMsg,wparam,lparam); //Call DefWindowProc (When return)
 		}
 	}
 	aSysMsg(reset);
@@ -1962,6 +2013,38 @@ HWND WINAPI sys_GetConsoleWindow(VOID){
 	return 0;
 	#endif	
 	
+}
+
+//!HWND WINAPI GetConsoleWindow(VOID)
+WINBOOL WINAPI sys_SetConsoleWindowInfo(HANDLE hConsoleOutput, WINBOOL bAbsolute, const SMALL_RECT* lpConsoleWindow)
+{
+	showfunc_opt("SetConsoleWindowInfo( hConsoleOutput:%d , bAbsolute:%d , lpConsoleWindow:%p)", hConsoleOutput, bAbsolute, lpConsoleWindow);
+	#ifdef Func_Win 
+	return SetConsoleWindowInfo();
+	#else
+	return 0;
+	#endif	
+	
+}
+
+WINBOOL WINAPI sys_SetConsoleOutputCP(int wCodePageID)
+{
+	showfunc_opt("SetConsoleOutputCP( wCodePageID:%d )", wCodePageID);
+	#ifdef Func_Win 
+	return SetConsoleOutputCP();
+	#else
+	return true;
+	#endif	
+}
+
+WINBOOL WINAPI sys_SetConsoleScreenBufferSize(HANDLE hConsoleOutput,COORD dwSize)
+{
+	showfunc_opt("SetConsoleScreenBufferSize( hConsoleOutput:%d , dwSize.X:%d, dwSize.Y:%d)", hConsoleOutput, dwSize.X, dwSize.Y);
+	#ifdef Func_Win 
+	return SetConsoleOutputCP();
+	#else
+	return true;
+	#endif	
 }
 
 //!struct lconv* localeconv (void)

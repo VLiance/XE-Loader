@@ -25,6 +25,8 @@ _enum_{
 	_(LBUTTONDOWN),
 	_(LBUTTONUP),
 	_(MOUSEMOVE),
+	_(KEYDOWN),
+	_(KEYUP),
 }enum_
 #undef _
 
@@ -34,6 +36,7 @@ typedef struct {
 	XEGI_Msg_  type;
 	ptrdiff_t x;
 	ptrdiff_t y;
+	ptrdiff_t key;
 } XEGI_SysMsg;
 
 ARRAY(XEGI_aSysMsg, XEGI_SysMsg, 512);

@@ -180,9 +180,18 @@ inl size_t
 	wcslen_(const wchar_t* s){
 	size_t ln = 0;
 	if(!s)return 0;
-	while (s[ln] != L'\0'){
-		++ln;
-	}return ln;
+	while (s[ln] != L'\0')
+    {
+      if (s[++ln] == L'\0')
+		return ln;
+	  if (s[++ln] == L'\0')
+		return ln;
+	  if (s[++ln] == L'\0')
+		return ln;
+	  ++ln;
+    }
+	return ln;
+	
 }
 
 #include "XE/Utils/ConvertUTF.h"

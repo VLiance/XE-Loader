@@ -63,7 +63,7 @@ LRESULT CALLBACK WndProc( HWND hwnd,UINT msg,WPARAM wParam,LPARAM lParam){
       }
       break;
 	  
-  case WM_LBUTTONDOWN:
+  	case WM_LBUTTONDOWN:
 		aSysMsg(add,(XEGI_SysMsg){.handle=h, .type=XEGI_Msg_(LBUTTONDOWN)});
 		bLButtonDown = true;
 		break;
@@ -77,6 +77,14 @@ LRESULT CALLBACK WndProc( HWND hwnd,UINT msg,WPARAM wParam,LPARAM lParam){
 		pixView_mouse_x = (float)GET_X_LPARAM(lParam);
 		pixView_mouse_y = (float)GET_Y_LPARAM(lParam);
 	 }
+
+	 case WM_KEYDOWN:
+		aSysMsg(add,(XEGI_SysMsg){.handle=h, .type=XEGI_Msg_(KEYDOWN), .key=wParam});
+		break;
+	
+	case WM_KEYUP:
+		aSysMsg(add,(XEGI_SysMsg){.handle=h, .type=XEGI_Msg_(KEYUP), .key=wParam});
+		break;
 			 
     case WM_PAINT:
       {

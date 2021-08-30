@@ -164,12 +164,80 @@ ULONG impl_chkstk(){
 	//Load ntdll.dll: __chkstk
 }
  */
+
+#if defined(Func_Win) || defined(ImWin)
+	#include <direct.h>
+	#include <stdio.h>
+	#include <stdlib.h>
+#else
+	#include <sys/stat.h>
+#endif
+
+int impl_mkdir (const char *path)
+{
+	#if defined(Func_Win) || defined(ImWin)
+		return mkdir(path);
+	#else
+		int modet = 0777;
+
+		return mkdir(path, modet);
+	#endif
+}
+
+int impl_strnicmp(const char* s1, const char* s2, size_t n) 
+{
+	//showfunc("strnicmp( s1: %s, s2: %s n:%d)", s1, s2, n);
+
+
+	if (n == 0)
+	return 0;
+
+	do 
+	{
+		if (tolower((unsigned char) *s1) != tolower((unsigned char) *s2++))
+			return (int)tolower((unsigned char)*s1) -
+		(int) tolower((unsigned char) *--s2);
+
+		if (*s1++ == 0)
+			break;
+	} 
+	while (--n != 0);
+
+	return 0;
+}
+
+
  
  //!FILE * fopen ( const char * filename, const char * mode )
  FILE * impl_fopen ( const char * filename, const char * mode ){
-	showfunc("fopen( filename: %p, mode: %s )", filename,mode);
+	showfunc("fopen( filename: %s, mode: %s )", filename,mode);
 	return fopen(filename, mode);
  }
+
+void* impl_AddAtomA(LPCSTR atomName)
+{
+	showfunc("AddAtomA( atomName: %s )", atomName);
+
+	return atomName;
+}
+
+
+void* impl_GetAtomNameA( void* atom, LPSTR atomName, int nameLen)
+{
+	showfunc("GetAtomNameA( atom: %p, mode: %s nameLen: %d)", atom, atomName, nameLen);
+
+	return atomName;
+}
+
+void* impl_FindAtomA( LPCSTR atomName)
+{
+	showfunc("FindAtomA( atomName: %s )", atomName);
+
+	return atomName;
+}
+
+
+
 
  //!size_t wcstombs (char* dest, const wchar_t* src, size_t max);
  //Important: Windows wchar_t is 16-bit & for Linux, wchar_t is 32 bit.
@@ -491,6 +559,42 @@ inl int  impl_snwprintf( wchar_t* s, size_t n, const wchar_t* format, ... ){
 	return 0;
 }
 
+/////////////////////////////// WPrintf //////////////
+#define tConvtBufferSize 1024
+char aConvtBuffer[tConvtBufferSize];
+size_t fNarrow(const wchar_t * src, char * dest, size_t dest_len){
+  size_t i;
+  wchar_t code;
+  i = 0;
+  while (src[i] != '\0' && i < (dest_len - 1)){
+    code = src[i];
+    if (code < 128)
+      dest[i] = (char) code;
+    else{
+      dest[i] = '?';
+      if (code >= 0xD800 && code <= 0xD8FF)
+        // lead surrogate, skip the next code unit, which is the trail
+        i++;
+    }
+    i++;
+  }
+  dest[i] = '\0';
+  return i - 1;
+}
+char* tempUTF16toUTF(const wchar_t * src){
+    fNarrow(src, aConvtBuffer, tConvtBufferSize);
+    return aConvtBuffer;
+}
+int impl_wprintf (const wchar_t* format, ...){
+	int NombreCaracteres;
+	va_list arglist;
+	
+	va_start( arglist, format );
+		NombreCaracteres = vprintf( tempUTF16toUTF(format), arglist );
+	va_end( arglist );
+	
+	return NombreCaracteres;
+}
 
 //!int fwprintf (FILE* stream, const wchar_t* format, ...)
 inl int impl_fwprintf (FILE* stream, const wchar_t* format, ...){
