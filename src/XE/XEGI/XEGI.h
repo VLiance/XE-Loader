@@ -134,7 +134,7 @@ uintptr_t
 			err = GetLastError();
 		}
 		#else
-			return XeGI_CreateThread(XEGI_THREAD_START_ROUTINE threadMain, uint32_t stackSize, void* threadParam);
+			return XeGI_CreateThread(threadMain, stackSize, threadParam);
 		#endif
 		
 	#endif
