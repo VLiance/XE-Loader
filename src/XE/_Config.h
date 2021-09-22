@@ -44,7 +44,7 @@
 #define VirtualLoadPE
 
 #define USE_Direct_Mapping
-
+#define USE_Direct_Mapping_Printf
 
 
 //Show when function are called from the fonction table, with is parameters

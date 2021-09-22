@@ -375,10 +375,8 @@
 {"",			"fflush"  	,(FUNC_) impl_fflush },
 {"",			"fwrite"  	,(FUNC_) impl_fwrite },
 
-{"",			"printf"  			,(FUNC_) impl_printf },
 {"",			"setbuf"  			,(FUNC_) impl_setbuf },
-{"",			"fprintf"  			,(FUNC_) impl_fprintf },
-{"",			"sprintf"  			,(FUNC_) impl_sprintf },
+
 {"",			"vsprintf"  		,(FUNC_) impl_vsprintf },
 {"",			"_vscprintf"  		,(FUNC_) impl_vscprintf },
 
@@ -387,6 +385,17 @@
 {"",			"puts"  	,(FUNC_) impl_puts },
 {"",			"fputs"  	,(FUNC_) impl_fputs },
 {"",			"putchar"	,(FUNC_) impl_putchar },
+
+
+#ifdef USE_Direct_Mapping_Printf
+	{"",			"printf"  			,(FUNC_) impl_printf },
+	{"",			"fprintf"  			,(FUNC_) impl_fprintf },
+	{"",			"sprintf"  			,(FUNC_) impl_sprintf },
+#else
+	{"",			"printf"  			,(FUNC_) impl_printf },
+	{"",			"fprintf"  			,(FUNC_) impl_fprintf },
+	{"",			"sprintf"  			,(FUNC_) impl_sprintf },
+#endif
 
 ////////////////////////////////////
 
@@ -451,6 +460,7 @@
 /////////// CHAR ////////////////
 {"",			"getc"  	,(FUNC_) getc },
 {"",			"fgetc"  	,(FUNC_) fgetc },
+{"",            "fgets"     ,(FUNC_) fgets },
 {"",			"getchar"  	,(FUNC_) getchar },
 {"",			"getch"  	,(FUNC_) getch },
 /////////////////////////////////
