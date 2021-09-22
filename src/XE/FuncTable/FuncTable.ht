@@ -388,9 +388,9 @@
 
 
 #ifdef USE_Direct_Mapping_Printf
-	{"",			"printf"  			,(FUNC_) impl_printf },
-	{"",			"fprintf"  			,(FUNC_) impl_fprintf },
-	{"",			"sprintf"  			,(FUNC_) impl_sprintf },
+	{"",			"printf"  			,(FUNC_) printf },
+	{"",			"fprintf"  			,(FUNC_) fprintf },
+	{"",			"sprintf"  			,(FUNC_) sprintf },
 #else
 	{"",			"printf"  			,(FUNC_) impl_printf },
 	{"",			"fprintf"  			,(FUNC_) impl_fprintf },
