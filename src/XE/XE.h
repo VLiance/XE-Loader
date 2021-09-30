@@ -90,23 +90,6 @@ extern XE_aModule aModule;
 
 #include "Module/PE/win.h"
 
-#ifdef Show_AllFuncTable
-#define showfunc_opt showfunc
-#else
-#define showfunc_opt
-#endif
-
-#ifndef Show_FuncTable
-#undef showfunc
-#define showfunc
-#undef showfunc_ret
-#define showfunc_ret
-#undef showfunc_unimplt
-#define showfunc_unimplt
-#undef showfunc_opt
-#define showfunc_opt
-#endif
-
 typedef struct {const char* sLib; const char* sFuncName;FUNC_ dFunc;} sFunc;
 
 typedef void (*FUNC_Version)(int _nMajor, int _nMinor);
@@ -118,11 +101,21 @@ typedef int  (*funcPtrPtr_int)(void*,void*);
 typedef bool (*funcPtrIntPtr_bool)(void*,int,void*);
 typedef int  (*funcPtrIntIntPtr_int)(void*,int,int,void*);
 
-/// Log ///
 #define showfunc_unimplt(name, ...) warn_print("-->Call not implemented func: " name , __VA_ARGS__);
-#define showfunc(name, ...) 		_printl( "-->Call: " name , __VA_ARGS__);
-#define showfunc_ret(name, ...) 	_printl("-->Return: " name , __VA_ARGS__);
-#define showinf(name, ...) 			info_print("---: " name , __VA_ARGS__);
+#if defined(Show_FuncTable) || defined(Show_AllFuncTable)
+    #define showfunc(name, ...)         _printl( "-->Call: " name , __VA_ARGS__);
+    #define showfunc_ret(name, ...)     _printl("-->Return: " name , __VA_ARGS__);
+    #define showinf(name, ...)             info_print("---: " name , __VA_ARGS__);
+#else
+    #define showfunc(name, ...)         ___nothing__();
+    #define showfunc_ret(name, ...)     ___nothing__();
+    #define showinf(name, ...)             info_print(name , __VA_ARGS__);
+#endif
+#ifdef Show_AllFuncTable
+#define showfunc_opt showfunc
+#else
+#define showfunc_opt
+#endif
 
 extern int xe_arg_nb;
 extern char* xe_arg;

@@ -218,7 +218,7 @@ void* impl_AddAtomA(LPCSTR atomName)
 {
 	showfunc("AddAtomA( atomName: %s )", atomName);
 
-	return atomName;
+	return (void*)atomName;
 }
 
 
@@ -226,14 +226,14 @@ void* impl_GetAtomNameA( void* atom, LPSTR atomName, int nameLen)
 {
 	showfunc("GetAtomNameA( atom: %p, mode: %s nameLen: %d)", atom, atomName, nameLen);
 
-	return atomName;
+	return (void*)atomName;
 }
 
 void* impl_FindAtomA( LPCSTR atomName)
 {
 	showfunc("FindAtomA( atomName: %s )", atomName);
 
-	return atomName;
+	return (void*)atomName;
 }
 
 
@@ -678,7 +678,7 @@ int impl_fprintf( FILE* stream, const char* format, ...){
 	va_start (arg, format);
 		 ret = vsprintf (BUFFER, format, arg);
 	va_end (arg);
-	showinf("O> %s", BUFFER);
+	showinf("%s", BUFFER);
 	#endif
 	
 	va_end (_arg_);
@@ -700,7 +700,7 @@ int impl_printf( const char* format, ...){
 	va_start (arg, format);
 		int ret = vsprintf (BUFFER, format, arg);
 	va_end (arg);
-	showinf("O> %s", BUFFER);
+	showinf("%s", BUFFER);
 	
 	#endif
 	va_end (_arg_);
