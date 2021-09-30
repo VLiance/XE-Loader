@@ -107,8 +107,8 @@ typedef int  (*funcPtrIntIntPtr_int)(void*,int,int,void*);
     #define showfunc_ret(name, ...)     _printl("-->Return: " name , __VA_ARGS__);
     #define showinf(name, ...)             info_print("---: " name , __VA_ARGS__);
 #else
-    #define showfunc(name, ...)         ___nothing__();
-    #define showfunc_ret(name, ...)     ___nothing__();
+    #define showfunc(name, ...)    
+    #define showfunc_ret(name, ...)
     #define showinf(name, ...)             info_print(name , __VA_ARGS__);
 #endif
 #ifdef Show_AllFuncTable
