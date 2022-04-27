@@ -66,7 +66,7 @@ That said, XE-Loader will not run every existing executable, instead, it gives y
 
 ## Examples
 
-Created for the [CpcDos](https://cpcdos.net ) project. [Github](https://github.com/SPinti-Software/CpcdosOS2.1/tree/dev/CONTRIB/XE-Loader) / [Video](https://www.youtube.com/watch?v=sUTnZHpxKf4&ab_channel=TutorielsCpcdosOSx-Cr%C3%A9ezvotreOS) / [Using Mesa] (https://github.com/Cwc-Lib/mesa)
+Created for the [CpcDos](https://cpcdos.net ) project. [Github](https://github.com/SPinti-Software/CpcdosOS2.1/tree/dev/CONTRIB/XE-Loader) / [Video](https://www.youtube.com/watch?v=sUTnZHpxKf4&ab_channel=TutorielsCpcdosOSx-Cr%C3%A9ezvotreOS) / [Using Mesa](https://github.com/Cwc-Lib/mesa)
 
 
 ## Soon
