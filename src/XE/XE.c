@@ -103,6 +103,7 @@ int
 	}
 	}
 	#undef  _set
+	return 0;
 }
 
 export XE_Module* 

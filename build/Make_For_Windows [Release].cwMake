@@ -2,7 +2,7 @@
 >
 -{_sOpt}="O2"
 >
--#Run Build.cwc -{_wToolchain}= VLianceTool/LibRT
+-{App}=YourApp.exe
 >
--#Run _out/{sFolder}/XE-Loader.exe  YourApp.exe
+-#Run Build.cwc -{_wToolchain}= VLianceTool/LibRT
 >

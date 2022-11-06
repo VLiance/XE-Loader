@@ -319,11 +319,13 @@ int impl_XPending(Display*display){
 unsigned int impl_sleep(unsigned int seconds){
 	showfunc_opt("sleep( seconds: %d)", seconds);
 	XeGI_Sleep(seconds*1000);
+	return 0;
 }
 //!int usleep(useconds_t useec)
 int impl_usleep(useconds_t usec){
 	showfunc_opt("usleep( usec: %d)", usec);
 	XeGI_Sleep(usec/1000);
+	return 0;
 }
 
 //extern char **__environ;
@@ -484,4 +486,5 @@ void impl_perror(const char *s){
 int * impl_errno_location(void){
 	err_print("errno_location", "");
 //TODO return the adress of the errno variable
+	return 0;
 }

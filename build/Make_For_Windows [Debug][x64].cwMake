@@ -2,7 +2,7 @@
 >
 -{_sOpt}="Debug"
 >
--#Run Build.cwc -{_wToolchain}= VLianceTool/LibRT[x64]
+-{App}=YourApp.exe
 >
--#Run _out/{sFolder}/XE-Loader.exe  YourApp.exe
+-#Run Build.cwc -{_wToolchain}= VLianceTool/LibRT[x64]
 >

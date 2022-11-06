@@ -36,6 +36,7 @@ inl HMODULE WINAPI impl_LoadLibraryW(LPCWSTR lpLibFileName){
 	W2CStr(aVLA, lpLibFileName,len);
 	*/
 	showinf("\nTODO: impl_LoadLibraryW" , "");
+	return 0;
 }
 
 //!HMODULE LoadLibraryA(LPCSTR lpLibFileName)
@@ -74,6 +75,7 @@ HMODULE WINAPI impl_LoadLibraryExW (LPCWSTR lpLibFileName, HANDLE hFile, DWORD d
 		return (HMODULE)AddLibrary(_sFile);
 	#endif
 	*/
+	return 0;
 }
 
 //!WINBOOL WINAPI FreeLibrary (HMODULE hLibModule)
@@ -737,6 +739,7 @@ int impl_putenv(const char *envstring){
 void (*impl_signal(int sig, void (*func)(int)))(int){
 	showfunc("signal(signal: %d, func: %p)", sig, func);
 	signal(sig, func);
+	return 0;
 }
 
 #include <io.h> //_open / _get_osfhandle / _fileno

@@ -28,3 +28,5 @@
 	
 	-{vExtraFlag}
 >
+-#Run _out/{sFolder}/XE-Loader.exe {App}
+>

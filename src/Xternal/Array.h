@@ -43,6 +43,6 @@ inl bool name_##_contain(name_* _this, type_* _match){                  \
 	return false;                                                       \
 }                                                                       \
 																		\
-inl bool name_##_reset(name_* _this){                					\
+inl void name_##_reset(name_* _this){                					\
 	_this->size = 0;                                                 	\
 }                                                                        
